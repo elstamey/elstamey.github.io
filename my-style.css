@@ -1,0 +1,12 @@
+.slide {
+    background-color: inherit;
+}
+
+.slide-me {
+    background-color: #F05B62;
+    color: white;
+}
+
+.slide-me h3, .slide-me a {
+    color: white;
+}
