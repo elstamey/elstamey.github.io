@@ -3,7 +3,7 @@ author:
   name: Emily Stamey
   twitter: elstamey
   url: http://elstamey.com
-output: gdirdu-snowandtell/gdi-conference-speaking.html
+output: gdirdu-snowandtell/conference-speaking.html
 theme: jdan/cleaver-retro
 controls: true
 
