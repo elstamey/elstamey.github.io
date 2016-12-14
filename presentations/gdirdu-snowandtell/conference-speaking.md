@@ -29,7 +29,6 @@ controls: true
 -  Travel 
 
 
-
 ![Reasons](imgs/travel-turtles.gif)
 
 --
@@ -49,6 +48,7 @@ controls: true
 - Familiar
 - Comfortable
 - Supportive
+- Compensate Speakers
 
 ![Cheering Section](imgs/cheering.gif)
 
@@ -59,6 +59,7 @@ controls: true
 - Familiar
 - Comfortable
 - Supportive
+- Compensate Speakers
 
 #### ==> Grow Into It
 --
