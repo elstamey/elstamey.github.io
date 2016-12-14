@@ -62,6 +62,7 @@ controls: true
 - Compensate Speakers
 
 #### ==> Grow Into It
+
 --
 
 ### Submit To Many Conferences
@@ -89,8 +90,8 @@ controls: true
 
 ### You Will React
 
-![](imgs/freak-out.gif)
-![](imgs/omg-accepted.gif)
+![Excited](imgs/freak-out.gif)
+![Freaking Out](imgs/omg-accepted.gif)
 
 
 --
@@ -109,5 +110,6 @@ controls: true
 - Build Great Content
 - PRACTICE
 
-![Reasons](imgs/travel.jpg)
+![TRAVEL](imgs/travel.jpg)
+
 --
