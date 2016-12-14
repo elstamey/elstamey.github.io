@@ -12,10 +12,10 @@ controls: true
 
 # Conference Speaking
 
-(hint: I'm going to talk you into it ;)
+(hint: I'm going to talk you into it ;) 
 --
 
-### Reasons
+### Reasons 
 -  Share What You Are Working On/Learning
 -  Learn More
 
@@ -23,10 +23,10 @@ controls: true
 
 --
 
-### Reasons
+### Reasons 
 -  Share What You Are Working On/Learning
 -  Learn More
--  Travel
+-  Travel 
 
 
 
