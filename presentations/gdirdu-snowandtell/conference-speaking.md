@@ -113,3 +113,17 @@ controls: true
 ![TRAVEL](imgs/travel.jpg)
 
 --
+
+###Links
+
+- [Brainstorming Technique](http://lucybain.com/blog/2016/conference-proposal-ideas/)
+    You may need to do this a few times to really get an idea you love
+- [Help Me Abstract](http://helpmeabstract.com/)
+    Submit a gist of your abstract and get feedback from speakers
+- Find Conferences with Open Calls
+  - [Callback Women](https://twitter.com/callbackwomen)
+  - [Joind.in](https://joind.in/event/callforpapers)
+  - [PaperCall](https://www.papercall.io/cfps)
+
+
+--
