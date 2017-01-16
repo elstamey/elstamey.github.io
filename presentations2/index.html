@@ -35,28 +35,44 @@
 					Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
 				</section>
 				<section>
-					<h3>Survey Your Application</h3>
-					<ol>
-						<li><p>Talk to users of the application</p></li>
-						<li><p>Study the codebase</p></li>
-						<li><p>Examine the new feature requests</p></li>
-					</ol>
-					<aside class="notes">
-						For your survey,
-						<li>you want to talk to the users</li>
-						<li>study the code</li>
-						<li>and since there are always new features, you need to see how those might fit in. </li>
-					</aside>
+					<section>
+						<h3>Survey Your Application</h3>
+						<ol>
+							<li><p>Talk to users of the application</p></li>
+							<li><p>Study the codebase</p></li>
+							<li><p>Examine the new feature requests</p></li>
+						</ol>
+						<aside class="notes">
+							For your survey,
+							<li>you want to talk to the users</li>
+							<li>study the code</li>
+							<li>and since there are always new features, you need to see how those might fit in. </li>
+						</aside>
+					</section>
+					<section>
+						<h3>Survey Your Application</h3>
+						<ol>
+							<li><p><mark>Talk to users of the application</mark></p></li>
+							<li><p>Study the codebase</p></li>
+							<li><p>Examine the new feature requests</p></li>
+						</ol>
+						<aside class="notes">
+						</aside>
+					</section>
 				</section>
 				<section>
-					<h3>Survey Your Application</h3>
-					<ol>
-						<li><p><mark>Talk to users of the application</mark></p></li>
-						<li><p>Study the codebase</p></li>
-						<li><p>Examine the new feature requests</p></li>
-					</ol>
-					<aside class="notes">
-					</aside>
+					<section>
+  <pre><code data-trim>
+	  // Useless comment.
+	  alert('hi');
+  </pre></code>
+						<p class="fragment" data-code-focus="1">
+							This focuses on the comment.
+						</p>
+						<p class="fragment" data-code-focus="1-2">
+							Another fragment.
+						</p>
+					</section>
 				</section>
 			</div>
 		</div>
@@ -74,13 +90,17 @@
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
 					{ src: 'plugin/notes/notes.js', async: true },
-					{
-						src: 'plugin/highlight/highlight.js', async: true, callback: function () {
-						hljs.initHighlightingOnLoad();
-					}},
+					{ src: 'plugin/highlight/highlight.js' },
 					{ src: 'plugin/accessibility/helper.js', async: true, condition: function() {
 						return !!document.body.classList;
-					}}
+					}},
+					{
+						src: 'node_modules/reveal-code-focus/reveal-code-focus.js',
+						async: true,
+						callback: function() {
+							RevealCodeFocus();
+						}
+					}
 				],
 
 				// Display controls in the bottom right corner
@@ -90,7 +110,7 @@
 				progress: true,
 
 				// Display the page number of the current slide
-				slideNumber: false,
+				slideNumber: true,
 
 				// Push each slide change to the browser history
 				history: false,
