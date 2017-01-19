@@ -91,7 +91,10 @@ blockquote.style4 {
     /*color: black;*/
 /*}*/
 
-
+.reveal .slide-background.present {
+    background-size: 80%;
+    display: block;
+}
 
 
 /* New section*/
