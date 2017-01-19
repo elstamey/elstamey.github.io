@@ -136,9 +136,7 @@ myColBox {
 }
 
 myRowBox {
-    flex-wrap: wrap;
     background: teal;
-    flex-grow: 1;
     flex-basis: auto;
     min-height: 100%;
     display: flex;
@@ -159,10 +157,15 @@ myRowBox > article {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    flex-grow: 1;
 }
 
 myRowBox > article > img {
-    padding: 1rem;
+    margin: auto;
+    width: 100%;
+    max-width: 50% !important;
+    max-height:100% !important;
+
 }
 
 h5.attrib {
