@@ -1,3 +1,48 @@
+
+
+/* New section*/
+
+section.left {
+    text-align: left;
+    float: left;
+    width: 50%;
+    margin: 10px 10px 10px 10px;
+}
+
+section.right {
+    text-align: right;
+    float: right;
+    width: 50%;
+    margin: 10px 10px 10px 10px;
+}
+
+img.full_bg {
+    position: absolute;
+    top: -360px;
+    left: -310px;
+    max-width: none;
+    max-height: none;
+    margin: 0px;
+    border: none;
+}
+
+img.single_right {
+    position: absolute;
+    align: top right;
+}
+
+h5.attrib {
+    font-size: large;
+}
+
+h5.attrib a,
+h5.attrib a:hover {
+    color: black;
+}
+
+/*
+    Code Fragment Highlighting styles
+ */
 .line { display: block; }
 .line.hover { background: yellow; }
 
