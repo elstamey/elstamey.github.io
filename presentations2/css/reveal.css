@@ -337,6 +337,9 @@ body {
 .reveal .slides > section,
 .reveal .slides > section > section {
   display: none;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   position: absolute;
   width: 100%;
   padding: 20px 0px;
