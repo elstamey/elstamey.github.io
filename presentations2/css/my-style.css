@@ -1,38 +1,159 @@
+/*.slide {*/
+    /*background-color: inherit;*/
+/*}*/
 
+/*blockquote.style4 {*/
+    /*font: 1em/1.5em Gotham-Italic serif;*/
+    /*padding-left: 70px;*/
+    /*padding-top: 18px;*/
+    /*padding-bottom: 18px;*/
+    /*padding-right: 10px;*/
+    /*background-color: #dadada;*/
+    /*border-top: 1px solid #ccc;*/
+    /*border-bottom: 1px solid #ccc;*/
+    /*margin: 5px;*/
+    /*background-image: url(img/openquote4.gif);*/
+    /*background-position: middle left;*/
+    /*background-repeat: no-repeat;*/
+    /*text-indent: 23px;*/
+/*}*/
+
+/*div.slide-background.titleblock.present {*/
+    /*!*background-size: contain;*!*/
+    /*!*background-position-x: left;*!*/
+/*}*/
+
+/*.example {*/
+    /*background-color: rgba(240, 91, 98, 0.45);*/
+/*}*/
+
+/*.slide-me {*/
+    /*!*background-color: #F05B62;*!*/
+    /*!*color: white;*!*/
+/*}*/
+
+/*.slide-me h3, .slide-me a {*/
+    /*color: white;*/
+/*}*/
+
+/*.choose1 li:nth-child(1)  p:first-of-type ,*/
+/*.choose2 li:nth-child(2) p:first-of-type  ,*/
+/*.choose3 li:nth-child(3) p:first-of-type  {*/
+    /*color: #1b91ff;*/
+/*}*/
+
+/*ul {*/
+    /*padding-left: 40px;*/
+    /*padding-top: 0;*/
+/*}*/
+
+/*img {*/
+    /*align-items: center;*/
+    /*width: auto;*/
+/*}*/
+
+
+
+/*h3.title {*/
+    /*!*color: #f05b62;*!*/
+    /*font-weight: bolder;*/
+/*}*/
+
+
+/*h2.sectionblockbox {*/
+    /*!*color: #4e9ed4;*!*/
+    /*font-weight: bolder;*/
+/*}*/
+
+/*h3 {*/
+    /*!*color: #f05b62 !important;*!*/
+    /*font-weight: bold;*/
+/*}*/
+
+/*.speaker-controls-notes .value {*/
+    /*text-overflow: ellipsis;*/
+/*}*/
+
+/*section.titleblock {*/
+    /*margin-left: 100px;*/
+    /*margin-top: 450px;*/
+    /*background: rgba(255,255,2555,0.8);*/
+/*}*/
+
+/*section.sectionblock {*/
+    /*margin-left: 100px;*/
+    /*margin-top:460px;*/
+    /*background: rgba(255,255,2555,0.8);*/
+/*}*/
+
+/*mark {*/
+    /*background-color: yellow;*/
+    /*color: black;*/
+/*}*/
 
 /* New section*/
 
-div.left {
-    text-align: left;
-    float: left;
-    width: 50%;
-    margin: 10px 10px 10px 10px;
+/*div.left {*/
+    /*text-align: left;*/
+    /*float: left;*/
+    /*width: 48%;*/
+    /*margin: 10px 10px 10px 10px;*/
+/*}*/
+
+/*div.right {*/
+    /*text-align: right;*/
+    /*float: inherit;*/
+    /*width: 48%;*/
+    /*margin: 10px 10px 10px 10px;*/
+/*}*/
+
+/*div.stacked_images {*/
+    /*float: right;*/
+    /*display: block;*/
+/*}*/
+
+/*img.full_bg {*/
+    /*position: absolute;*/
+    /*top: -360px;*/
+    /*left: -310px;*/
+    /*max-width: none;*/
+    /*max-height: none;*/
+    /*margin: 0px;*/
+    /*border: none;*/
+/*}*/
+
+/*img.single_right {*/
+    /*position: absolute;*/
+    /*align: top right;*/
+/*}*/
+
+header {
+    background: purple;
+    height: 100px;
 }
 
-div.right {
-    text-align: right;
-    float: inherit;
-    width: 50%;
-    margin: 10px 10px 10px 10px;
+myColBox {
+    display: flex;
+    flex-wrap: nowrap;
 }
 
-img.full_bg {
-    position: absolute;
-    top: -360px;
-    left: -310px;
-    max-width: none;
-    max-height: none;
-    margin: 0px;
-    border: none;
+myColBox > article {
+    flex: 1;
 }
 
-img.single_right {
-    position: absolute;
-    align: top right;
+article {
+    padding: 10px;
+    margin: 10px;
+    background: aqua;
 }
+
+
 
 h5.attrib {
     font-size: large;
+    text-align: right;
+    position: relative;
+    float: right;
 }
 
 h5.attrib a,
