@@ -2,21 +2,21 @@
     /*background-color: inherit;*/
 /*}*/
 
-/*blockquote.style4 {*/
-    /*font: 1em/1.5em Gotham-Italic serif;*/
-    /*padding-left: 70px;*/
-    /*padding-top: 18px;*/
-    /*padding-bottom: 18px;*/
-    /*padding-right: 10px;*/
-    /*background-color: #dadada;*/
-    /*border-top: 1px solid #ccc;*/
-    /*border-bottom: 1px solid #ccc;*/
-    /*margin: 5px;*/
-    /*background-image: url(img/openquote4.gif);*/
-    /*background-position: middle left;*/
-    /*background-repeat: no-repeat;*/
-    /*text-indent: 23px;*/
-/*}*/
+blockquote.style4 {
+    font: 1em/1.5em Gotham-Italic serif;
+    padding-left: 70px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    padding-right: 10px;
+    background-color: #dadada;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    margin: 5px;
+    background-image: url('../img/openquote4.gif');
+    background-position: middle left;
+    background-repeat: no-repeat;
+    text-indent: 23px;
+}
 
 /*div.slide-background.titleblock.present {*/
     /*!*background-size: contain;*!*/
