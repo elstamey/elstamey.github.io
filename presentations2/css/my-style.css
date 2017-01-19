@@ -131,6 +131,18 @@ header {
 myColBox {
     display: flex;
     flex-wrap: nowrap;
+    background: aqua;
+    flex-direction: row;
+}
+
+myRowBox {
+    flex-wrap: wrap;
+    background: teal;
+    flex-grow: 1;
+    flex-basis: auto;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 myColBox > article {
@@ -140,10 +152,18 @@ myColBox > article {
 article {
     padding: 10px;
     margin: 10px;
-    background: aqua;
 }
 
+myRowBox > article {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
+myRowBox > article > img {
+    padding: 1rem;
+}
 
 h5.attrib {
     font-size: large;
