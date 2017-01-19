@@ -128,6 +128,11 @@ header {
     height: 100px;
 }
 
+footer {
+    background: red;
+    /*height: 100px;*/
+}
+
 myColBox {
     display: flex;
     flex-wrap: nowrap;
