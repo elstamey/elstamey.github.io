@@ -2,16 +2,16 @@
 
 /* New section*/
 
-section.left {
+div.left {
     text-align: left;
     float: left;
     width: 50%;
     margin: 10px 10px 10px 10px;
 }
 
-section.right {
+div.right {
     text-align: right;
-    float: right;
+    float: inherit;
     width: 50%;
     margin: 10px 10px 10px 10px;
 }
