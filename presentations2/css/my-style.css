@@ -1,3 +1,20 @@
-.line {
+.line { display: block; }
+.line.hover { background: yellow; }
+
+.line.focus {
+    background: yellow;
+    color: black;
+}
+
+.line.focus .hljs-comment, .line.focus .hljs-quote {
+    color: #586e75;
+}
+
+.reveal .slides section .fragment.current-only {
+    opacity: 1;
+    visibility: visible;
+    display: none;
+}
+.reveal .slides section .fragment.current-only.current-fragment {
     display: block;
 }
