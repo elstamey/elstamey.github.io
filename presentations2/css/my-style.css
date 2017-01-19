@@ -91,37 +91,10 @@ blockquote.style4 {
     /*color: black;*/
 /*}*/
 
+
+
+
 /* New section*/
-
-/*div.left {*/
-    /*text-align: left;*/
-    /*float: left;*/
-    /*width: 48%;*/
-    /*margin: 10px 10px 10px 10px;*/
-/*}*/
-
-/*div.right {*/
-    /*text-align: right;*/
-    /*float: inherit;*/
-    /*width: 48%;*/
-    /*margin: 10px 10px 10px 10px;*/
-/*}*/
-
-/*div.stacked_images {*/
-    /*float: right;*/
-    /*display: block;*/
-/*}*/
-
-/*img.full_bg {*/
-    /*position: absolute;*/
-    /*top: -360px;*/
-    /*left: -310px;*/
-    /*max-width: none;*/
-    /*max-height: none;*/
-    /*margin: 0px;*/
-    /*border: none;*/
-/*}*/
-
 
 header {
     background: purple;
