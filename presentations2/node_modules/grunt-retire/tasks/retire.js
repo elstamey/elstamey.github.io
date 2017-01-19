@@ -21,7 +21,7 @@ module.exports = function (grunt) {
       var vulnsFound = false;
       var filesSrc = this.filesSrc;
       var request = req;
-      var defaultIgnoreFile = '.retireignore';
+      var defaultIgnoreFiles = ['.retireignore', '.retireignore.json'];
       var output = {};
       var scanedFile;
 
@@ -45,7 +45,7 @@ module.exports = function (grunt) {
       // Merge task-specific and/or target-specific options with these defaults.
       var options = this.options({
          verbose: true,
-         packageOnly: false, 
+         packageOnly: false,
          jsRepository: 'https://raw.github.com/RetireJS/retire.js/master/repository/jsrepository.json',
          nodeRepository: 'https://raw.github.com/RetireJS/retire.js/master/repository/npmrepository.json',
          logger: grunt.log.writeln,
@@ -58,8 +58,12 @@ module.exports = function (grunt) {
          options.cachedir = path.resolve(os.tmpdir(), '.retire-cache/');
       }
       var ignores = options.ignore ? options.ignore.split(',') : [];
-      options.ignore = [];
-      if (!options.ignorefile && grunt.file.exists(defaultIgnoreFile)) {
+      options.ignore = { paths : [], descriptors: [] };
+      var defaultIgnoreFile = defaultIgnoreFiles.filter(function (x) {
+         return fs.existsSync(x);
+      })[0];
+
+      if (!options.ignorefile && defaultIgnoreFile) {
         options.ignorefile = defaultIgnoreFile;
       }
 
@@ -68,12 +72,24 @@ module.exports = function (grunt) {
           grunt.log.error('Error: Could not read ignore file: ' + options.ignorefile);
           process.exit(1);
         }
-        var lines = fs.readFileSync(options.ignorefile).toString().split(/\r\n|\n/g).filter(function(e) { return e !== ''; });
-        var ignored = lines.map(function(e) { return e[0] === '@' ? e.slice(1) : path.resolve(e); });
-        options.ignore = options.ignore.concat(ignored);
+        var ignored;
+        if (options.ignorefile.substr(-5) === ".json") {
+           ignored = JSON.parse(fs.readFileSync(options.ignorefile).toString());
+           options.ignore.descriptors = ignored;
+           var ignoredPaths = ignored.map(function (x) {
+              return x.path;
+           }).filter(function (x) {
+              return x;
+           });
+           options.ignore.paths = options.ignore.paths.concat(ignoredPaths);
+        } else {
+           var lines = fs.readFileSync(options.ignorefile).toString().split(/\r\n|\n/g).filter(function(e) { return e !== ''; });
+           ignored = lines.map(function(e) { return e[0] === '@' ? e.slice(1) : path.resolve(e); });
+           options.ignore.paths = options.ignore.paths.concat(ignored);
+        }
       }
 
-      ignores.forEach(function(e) { options.ignore.push(e); });
+      ignores.forEach(function(e) { options.ignore.paths.push(e); });
       logger.verbose("Ignoring " + JSON.stringify(options.ignore));
 
       // log (verbose) options before hooking in the reporter
