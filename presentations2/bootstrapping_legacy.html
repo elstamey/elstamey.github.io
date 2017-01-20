@@ -1121,20 +1121,21 @@ class CreateUserLoginsTable extends AbstractMigration
                         <li><p>'/src' is given a namespace</p></li>
                         <li><p>namespaces are autoloaded in composer</p></li>
                     </ul>
-            <pre><code>
-                {
-                "name": "itecs/scholarships",
-                "description": "Scholarships application for the College of Engineering.",
-                ...
-                "autoload": {
-                "psr-4": {
-                "ITECS\\Scholarships\\": [ "src/", "app/core/" ],
-                "Codeception\\Module\\": "src/",
-                "Tests\\Substitute\\": "tests/_helpers/"
-                }
-                }
-                }
-            </code></pre>
+<pre><code>
+{
+    "name": "itecs/scholarships",
+    "description": "Scholarships application for the College of Engineering.",
+    ...
+    "autoload": {
+        "psr-4": {
+            "ITECS\\Scholarships\\": [ "src/", "app/core/" ],
+            "Codeception\\Module\\": "src/",
+            "Tests\\Substitute\\": "tests/_helpers/"
+        }
+    }
+}
+</code></pre>
+                    <span class="fragment current-only" data-code-focus="7-11"></span>
                     <aside class="notes">
                         <li>Composer allowed us to build this independent structure. </li>
                         <li>We used it to load a lot of the tooling I already mentioned</li>
