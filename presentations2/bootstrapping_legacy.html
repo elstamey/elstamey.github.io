@@ -744,43 +744,71 @@
                     </aside>
                 </section>
                 <section>
-                    <h3>Composer packages</h3>
-                    <ul>
-                        <li>Testing packages (Codeception, PHPUnit, Mockery)</li>
-                        <li>Twig templates</li>
-                        <!--<li>Moneyphp for handling currency</li>-->
-                        <li>Pimple container</li>
-                        <li>Illuminate database</li>
-                        <li>Phinx for database migrations</li>
-                    </ul>
-                    <aside class="notes">
-                        <li>In order to use those testing packages, we used composer</li>
-                        <li>Twig templates gave us some really nice functionality for the new User Interfaces we built</li>
-                        <!--We used a package called MoneyPHP for handling the dollar amounts of the scholarships-->
-                        <li>Pimple container was extremely useful for our bootstrapping, and I'll explain them soon.</li>
-                        <li>We used Illuminate DB to give us query builder and DB connections</li>
-                        <li>And Phinx gave us the ability to migrate DB changes</li>
-                    </aside>
-                </section>
-                <section>
+                    <section>
+                        <header>
+                            <h3>Composer packages</h3>
+                        </header>
+                        <myColBox>
+                            <article>
+                                <ul>
+                                    <li>Testing packages (Codeception, PHPUnit, Mockery)</li>
+                                    <li>Twig templates</li>
+                                    <!--<li>Moneyphp for handling currency</li>-->
+                                    <li>Pimple container</li>
+                                    <li>Illuminate database</li>
+                                    <li>Phinx for database migrations</li>
+                                </ul>
+                            </article>
+                            <article>
+                                <img src="img/logo-composer-transparent.png">
+                            </article>
+                        </myColBox>
+                        <aside class="notes">
+                            <li>In order to use those testing packages, we used composer</li>
+                            <li>Twig templates gave us some really nice functionality for the new User Interfaces we built</li>
+                            <!--We used a package called MoneyPHP for handling the dollar amounts of the scholarships-->
+                            <li>Pimple container was extremely useful for our bootstrapping, and I'll explain them soon.</li>
+                            <li>We used Illuminate DB to give us query builder and DB connections</li>
+                            <li>And Phinx gave us the ability to migrate DB changes</li>
+                        </aside>
+                    </section>
                     <section>
                         <h3>Composer Require</h3>
-                <pre><code>
-                    {
-                    "name": "itecs/scholarships",
-                    "description": "Scholarships application for the College of Engineering.",
-                    "require": {
-                    "php": ">=5.3.3",
-                    "robmorgan/phinx": "*",
-                    "pimple/pimple": "~3.0",
-                    "ncsu/auth": "dev-master"
-                    },
-                    "require-dev": {
-                    "codeception/codeception": "2.0.*"
-                    }
-                    ...
-                    }
-                </code></pre>
+<pre><code>
+{
+    "name": "itecs/scholarships",
+    "description": "Scholarships application for the College of Engineering.",
+    "require": {
+        "php": ">=5.3.3",
+        "robmorgan/phinx": "*",
+        "pimple/pimple": "~3.0",
+        "ncsu/auth": "dev-master"
+    },
+    "require-dev": {
+        "codeception/codeception": "2.0.*"
+    }
+    ...
+}
+</code></pre>
+                        <span class="fragment current-only" data-code-focus="5">
+                            <p>All packages in this section will be included everywhere</p>
+                        </span>
+                        <span class="fragment current-only" data-code-focus="11">
+                            <p>All packages in this section will be included in the dev environment</p>
+                        </span>
+                        <span class="fragment current-only" data-code-focus="7-9,12"></span>
+                        <span class="fragment current-only" data-code-focus="12">
+                            <p>Included Test packages.  >=2.0 <2.1.</p>
+                        </span>
+                        <span class="fragment current-only" data-code-focus="7">
+                            <p>Migrations - all updates</p>
+                        </span>
+                        <span class="fragment current-only" data-code-focus="8">
+                            <p>Pimple Containers - Equivalent to >=3.0 <4.0.0</p>
+                        </span>
+                        <span class="fragment current-only" data-code-focus="9">
+                            <p>Don't include the dev-master unless you control updates.</p>
+                        </span>
                         <aside class="notes">
                             In your composer.json file, you specify the packages and the versions you will accept.
                             <br>Package name = the vendor name and the project's name
@@ -792,41 +820,41 @@
                     <section>
                         <h3>Full Composer</h3>
 <pre><code>
-    {
+{
     "name": "itecs/scholarships",
     "description": "Scholarships application for the College of Engineering.",
     "require": {
-    "php": ">=5.3.3",
-    "robmorgan/phinx": "*",
-    "pimple/pimple": "~3.0",
-    "symfony/http-foundation": "2.5.*",
-    "illuminate/database": "4.1.*",
-    "illuminate/support": "4.1.*",
-    "ncsu/auth": "dev-master",
-    "twig/twig": "~1.16",
-    "mathiasverraes/money": "v1.3.0",
-    "monolog/monolog": "~1.12",
-    "mpdf/mpdf": "dev-master"
+        "php": ">=5.3.3",
+        "robmorgan/phinx": "*",
+        "pimple/pimple": "~3.0",
+        "symfony/http-foundation": "2.5.*",
+        "illuminate/database": "4.1.*",
+        "illuminate/support": "4.1.*",
+        "ncsu/auth": "dev-master",
+        "twig/twig": "~1.16",
+        "mathiasverraes/money": "v1.3.0",
+        "monolog/monolog": "~1.12",
+        "mpdf/mpdf": "dev-master"
     },
     "require-dev": {
-    "codeception/codeception": "2.0.*",
-    "codeception/specify": "*",
-    "codeception/verify": "*",
-    "fzaninotto/faker": "1.4.*",
-    "phpunit/phpunit": "4.1.*",
-    "mockery/mockery": "0.9.*",
-    "symfony/var-dumper": "~2.6",
-    "squizlabs/php_codesniffer": "2.*"
+        "codeception/codeception": "2.0.*",
+        "codeception/specify": "*",
+        "codeception/verify": "*",
+        "fzaninotto/faker": "1.4.*",
+        "phpunit/phpunit": "4.1.*",
+        "mockery/mockery": "0.9.*",
+        "symfony/var-dumper": "~2.6",
+        "squizlabs/php_codesniffer": "2.*"
     },
     "autoload": {
-    "psr-4": {
-    "ITECS\\Scholarships\\": [ "src/", "app/core/" ],
-    "Codeception\\Module\\": "src/",
-    "Tests\\Substitute\\": "tests/_helpers/"
+        "psr-4": {
+        "ITECS\\Scholarships\\": [ "src/", "app/core/" ],
+        "Codeception\\Module\\": "src/",
+        "Tests\\Substitute\\": "tests/_helpers/"
     }
-    }
-    }
+}
 </code></pre>
+                        <span class="fragment current-only" data-code-focus="28-33"></span>
                         <aside class="notes">
                             <li>This is the composer file.  </li>
                             <li>The testing packages are only required in our development environment.</li>
