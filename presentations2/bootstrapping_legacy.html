@@ -455,9 +455,9 @@
                 <section>
                     <h3>Study the codebase</h3>
                     <ul>
-                        <li><p>Talk to past/current developers</p></li>
-                        <li><p>Verify that key functionality does what everyone thinks it does</p></li>
-                        <li><p>Look for entanglements</p></li>
+                        <li><p><mark>Talk to past/current developers</mark></p></li>
+                        <li class="fragment"><p>Verify functionality does what everyone thinks it does</p></li>
+                        <li class="fragment"><p>Look for entanglements</p></li>
                     </ul>
                     <aside class="notes">
                         <li>This is where it makes sense to talk to other developers</li>
@@ -465,14 +465,14 @@
                         <li>Identify entanglements whether they are places to avoid changing or have for improvement.</li>
                     </aside>
                 </section>
-                <section>
-                    <h3>Codebase of Scholarship</h3>
+                <section data-background-image="img/notebook-page3.jpg">
+                    <h3>Codebase of Scholarships</h3>
                     <ul>
-                        <li><p>Large App model</p>
+                        <li><p class="fragment">Large App model</p>
                             <ul>
-                                <li><p>SQL queries, only slightly dynamic</p></li>
-                                <li><p>Functions weren’t single-purpose</p></li>
-                                <li><p>No Bounded Contexts between Students, Selection, and Foundation</p></li>
+                                <li class="fragment"><p>SQL queries, only slightly dynamic</p></li>
+                                <li class="fragment"><p>Functions weren’t single-purpose</p></li>
+                                <li class="fragment"><p>No Bounded Contexts between Students, Selection, and Foundation</p></li>
                             </ul></li>
                     </ul>
                     <aside class="notes">
@@ -481,13 +481,13 @@
                         <li>There were no boundaries between selection and foundation queries, so it was impossible to change one without affecting the other</li>
                     </aside>
                 </section>
-                <section>
+                <section data-background-image="img/notebook-page3.jpg">
                     <h3>Codebase of Scholarship</h3>
                     <ul>
-                        <li><p>Student application data was a single row in table</p>
+                        <li class="fragment"><p>Student application data was a single row in table</p>
                             <ul>
-                                <li><p>Academic information wasn’t updated when it changed</p></li>
-                                <li><p>Major was a single column in that row</p></li>
+                                <li class="fragment"><p>Academic information wasn’t updated when it changed</p></li>
+                                <li class="fragment"><p>Major was a single column in that row</p></li>
                             </ul></li>
                     </ul>
                     <aside class="notes">
@@ -519,12 +519,12 @@
                         You want to see what those features are and how they might fit into the other work to be done.
                     </aside>
                 </section>
-                <section>
+                <section data-background-image="img/notebook-page3.jpg">
                     <h3>New Features: Scholarships</h3>
                     <ul>
-                        <li><p>Explicit criteria matching, excluded non-matching applicants</p></li>
-                        <li><p>Current student data, query their GPA, Major, etc at time of selection</p></li>
-                        <li><p>Students have multiple majors</p></li>
+                        <li class="fragment"><p>Explicit criteria matching, excluded non-matching applicants</p></li>
+                        <li class="fragment"><p>Current student data, query their GPA, Major, etc at time of selection</p></li>
+                        <li class="fragment"><p>Students have multiple majors</p></li>
                     </ul>
                     <aside class="notes">
                         <li>For scholarships they agreed to exclude applicants who didn't match requirements</li>
@@ -547,12 +547,19 @@
                     </aside>
                 </section-->
                 <section>
-                    <h3>Before you start</h3>
-                    <ul>
-                        <li><p>Is there another application that can do what it does? Is it better?</p></li>
-                        <li><p>Is this a worthwhile investment?</p></li>
-                        <li><p>If so, what are the Most Valuable Features?</p></li>
-                    </ul>
+                    <myColBox>
+                        <article>
+                            <h3>Before you start</h3>
+                            <ul>
+                                <li class="fragment"><p>Is there another application that can do what it does? Is it better?</p></li>
+                                <li class="fragment"><p>Is this a worthwhile investment?</p></li>
+                                <li class="fragment"><p>If so, what are the Most Valuable Features?</p></li>
+                            </ul>
+                        </article>
+                        <article>
+                            <img src="img/Cash-Coins-Investment.jpg">
+                        </article>
+                    </myColBox>
                     <aside class="notes">
                         <li>Be sure you aren't re-inventing the wheel.</li>
                         <li>Before starting this huge project, we heard the University might be buying a tool for the University scholarships. </li>
@@ -563,14 +570,17 @@
                     </aside>
                 </section>
                 <section>
-                    <h3>Include Customers/Users in Decisions</h3>
+                    <h1>IT BEGINS</h1>
+                </section>
+                <section>
+                    <h3>Include Users in Decisions</h3>
                     <ul>
-                        <li><p>Explain why this work is necessary</p></li>
-                        <li><p>Be open about errors in the application</p></li>
-                        <li><p>Build trust from the beginning</p></li>
+                        <li class="fragment"><p>Explain why this work is necessary</p></li>
+                        <li class="fragment"><p>Be open about errors in the application</p></li>
+                        <li class="fragment"><p>Build trust from the beginning</p></li>
                     </ul>
                     <aside class="notes">
-                        <li>It's a good idea to include customers in your decisions about the value of features.</li>
+                        <li>It's a good idea to include customers and users in your decisions about the value of features.</li>
                         <li>Make sure that your priorities are consistent with their needs</li>
                         <li>Be open about errors in the application because this helps them understand the choices. </li>
                     </aside>
