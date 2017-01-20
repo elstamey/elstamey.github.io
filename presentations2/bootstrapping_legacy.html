@@ -1146,22 +1146,22 @@ class CreateUserLoginsTable extends AbstractMigration
                 <section>
                     <h3>Bootstrapping:  Connecting to the Framework</h3>
                     <ul>
-                        <li><p>'/app/bindings.php'
-                            define container for new code and its dependencies</p></li>
-                        <li><p><p>'/app/controllers'
-                            <br>new controllers for the new functionality</p></li>
-                        <li><p><p>'/app/services.php'
-                            defined and configured twig, database, et al</p></li>
+                        <li class="fragment"><p>'/app/bindings.php'
+                            <br>define container for new code and its dependencies</p></li>
+                        <li class="fragment"><p>'/app/controllers'
+                            <br>new controllers for the new functionality</></li>
+                        <li class="fragment"><p>'/app/services.php'
+                            <br>defined and configured twig, database, et al</p></li>
                     </ul>
                     <aside class="notes">
                         <li>We created a file to define the container, Each class or service was added to the container array and the dependencies were included.</li>
-                        <li>We also created new controllers to seperate new features from the old</li>
+                        <li>We also created new controllers to separate new features from the old</li>
                         <li>These controllers linked to our container and passed the required classes and services to be used in the requests and templates</li>
                         <li>The services file is where we configured the database connections and twig templates and tooling and things like that.  This accessed our config variables from the config.php file</li>
                     </aside>
                 </section>
-                <section data-background="#f05b62">
-                    <h1 style="color: #fafafa;">Dependency Injection</h1>
+                <section>
+                    <h1>Dependency Injection</h1>
                     <aside class="notes">
                         <li>We positioned our new code adjacent to the framework</li>
                         <li>We needed to bring the fully namespaced services into that framework</li>
@@ -1170,30 +1170,37 @@ class CreateUserLoginsTable extends AbstractMigration
                     </aside>
                 </section>
                 <section>
-                    <h3>Dependency Injection Container</h3>
-                    <ul>
-                        <!--<li>Dependency injection is a software design pattern that implements inversion of control for resolving dependencies.</li>-->
-                        <!--<li>A dependency is an object that can be used (a service).</li>-->
-                        <!--<li>An injection is the passing of a dependency to a dependent object (a client) that would use it.</li>-->
-                        <li>The Pimple Container helps us pass the Service or Object we need in the application along with all of its dependencies</li>
-                        <li>We don't have to wait to let the dependencies resolve when the user accesses the object, we can ensure they are there ahead of time</li>
-                    </ul>
+                    <footer>
+                        <h3>Dependency Injection Container</h3>
+                        <ul>
+                            <!--<li>Dependency injection is a software design pattern that implements inversion of control for resolving dependencies.</li>-->
+                            <!--<li>A dependency is an object that can be used (a service).</li>-->
+                            <!--<li>An injection is the passing of a dependency to a dependent object (a client) that would use it.</li>-->
+                            <li class="fragment">The Pimple Container helps us pass the Service or Object we need in the application along with all of its dependencies</li>
+                            <li class="fragment">We don't have to wait to let the dependencies resolve when the user accesses the object, we can ensure they are there ahead of time</li>
+                        </ul>
+                    </footer>
                 </section>
                 <section>
-                    <h3>Container</h3>
-                    <p>'/app/bindings.php'
-                    <p><pre><code>
-                    &lt;?php
+                    <footer>
+                        <h3>Container</h3>
+                        <p>'/app/bindings.php'</p>
+<pre><code>
+&lt;?php
 
-                    /* example one */
+    /* example one */
 
-                    use Scholarships\Selection\Services\IlluminateDatabaseGpaService;
+    use Scholarships\Selection\Services\IlluminateDatabaseGpaService;
 
-                    $container['Scholarships\Common\Services\GpaService'] = function($c) {
-                    return new IlluminateDatabaseGpaService($c['database']);
-                    };
+    $container['Scholarships\Common\Services\GpaService'] = function($c) {
+        return new IlluminateDatabaseGpaService($c['database']);
+    };
 
-                </code></pre>
+</code></pre>
+                        <span class="fragment current-only" data-code-focus="6,9"></span>
+                        <span class="fragment current-only" data-code-focus="8"></span>
+                    </footer>
+
                     <aside class="notes">
                         <li>We needed an injector to bring our code dependencies into our CodeIgniter framework.  </li>
                         <li>In order to do this, we defined container in a file called `bindings.php`</li>
@@ -1204,24 +1211,25 @@ class CreateUserLoginsTable extends AbstractMigration
                 <section>
                     <h3>Container</h3>
                     <p>'/app/bindings.php'
-                    <p><pre><code>
-                    &lt;?php
+<pre><code>
+&lt;?php
 
-                    /* example two */
+/* example two */
 
-                    use Scholarships\Selection\ApplicantQueryService;
+use Scholarships\Selection\ApplicantQueryService;
 
-                    $container['Scholarships\Selection\ApplicantQueryService'] = function($c) {
-                    return new ApplicantQueryService(
-                    $c['Scholarships\StudentApplication\StudentQueryService'],
-                    $c['Scholarships\Common\Services\ResidenciesService'],
-                    $c['Scholarships\Common\Services\GpaService'],
-                    $c['Scholarships\Common\Services\UnmetNeedService'],
-                    $c['Scholarships\Common\Services\CandidateQualificationService']
-                    );
-                    };
-
-                </code></pre>
+$container['Scholarships\Selection\ApplicantQueryService'] = function($c) {
+    return new ApplicantQueryService(
+        $c['Scholarships\StudentApplication\StudentQueryService'],
+        $c['Scholarships\Common\Services\ResidenciesService'],
+        $c['Scholarships\Common\Services\GpaService'],
+        $c['Scholarships\Common\Services\UnmetNeedService'],
+        $c['Scholarships\Common\Services\CandidateQualificationService']
+    );
+};
+</code></pre>
+                    <span class="fragment current-only" data-code-focus="6,9"></span>
+                    <span class="fragment current-only" data-code-focus="10-14"></span>
                     <aside class="notes">
                         <li>We were bringing in large chunks of code.  Importing a Service might involve 5 or more dependencies, and
                             preserving them was critical</li>
