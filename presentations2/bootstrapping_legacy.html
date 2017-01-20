@@ -1247,42 +1247,49 @@ $container['Scholarships\Selection\ApplicantQueryService'] = function($c) {
                     <section>
                         <h3>Controllers</h3>
 <pre><code>
-    &lt;?php
+&lt;?php
 
-    class Selectionnext extends BaseController
-    {
+class Selectionnext extends BaseController
+{
     public function Selectionnext()
     {
-    parent::BaseController();
+        parent::BaseController();
 
-    $this->scholarshipRepository = $this->container['Scholarships\Selection\Scholarship\ScholarshipRepository'];
-    $this->collaborationsService = $this->container['Scholarships\Selection\CollaborationsService'];
-    $this->committeeService = $this->container['Scholarships\Selection\CommitteeService'];
-    $this->authService = $this->container['Scholarships\IdentityAccess\AuthenticationService'];
-    $this->awardsService = $this->container['Scholarships\Selection\Scholarship\AwardsService'];
-    $this->events = $this->container['Scholarships\Support\Events\EventStore'];
+        $this->scholarshipRepository = $this->container['Scholarships\Selection\Scholarship\ScholarshipRepository'];
+        $this->collaborationsService = $this->container['Scholarships\Selection\CollaborationsService'];
+        $this->committeeService = $this->container['Scholarships\Selection\CommitteeService'];
+        $this->authService = $this->container['Scholarships\IdentityAccess\AuthenticationService'];
+        $this->awardsService = $this->container['Scholarships\Selection\Scholarship\AwardsService'];
+        $this->events = $this->container['Scholarships\Support\Events\EventStore'];
     }
 
     private function getScholarshipDashboard($scholarshipId,$keepItLight=false)
     {
-    $committeeMember = $this->getCommitteeMember();
+        $committeeMember = $this->getCommitteeMember();
 
-    $presenter = new ScholarshipDashboardPresenter(
-    $committeeMember,
-    ScholarshipId::fromString($scholarshipId),
-    $this->events,
-    $this->scholarshipRepository,
-    $this->container['Scholarships\Selection\ApplicantQueryService'],
-    $keepItLight
-    );
+        $presenter = new ScholarshipDashboardPresenter(
+            $committeeMember,
+            ScholarshipId::fromString($scholarshipId),
+            $this->events,
+            $this->scholarshipRepository,
+            $this->container['Scholarships\Selection\ApplicantQueryService'],
+            $keepItLight
+        );
 
-    $scholDetails = $presenter->asArrayForJson();
-    $scholDetails['json_string'] = json_encode($scholDetails);
+        $scholDetails = $presenter->asArrayForJson();
+        $scholDetails['json_string'] = json_encode($scholDetails);
 
-    return $scholDetails;
+        return $scholDetails;
     }
-    ?&gt;
+?&gt;
 </code></pre>
+                        <span class="fragment current-only" data-code-focus="6"></span>
+                        <span class="fragment current-only" data-code-focus="10-15"></span>
+                        <span class="fragment current-only" data-code-focus="27"></span>
+                        <span class="fragment current-only" data-code-focus="22"></span>
+                        <span class="fragment current-only" data-code-focus="31"></span>
+                        <span class="fragment current-only" data-code-focus="34"></span>
+
                         <aside class="notes">
                             <li>Our controller included the Applicant Query Service as it built the Scholarship Dashboard</li>
                             <li>This defined a presenter to compile and display the Scholarship, its requirements, valid candidates, and any awards alredy given.</li>
@@ -1292,18 +1299,18 @@ $container['Scholarships\Selection\ApplicantQueryService'] = function($c) {
                     <section>
                         <h3>Base Controller</h3>
 <pre><code>
-    &lt;?php
+&lt;?php
 
-    namespace ITECS\Scholarships;
+namespace ITECS\Scholarships;
 
-    use \ReflectionClass;
-    use \Log;
+use \ReflectionClass;
+use \Log;
 
-    /**
-    * Base Application Controller Class
-    *
-    */
-    class BaseController extends \Controller {
+/**
+* Base Application Controller Class
+*
+*/
+class BaseController extends \Controller {
 
     const BAD_REQUEST=400;
     const FORBIDDEN=403;
@@ -1324,20 +1331,20 @@ $container['Scholarships\Selection\ApplicantQueryService'] = function($c) {
     */
     public function BaseController()
     {
-    parent::Controller();
+        parent::Controller();
 
 
-    // In Ameyrika, BaseController Contains Container
-    global $container;
-    $this->container = $container;
+        // In Ameyrika, BaseController Contains Container
+        global $container;
+        $this->container = $container;
 
-    $this->authenticationService = $this->container['ITECS\Scholarships\IdentityAccess\AuthenticationService'];
+        $this->authenticationService = $this->container['ITECS\Scholarships\IdentityAccess\AuthenticationService'];
 
-    session_start();
+        session_start();
 
-    $this->setExceptionHandler();
+        $this->setExceptionHandler();
 
-    log_message('debug', "Base Controller Class Initialized");
+        log_message('debug', "Base Controller Class Initialized");
     }
 
     /**
@@ -1347,7 +1354,7 @@ $container['Scholarships\Selection\ApplicantQueryService'] = function($c) {
     */
     protected function getCurrentUserIdentity()
     {
-    return $this->authenticationService->getCurrentAuthenticatedUser();
+        return $this->authenticationService->getCurrentAuthenticatedUser();
     }
 
     /**
@@ -1358,10 +1365,10 @@ $container['Scholarships\Selection\ApplicantQueryService'] = function($c) {
     */
     protected function render($name, array $context = array())
     {
-    // This keeps CodeIgniter from getting frisky.
-    ob_end_clean();
-    echo $this->container['twig']->render($name, $context);
-    exit;
+        // This keeps CodeIgniter from getting frisky.
+        ob_end_clean();
+        echo $this->container['twig']->render($name, $context);
+        exit;
     }
 
     /**
@@ -1375,9 +1382,9 @@ $container['Scholarships\Selection\ApplicantQueryService'] = function($c) {
     */
     protected function redirectAwayWithFlashNotice($location, $title, $message, $type='success')
     {
-    $this->setFlashNotice($title, $message, $type);
-    redirect($location);
-    exit;
+        $this->setFlashNotice($title, $message, $type);
+        redirect($location);
+        exit;
     }
 
     /**
@@ -1390,11 +1397,11 @@ $container['Scholarships\Selection\ApplicantQueryService'] = function($c) {
     */
     protected function setFlashNotice($title, $message, $type)
     {
-    $_SESSION['flash_notice'] = array(
-    'type' => $type,
-    'title'=>$title,
-    'message' => $message
-    );
+        $_SESSION['flash_notice'] = array(
+            'type' => $type,
+            'title'=>$title,
+            'message' => $message
+        );
     }
 
     /**
@@ -1408,46 +1415,47 @@ $container['Scholarships\Selection\ApplicantQueryService'] = function($c) {
     */
     protected function dieWithErrors($statusCode,$exception=NULL,$userMessages=NULL)
     {
-    if (is_null($userMessages)) {
-    $userMessages=array();
-    } else if (is_string($userMessages)) {
-    $userMessages=array($userMessages);
-    } else if (!is_array($userMessages)) {
-    $userMessages=array("An unexpected error occurred: {$userMessages}");
-    }
+        if (is_null($userMessages)) {
+            $userMessages=array();
+        } else if (is_string($userMessages)) {
+            $userMessages=array($userMessages);
+        } else if (!is_array($userMessages)) {
+            $userMessages=array("An unexpected error occurred: {$userMessages}");
+        }
 
-    if (!in_array($statusCode, array(self::BAD_REQUEST, self::FORBIDDEN, self::NOT_FOUND, self::METHOD_NOT_ALLOWED, self::SERVER_ERROR))) {
-    $statusCode = self::SERVER_ERROR;
-    }
+        if (!in_array($statusCode, array(self::BAD_REQUEST, self::FORBIDDEN, self::NOT_FOUND, self::METHOD_NOT_ALLOWED, self::SERVER_ERROR))) {
+            $statusCode = self::SERVER_ERROR;
+        }
 
-    $constants = new ReflectionClass('ITECS\Scholarships\BaseController');
-    $this->serverResponseCodes = array_flip($constants->getConstants());
+        $constants = new ReflectionClass('ITECS\Scholarships\BaseController');
+        $this->serverResponseCodes = array_flip($constants->getConstants());
 
-    $diagnosticMessages = array();
-    if (!is_null($exception)) {
-    $diagnosticMessages = array($exception->getMessage());
-    if ($statusCode == self::SERVER_ERROR) {
-    $this->reportUnhandledException($exception);
-    }
-    }
+        $diagnosticMessages = array();
+        if (!is_null($exception)) {
+            $diagnosticMessages = array($exception->getMessage());
 
-    $this->render("error/{$statusCode}.twig", array(
+            if ($statusCode == self::SERVER_ERROR) {
+                $this->reportUnhandledException($exception);
+            }
+        }
 
-    'diagnosticMessages' => $diagnosticMessages,
+        $this->render("error/{$statusCode}.twig", array(
 
-    'userErrorMessages' => $userMessages,
+        'diagnosticMessages' => $diagnosticMessages,
 
-    'currentUser'   => ( $statusCode == 403 ? array('name'=>'Access Denied') :  array('name'=>ucwords(strtolower(str_replace('_', ' ', $this->serverResponseCodes[$statusCode])))) ),
+        'userErrorMessages' => $userMessages,
 
-    'currentUrlEncoded' => $current_url = str_replace('+','%20', urlencode(sprintf(
-    'Scholarships problem at %s://%s/%s',
-    isset($_SERVER['HTTPS']) ? 'https' : 'http',
-    $_SERVER['HTTP_HOST'],
-    $_SERVER['REQUEST_URI']
-    )))
-    ));
+        'currentUser'   => ( $statusCode == 403 ? array('name'=>'Access Denied') :  array('name'=>ucwords(strtolower(str_replace('_', ' ', $this->serverResponseCodes[$statusCode])))) ),
 
-    exit;
+        'currentUrlEncoded' => $current_url = str_replace('+','%20', urlencode(sprintf(
+        'Scholarships problem at %s://%s/%s',
+        isset($_SERVER['HTTPS']) ? 'https' : 'http',
+        $_SERVER['HTTP_HOST'],
+        $_SERVER['REQUEST_URI']
+        )))
+        ));
+
+        exit;
     }
 
     /**
@@ -1458,14 +1466,14 @@ $container['Scholarships\Selection\ApplicantQueryService'] = function($c) {
     */
     public function handleUncaughtExceptions($exception)
     {
-    $caller = debug_backtrace();
-    $caller = $caller[1]['function'];
+        $caller = debug_backtrace();
+        $caller = $caller[1]['function'];
 
-    if (!empty($caller)) {
-    $this->dieWithErrors(self::NOT_FOUND);
-    }
+        if (!empty($caller)) {
+            $this->dieWithErrors(self::NOT_FOUND);
+        }
 
-    $this->dieWithErrors(self::SERVER_ERROR,$exception);
+        $this->dieWithErrors(self::SERVER_ERROR,$exception);
     }
 
 
@@ -1474,7 +1482,7 @@ $container['Scholarships\Selection\ApplicantQueryService'] = function($c) {
     */
     protected function setExceptionHandler()
     {
-    set_exception_handler(array($this, "handleUncaughtExceptions"));
+        set_exception_handler(array($this, "handleUncaughtExceptions"));
     }
 
     /**
@@ -1483,20 +1491,20 @@ $container['Scholarships\Selection\ApplicantQueryService'] = function($c) {
     */
     protected function reportUnhandledException($exception)
     {
-    if ( $this->container['config']['errorHandling']['emailExceptions'] ) {
-    $mail_body = "An unhandled exception was detected in Scholarships.";
-    $mail_body .= "\n\nThe exception code was {$exception->getCode()}\n\nThe exception message was:\n{$exception->getMessage()}\n\nThe current user was '{$this->getCurrentUserIdentity()}'.\n\n";
-    $mail_body .= "Request URI: {$_SERVER['REQUEST_URI']}\n\n";
+        if ( $this->container['config']['errorHandling']['emailExceptions'] ) {
+            $mail_body = "An unhandled exception was detected in Scholarships.";
+            $mail_body .= "\n\nThe exception code was {$exception->getCode()}\n\nThe exception message was:\n{$exception->getMessage()}\n\nThe current user was '{$this->getCurrentUserIdentity()}'.\n\n";
+            $mail_body .= "Request URI: {$_SERVER['REQUEST_URI']}\n\n";
 
-    mail(
-    $recipient = 'engr-webmaster@ncsu.edu',
-    $subject   = '[Scholarships] Unhandled Exception on ' . date("F j, Y, g:i a"),
-    $mail_body,
-    $header    = "From: Scholarships Application <engr-webmaster@ncsu.edu>\r\n"
-    );
-    }
+            mail(
+                $recipient = 'engr-webmaster@ncsu.edu',
+                $subject   = '[Scholarships] Unhandled Exception on ' . date("F j, Y, g:i a"),
+                $mail_body,
+                $header    = "From: Scholarships Application <engr-webmaster@ncsu.edu>\r\n"
+            );
+        }
 
-    Log::error($exception, array('login' => $this->getCurrentUserIdentity()));
+        Log::error($exception, array('login' => $this->getCurrentUserIdentity()));
     }
 
     /**
@@ -1506,7 +1514,7 @@ $container['Scholarships\Selection\ApplicantQueryService'] = function($c) {
     */
     protected function requestMethodIsPost()
     {
-    return $this->container['request']->getMethod() === 'POST';
+        return $this->container['request']->getMethod() === 'POST';
     }
 
     /**
@@ -1517,13 +1525,14 @@ $container['Scholarships\Selection\ApplicantQueryService'] = function($c) {
     */
     protected function methodMustBePost($message)
     {
-    if ( !$this->requestMethodIsPost() ) {
-    $this->dieWithErrors(self::METHOD_NOT_ALLOWED, NULL, $message);
+        if ( !$this->requestMethodIsPost() ) {
+            $this->dieWithErrors(self::METHOD_NOT_ALLOWED, NULL, $message);
+        }
     }
-    }
-    }
+}
 
 </code></pre>
+                        <span class="fragment current-only" data-code-focus="27,39"></span>
                         <aside class="notes">
 
                         </aside>
