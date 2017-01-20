@@ -100,24 +100,24 @@ blockquote.style4 {
 /* New section*/
 
 header {
-    background: purple;
+    /*background: purple;*/
     height: 100px;
 }
 
 footer {
-    background: red;
+    /*background: red;*/
     /*height: 100px;*/
 }
 
 myColBox {
     display: flex;
     flex-wrap: nowrap;
-    background: aqua;
+    /*background: aqua;*/
     flex-direction: row;
 }
 
 myRowBox {
-    background: teal;
+    /*background: teal;*/
     flex-basis: auto;
     min-height: 100%;
     display: flex;
