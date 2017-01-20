@@ -953,14 +953,18 @@ class CreateUserLoginsTable extends AbstractMigration
                 </section>
                 <section>
                     <section>
-                        <h3>Configuration file</h3>
-                        <ul>
-                            <li><p>DB connections</p></li>
-                            <li><p>Base URL </p></li>
-                            <li><p>Set paths to twig templates</p></li>
-                            <li><p>Customize Notice messages</p></li>
-                            <li><p>Set config variables for services</p></li>
-                        </ul>
+                        <header>
+                            <h3>Configuration file</h3>
+                        </header>
+                        <myColBox>
+                            <ul>
+                                <li class="fragment"><p>DB connections</p></li>
+                                <li class="fragment"><p>Base URL </p></li>
+                                <li class="fragment"><p>Set paths to twig templates</p></li>
+                                <li class="fragment"><p>Customize Notice messages</p></li>
+                                <li class="fragment"><p>Set config variables for services</p></li>
+                            </ul>
+                        </myColBox>
                         <aside class="notes">
                             <li>Another piece that allowed us to support the many environments: development, staging, production was a configuration file. </li>
                             <li>This was not version controlled. But a template was.</li>
@@ -973,77 +977,77 @@ class CreateUserLoginsTable extends AbstractMigration
                         <h3>Configuration file</h3>
                         <p>'/app/config.php'
 <pre><code>
-    &lt;?php
+&lt;?php
     return array(
-    /* base url for path in the site */
-    &#39;app&#39; =&gt; array(
-    &#39;base_url&#39; =&gt; sprintf(&#39;http://localhost:%s/&#39;, isset($_SERVER[&#39;SERVER_PORT&#39;])
-    ? $_SERVER[&#39;SERVER_PORT&#39;] : &#39;&#39;),
-    &#39;index_page&#39; =&gt; &#39;index.php/&#39;,
-    &#39;debug&#39; =&gt; FALSE
-    ),
+        /* base url for path in the site */
+        &#39;app&#39; =&gt; array(
+            &#39;base_url&#39; =&gt; sprintf(&#39;http://localhost:%s/&#39;, isset($_SERVER[&#39;SERVER_PORT&#39;])
+            ? $_SERVER[&#39;SERVER_PORT&#39;] : &#39;&#39;),
+            &#39;index_page&#39; =&gt; &#39;index.php/&#39;,
+            &#39;debug&#39; =&gt; FALSE
+        ),
 
-    /* DB configuration */
-    &#39;db&#39; =&gt; array(
-    &#39;default&#39; =&gt; array(
-    &#39;hostname&#39; =&gt; &quot;local__server&quot;,
-    &#39;port&#39; =&gt; &quot;3306&quot;,
-    &#39;username&#39; =&gt; &quot;uname&quot;,
-    &#39;password&#39; =&gt; &quot;pword&quot;,
-    &#39;database&#39; =&gt; &quot;db_name_&quot;
-    )
-    ),
+        /* DB configuration */
+        &#39;db&#39; =&gt; array(
+            &#39;default&#39; =&gt; array(
+                &#39;hostname&#39; =&gt; &quot;local__server&quot;,
+                &#39;port&#39; =&gt; &quot;3306&quot;,
+                &#39;username&#39; =&gt; &quot;uname&quot;,
+                &#39;password&#39; =&gt; &quot;pword&quot;,
+                &#39;database&#39; =&gt; &quot;db_name_&quot;
+            )
+        ),
 
-    &#39;twig&#39; =&gt; array(
-    &#39;template_path&#39; =&gt; array(
-    __DIR__ . &#39;/templates&#39;,
-    __DIR__ . &#39;/templates/dashboard&#39;,
-    )
-    ),
+        &#39;twig&#39; =&gt; array(
+            &#39;template_path&#39; =&gt; array(
+                __DIR__ . &#39;/templates&#39;,
+                __DIR__ . &#39;/templates/dashboard&#39;,
+            )
+        ),
 
-    &#39;authorization&#39; =&gt; array(
-    &#39;funding&#39; =&gt; array(&#39;elstamey&#39;, &#39;person2&#39;),
-    &#39;developers&#39; =&gt; array(&#39;elstamey&#39;),
-    &#39;coordinators&#39; =&gt; array(&#39;person3&#39;)
-    ),
+        &#39;authorization&#39; =&gt; array(
+            &#39;funding&#39; =&gt; array(&#39;elstamey&#39;, &#39;person2&#39;),
+            &#39;developers&#39; =&gt; array(&#39;elstamey&#39;),
+            &#39;coordinators&#39; =&gt; array(&#39;person3&#39;)
+        ),
 
-    &#39;notice&#39; =&gt; array(
-    &#39;enabled&#39; =&gt; false,
-    &#39;type&#39; =&gt; &#39;info&#39;,
-    &#39;headline&#39; =&gt; null,
-    &#39;message&#39; =&gt; null,
-    &#39;syslink&#39; =&gt; null
-    ),
+        &#39;notice&#39; =&gt; array(
+            &#39;enabled&#39; =&gt; false,
+            &#39;type&#39; =&gt; &#39;info&#39;,
+            &#39;headline&#39; =&gt; null,
+            &#39;message&#39; =&gt; null,
+            &#39;syslink&#39; =&gt; null
+        ),
 
-    &#39;errorHandling&#39; =&gt; array(
-    &#39;emailExceptions&#39; =&gt; false
-    ),
+        &#39;errorHandling&#39; =&gt; array(
+            &#39;emailExceptions&#39; =&gt; false
+        ),
 
-    &#39;awardLetters&#39; =&gt; array(
-    &#39;letterhead&#39; =&gt; &#39;_itecs/notification-samples/ncsu_coe_aa_letterhead.pdf&#39;,
-    &#39;academicYears&#39; =&gt; &#39;2015-2016&#39;,
-    &#39;respondByDate&#39; =&gt; &#39;May 11, 2015&#39;,
-    &#39;templates&#39; =&gt; array(
-    &#39;awardLetter&#39; =&gt; &#39;layouts/letters/award-letter.twig&#39;,
-    &#39;awardEmail&#39; =&gt; &#39;layouts/letters/award-email-body.twig&#39;
-    ),
-    &#39;fixedAttachments&#39; =&gt; array(
-    &#39;_itecs/notification-samples/thank_you_template.pdf&#39;
-    ),
-    &#39;signatureImagePath&#39; =&gt; &#39;_uploads/tmp/deans_signature.png&#39;,
-    &#39;outputPath&#39; =&gt; &#39;_uploads/awardLetters/&#39;
-    ),
+        &#39;awardLetters&#39; =&gt; array(
+            &#39;letterhead&#39; =&gt; &#39;_itecs/notification-samples/ncsu_coe_aa_letterhead.pdf&#39;,
+            &#39;academicYears&#39; =&gt; &#39;2015-2016&#39;,
+            &#39;respondByDate&#39; =&gt; &#39;May 11, 2015&#39;,
+            &#39;templates&#39; =&gt; array(
+                &#39;awardLetter&#39; =&gt; &#39;layouts/letters/award-letter.twig&#39;,
+                &#39;awardEmail&#39; =&gt; &#39;layouts/letters/award-email-body.twig&#39;
+            ),
+            &#39;fixedAttachments&#39; =&gt; array(
+                &#39;_itecs/notification-samples/thank_you_template.pdf&#39;
+            ),
+            &#39;signatureImagePath&#39; =&gt; &#39;_uploads/tmp/deans_signature.png&#39;,
+            &#39;outputPath&#39; =&gt; &#39;_uploads/awardLetters/&#39;
+        ),
 
-    &#39;emailService&#39; =&gt; array(
-    &#39;sendLimit&#39; =&gt; 5,
-    &#39;retries&#39; =&gt; 3,
-    &#39;throttleTime&#39; =&gt; 2, // seconds
-    &#39;fromAddress&#39; =&gt; &#39;Scholarships Application &lt;engr-webmaster@ncsu.edu&gt;&#39;,
-    &#39;replyToAddress&#39;=&gt;&#39;College of Engineering &lt;engineering@ncsu.edu&gt;&#39;
-    )
+        &#39;emailService&#39; =&gt; array(
+            &#39;sendLimit&#39; =&gt; 5,
+            &#39;retries&#39; =&gt; 3,
+            &#39;throttleTime&#39; =&gt; 2, // seconds
+            &#39;fromAddress&#39; =&gt; &#39;Scholarships Application &lt;engr-webmaster@ncsu.edu&gt;&#39;,
+            &#39;replyToAddress&#39;=&gt;&#39;College of Engineering &lt;engineering@ncsu.edu&gt;&#39;
+        )
     );
 
-    ?&gt;
+?&gt;
 </code></pre>
                         <p>We passed this array into a <b>$config</b> variable that could be accessed as `$config['app']['base_url']`</p>
                         <aside class="notes">
@@ -1058,8 +1062,8 @@ class CreateUserLoginsTable extends AbstractMigration
                         </aside>
                     </section>
                 </section>
-                <section data-background="#f05b62">
-                    <h1 style="color: #fafafa;">The Good Stuff</h1>
+                <section data-background-image="img/foundation.jpg">
+                    <h1>The Good Stuff</h1>
                     <aside class="notes">
                         <li>Once we improved tooling of our project, we were able to begin work on improvements</li>
                         <li>There was a great deal of risk with altering the database queries in the existing app as well as the
@@ -1072,9 +1076,7 @@ class CreateUserLoginsTable extends AbstractMigration
                         <li>Also Event-Sourced the state change of Scholarship Money and Awards</li>
                     </aside>
                 </section>
-                <section>
-                    <h3>Bounded Contexts</h3>
-                    <img src="img/bounded_contexts.png">
+                <section data-background-image="img/bounded_contexts.png">
                     <aside class="notes">
                         <ul>
                             <li>We recognized that our users were all accessing the scholarships in different ways.</li>
@@ -1084,12 +1086,14 @@ class CreateUserLoginsTable extends AbstractMigration
                     </aside>
                 </section>
                 <section>
-                    <h3>Events</h3>
-                    <ul>
-                        <li><p>Student Submitted Application</p></li>
-                        <li><p>Budget Allocated To Scholarship</p></li>
-                        <li><p>Award Was Given To Student</p></li>
-                    </ul>
+                    <footer>
+                        <h3>Events</h3>
+                        <ul>
+                            <li class="fragment"><p>Student Submitted Application</p></li>
+                            <li class="fragment"><p>Budget Allocated To Scholarship</p></li>
+                            <li class="fragment"><p>Award Was Given To Student</p></li>
+                        </ul>
+                    </footer>
                     <aside class="notes">
                         <p>Events were created when an Event happened in our system, but they were also helpful in notifying another bounded context</p>
                     </aside>
