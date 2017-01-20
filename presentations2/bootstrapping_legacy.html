@@ -869,10 +869,10 @@
                     <section>
                         <h3>Database Migrations: Phinx</h3>
                         <ul>
-                            <li><p>Allows you to change DB across evironments</p></li>
-                            <li><p>Gives you power to undo the change if there is a problem</p></li>
+                            <li><p>Allows you to change DB across environments</p></li>
+                            <li class="fragment"><p>Gives you power to undo the change if there is a problem</p></li>
                         </ul>
-                        <pre><code>$ vendor/bin/phinx create CreateUserLoginsTable</code></pre>
+                        <pre class="fragment"><code>$ vendor/bin/phinx create CreateUserLoginsTable</code></pre>
                         <aside class="notes">
                             <li>Phinx was a criticial tool for us. It gave us the ability to alter our databases using a script.</li>
                             <li>Migrations give you the ability to do and undo these DB changes. Any change I made to my DB could
@@ -885,25 +885,27 @@
                     </section>
                     <section>
 <pre><code>
-    &lt;?php
-    use Phinx\Migration\AbstractMigration;
+&lt;?php
+use Phinx\Migration\AbstractMigration;
 
-    class CreateUserLoginsTable extends AbstractMigration
-    {
+class CreateUserLoginsTable extends AbstractMigration
+{
     /* Example One: Change */
     public function change()
     {
-    // create the table
-    $table = $this-&gt;table(&#39;user_logins&#39;);
-    $table-&gt;addColumn(&#39;user_id&#39;, &#39;integer&#39;)
-    -&gt;addColumn(&#39;created&#39;, &#39;datetime&#39;)
-    -&gt;create();
+        // create the table
+        $table = $this-&gt;table(&#39;user_logins&#39;);
+        $table-&gt;addColumn(&#39;user_id&#39;, &#39;integer&#39;)
+        -&gt;addColumn(&#39;created&#39;, &#39;datetime&#39;)
+        -&gt;create();
     }
-
-    }
+}
 </code></pre>
-                        <pre><code>$ vendor/bin/phinx migrate</code></pre>
-                        <pre><code>$ vendor/bin/phinx rollback</code></pre>
+                        <span class="fragment current-only" data-code-focus="11"></span>
+                        <span class="fragment current-only" data-code-focus="12-13"></span>
+                        <span class="fragment current-only" data-code-focus="14"></span>
+                        <pre class="fragment"><code>$ vendor/bin/phinx migrate</code></></pre>
+                        <pre class="fragment"><code>$ vendor/bin/phinx rollback</code></></pre>
                         <aside class="notes">
                             <li>I've included two examples of a Phinx migration:</li>
                             <li>First is the change method, which is a single function. Phinx is supposed to know how to do AND undo that
@@ -912,25 +914,30 @@
                     </section>
                     <section>
 <pre><code>
-    &lt;?php
+&lt;?php
     use Phinx\Migration\AbstractMigration;
 
     class CreateUserLoginsTable extends AbstractMigration
     {
-    /* Example Two: Up/Down with Migrate/Rollback */
-    public function up()
-    {
-    $table = $this-&gt;table(&#39;users&#39;);
-    $table-&gt;renameColumn(&#39;bio&#39;, &#39;biography&#39;);
-    }
+        /* Example Two: Up/Down with Migrate/Rollback */
+        public function up()
+        {
+            $table = $this-&gt;table(&#39;users&#39;);
+            $table-&gt;renameColumn(&#39;bio&#39;, &#39;biography&#39;);
+        }
 
-    public function down()
-    {
-    $table = $this-&gt;table(&#39;users&#39;);
-    $table-&gt;renameColumn(&#39;biography&#39;, &#39;bio&#39;);
-    }
+        public function down()
+        {
+            $table = $this-&gt;table(&#39;users&#39;);
+            $table-&gt;renameColumn(&#39;biography&#39;, &#39;bio&#39;);
+        }
     }
 </code></pre>
+                        <span class="fragment current-only" data-code-focus="8"></span>
+                        <span class="fragment current-only" data-code-focus="10"></span>
+                        <span class="fragment current-only" data-code-focus="11"></span>
+                        <span class="fragment current-only" data-code-focus="14"></span>
+                        <span class="fragment current-only" data-code-focus="17"></span>
                         <pre><code>$ vendor/bin/phinx migrate</code></pre>
                         <pre><code>$ vendor/bin/phinx rollback</code></pre>
                         <aside class="notes">
