@@ -149,6 +149,15 @@ myRowBox > article > img {
 
 }
 
+
+myColBox > article > img {
+    margin: auto;
+    width: 100%;
+    max-width: 70% !important;
+    max-height: 70% !important;
+
+}
+
 h5.attrib {
     font-size: large;
     text-align: right;
