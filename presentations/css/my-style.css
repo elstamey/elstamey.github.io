@@ -15,6 +15,10 @@ blockquote.style4 {
     text-indent: 23px;
 }
 
+html.dimbg .slide-background {
+    opacity: 0.5 !important;
+}
+
 .reveal .slide-background.present {
     background-size: 80%;
     display: block;
