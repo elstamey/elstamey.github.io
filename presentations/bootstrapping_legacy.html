@@ -938,6 +938,7 @@
                                 use it extensively for data migrations in addition to schema changes.</li>
                             <li>In this project, we couldn't alter our schema until we had completely eliminated our dependency on the old codebase</li>
                             <p>The way that you begin is generate the configuration file.  The file will be given a timestamp and class name. </p>
+                            <li>The generator will create three methods: change(), up(), and down()</li>
                         </aside>
                     </section>
                     <section>
@@ -998,22 +999,110 @@ class CreateUserLoginsTable extends AbstractMigration
                         <pre><code>$ vendor/bin/phinx migrate</code></></pre>
                         <pre><code>$ vendor/bin/phinx rollback</code></></pre>
                         <aside class="notes">
-                            <li>The generator will create three methods: change(), up(), and down()</li>
                             <li>The change method is a single function. Phinx is supposed to know how to do AND undo that
                                 change, so you don't have to write the undo query. </li>
                         </aside>
                     </section>
-
                 </section>
                 <section>
                     <section data-background-image="img/boots/foundation.jpg" data-background-size="100%" data-background-position="center">
                         <h1>The Good Stuff</h1>
                         <aside class="notes">
                             <li>Once we improved tooling of our project, we were able to write new code, but the trick was exposing that new code through the CI framework</li>
-                            <li>We had decided not to touch the old code or the database schema</li>
+                            <li>We had decided not to touch the old models or the database schema</li>
                             <li>We wrote new code in a directory adjacent to the old application. </li>
                             <li>We created new controllers that routed users to the new functionality</li>
 
+                        </aside>
+                    </section>
+                    <section>
+                        <header>
+                            <h3>Bootstrapping:  Filetree</h3>
+                        </header>
+                        <myColBox>
+                            <article>
+                                <p>new code in '/src' alongside the '/app' directory</p>
+                            </article>
+                        </myColBox>
+                        <footer>
+                            <img src="img/boots/FileTree.png" alt="File tree">
+                            <img src="img/boots/FileTree-DDD.png" alt="DDD File tree">
+                        </footer>
+                        <aside class="notes">
+                            <li>You should be able to see the directories for our bounded contexts. As well as Common and Infrastructure.
+                                This could just as easily have been new Models and other code formats.</li>
+                            <li>We wanted to be able to move this src folder to another framework or run without a framework when we
+                                had replaced the whole application.</li>
+                        </aside>
+                    </section>
+                    <section>
+                        <header>
+                            <h3>Bootstrapping:  Namespaces</h3>
+                        </header>
+                        <myColBox>
+                            <article>
+                                <ul>
+                                    <li>'/src' is given a namespace</li>
+                                    <li>namespaces are autoloaded in composer</li>
+                                </ul>
+                                <span class="fragment current-only" data-code-focus="7-11"></span>
+                            </article>
+                        </myColBox>
+                        <footer>
+    <pre><code>
+{
+    "name": "itecs/scholarships",
+    "description": "Scholarships application for the College of Engineering.",
+    ...
+    "autoload": {
+        "psr-4": {
+            "ITECS\\Scholarships\\": [ "src/", "app/core/" ],
+            "Codeception\\Module\\": "src/",
+            "Tests\\Substitute\\": "tests/_helpers/"
+        }
+    }
+}
+</code></pre>
+                        </footer>
+
+                        <aside class="notes">
+                            <li>Composer allowed us to build this independent structure. </li>
+                            <li>We used it to load a lot of the tooling I already mentioned</li>
+                            <li>And we used it to autoload the namespaced code in our source folder.</li>
+                            <li>Here we label the /src folder as the namespace ITECS/Scholarships</li>
+                        </aside>
+                    </section>
+                    <section>
+                        <myColBox>
+                            <article>
+                                <h3>Bootstrapping:  Namespaced Class</h3>
+                                <p>This allows us to reference a class like:</p>
+                                <p></p><pre><code>ITECS\Scholarships\Common\Services\GPAService</code></pre></p>
+                            </article>
+                        </myColBox>
+                        <footer>
+<pre><code>&lt;?php
+
+namespace ITECS\Scholarships\Common\Services;
+
+use ITECS\Scholarships\Common\Values\GPA;
+use ITECS\Scholarships\StudentApplication\Domain\Student\StudentId;
+
+interface GpaService
+{
+
+    /**
+     * @param StudentId $studentId
+     *
+     * @return GPA
+     */
+    public function findGpaFor(StudentId $studentId);
+
+}
+</pre></code>
+
+                        </footer>
+                        <aside class="notes">
                         </aside>
                     </section>
                     <section data-background-image="img/boots/bounded_contexts.png"  data-background-size="60%" data-background-position="center">
@@ -1038,50 +1127,6 @@ class CreateUserLoginsTable extends AbstractMigration
                             <li>Also Event-Sourced the state change of Scholarship Money and Awards</li>
                             <p>Events were created when an Event happened in our system, but they were also helpful to "notify" another bounded context</p>
                             <li>Since we were logging events for important things that happened in our system, we could react to changes down the line</li>
-                        </aside>
-                    </section>
-                    <section>
-                        <h3>Bootstrapping:  Filetree</h3>
-                        <ul>
-                            <li>new code in '/src' alongside the '/app' directory</li>
-                        </ul>
-                        <p>
-                            <img src="img/boots/FileTree.png" alt="File tree">
-                            <img src="img/boots/FileTree-DDD.png" alt="DDD File tree">
-                        </p>
-                        <aside class="notes">
-                            <li>You should be able to see the directories for our bounded contexts. As well as Common and Infrastructure.
-                                This could just as easily have been new Models and other code formats.</li>
-                            <li>We wanted to be able to move this src folder to another framework or run without a framework when we
-                                had replaced the whole application.</li>
-                        </aside>
-                    </section>
-                    <section>
-                        <h3>Bootstrapping:  Namespaces</h3>
-                        <ul>
-                            <li><p>'/src' is given a namespace</p></li>
-                            <li><p>namespaces are autoloaded in composer</p></li>
-                        </ul>
-<pre><code>
-{
-    "name": "itecs/scholarships",
-    "description": "Scholarships application for the College of Engineering.",
-    ...
-    "autoload": {
-        "psr-4": {
-            "ITECS\\Scholarships\\": [ "src/", "app/core/" ],
-            "Codeception\\Module\\": "src/",
-            "Tests\\Substitute\\": "tests/_helpers/"
-        }
-    }
-}
-</code></pre>
-                        <span class="fragment current-only" data-code-focus="7-11"></span>
-                        <aside class="notes">
-                            <li>Composer allowed us to build this independent structure. </li>
-                            <li>We used it to load a lot of the tooling I already mentioned</li>
-                            <li>And we used it to autoload the namespaced code in our source folder.</li>
-                            <li>Here we label the /src folder as the namespace ITECS/Scholarships</li>
                         </aside>
                     </section>
                 </section>
