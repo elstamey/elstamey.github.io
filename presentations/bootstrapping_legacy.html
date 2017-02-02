@@ -21,7 +21,7 @@
         <link rel="stylesheet" href="css/my-style.css">
 
 		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="../presentations2/node_modules/highlight.js/styles/zenburn.css">
+		<link rel="stylesheet" href="./node_modules/highlight.js/styles/zenburn.css">
 
         <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
@@ -782,12 +782,32 @@
                 <section>
                     <section>
                         <header>
+                            <h3>Composer</h3>
+                        </header>
+                        <myColBox>
+                            <article>
+                                <ul>
+                                    <li>Allowed us to use libraries </li>
+                                    <li>Checked `composer.json` and `composer.lock` into git</li>
+                                    <li>added `/vendor` to the `.gitignore` file</li>
+                                </ul>
+                            </article>
+                            <article>
+                                <img src="img/boots/logo-composer-transparent.png">
+                            </article>
+                        </myColBox>
+                        <aside class="notes">
+                            <li>Composer allowed us to bring in these outside libraries that CodeIgniter didn't provide</li>
+                        </aside>
+                    </section>
+                    <section>
+                        <header>
                             <h3>Composer packages</h3>
                         </header>
                         <myColBox>
                             <article>
                                 <ul>
-                                    <li>Testing packages (Codeception, PHPUnit, Mockery)</li>
+                                    <li>Testing with Codeception, PHPUnit, Mockery</li>
                                     <li>Twig templates</li>
                                     <!--<li>Moneyphp for handling currency</li>-->
                                     <li>Pimple container</li>
@@ -826,25 +846,25 @@
     ...
 }
 </code></pre>
-                        <span class="fragment current-only" data-code-focus="5">
-                            <p>All packages in this section will be included everywhere</p>
-                        </span>
-                        <span class="fragment current-only" data-code-focus="11">
-                            <p>All packages in this section will be included in the dev environment</p>
-                        </span>
-                        <span class="fragment current-only" data-code-focus="7-9,12"></span>
-                        <span class="fragment current-only" data-code-focus="12">
-                            <p>Included Test packages.  >=2.0 <2.1.</p>
-                        </span>
-                        <span class="fragment current-only" data-code-focus="7">
-                            <p>Migrations - all updates</p>
-                        </span>
-                        <span class="fragment current-only" data-code-focus="8">
-                            <p>Pimple Containers - Equivalent to >=3.0 <4.0.0</p>
-                        </span>
-                        <span class="fragment current-only" data-code-focus="9">
-                            <p>Don't include the dev-master unless you control updates.</p>
-                        </span>
+                        <!--<span class="fragment current-only" data-code-focus="5">-->
+                            <!--<p>All packages in this section will be included everywhere</p>-->
+                        <!--</span>-->
+                        <!--<span class="fragment current-only" data-code-focus="11">-->
+                            <!--<p>All packages in this section will be included in the dev environment</p>-->
+                        <!--</span>-->
+                        <!--<span class="fragment current-only" data-code-focus="7-9,12"></span>-->
+                        <!--<span class="fragment current-only" data-code-focus="12">-->
+                            <!--<p>Included Test packages.  >=2.0 <2.1.</p>-->
+                        <!--</span>-->
+                        <!--<span class="fragment current-only" data-code-focus="7">-->
+                            <!--<p>Migrations - all updates</p>-->
+                        <!--</span>-->
+                        <!--<span class="fragment current-only" data-code-focus="8">-->
+                            <!--<p>Pimple Containers - Equivalent to >=3.0 <4.0.0</p>-->
+                        <!--</span>-->
+                        <!--<span class="fragment current-only" data-code-focus="9">-->
+                            <!--<p>Don't include the dev-master unless you control updates.</p>-->
+                        <!--</span>-->
                         <aside class="notes">
                             In your composer.json file, you specify the packages and the versions you will accept.
                             <br>Package name = the vendor name and the project's name
@@ -853,53 +873,53 @@
                             2.0.* of Codeception. This means any version in the 2.0 development branch. It is the equivalent of saying versions that match >=1.0 <1.1.
                         </aside>
                     </section>
-                    <section>
-                        <h3>Full Composer</h3>
-<pre><code>
-{
-    "name": "itecs/scholarships",
-    "description": "Scholarships application for the College of Engineering.",
-    "require": {
-        "php": ">=5.3.3",
-        "robmorgan/phinx": "*",
-        "pimple/pimple": "~3.0",
-        "symfony/http-foundation": "2.5.*",
-        "illuminate/database": "4.1.*",
-        "illuminate/support": "4.1.*",
-        "ncsu/auth": "dev-master",
-        "twig/twig": "~1.16",
-        "mathiasverraes/money": "v1.3.0",
-        "monolog/monolog": "~1.12",
-        "mpdf/mpdf": "dev-master"
-    },
-    "require-dev": {
-        "codeception/codeception": "2.0.*",
-        "codeception/specify": "*",
-        "codeception/verify": "*",
-        "fzaninotto/faker": "1.4.*",
-        "phpunit/phpunit": "4.1.*",
-        "mockery/mockery": "0.9.*",
-        "symfony/var-dumper": "~2.6",
-        "squizlabs/php_codesniffer": "2.*"
-    },
-    "autoload": {
-        "psr-4": {
-        "ITECS\\Scholarships\\": [ "src/", "app/core/" ],
-        "Codeception\\Module\\": "src/",
-        "Tests\\Substitute\\": "tests/_helpers/"
-    }
-}
-</code></pre>
-                        <span class="fragment current-only" data-code-focus="28-33"></span>
-                        <aside class="notes">
-                            <li>This is the composer file.  </li>
-                            <li>The testing packages are only required in our development environment.</li>
-                            <li>You can specify  packages and lock the version of the package.  We have a couple here that are using dev-master, but we shouldn't be doing that because mpdf, for example, is a code base we don't control</li>
-                            <li>We will look at the autoload section in a little bit</li>
+                    <!--<section>-->
+                        <!--<h3>Full Composer</h3>-->
+<!--<pre><code>-->
+<!--{-->
+    <!--"name": "itecs/scholarships",-->
+    <!--"description": "Scholarships application for the College of Engineering.",-->
+    <!--"require": {-->
+        <!--"php": ">=5.3.3",-->
+        <!--"robmorgan/phinx": "*",-->
+        <!--"pimple/pimple": "~3.0",-->
+        <!--"symfony/http-foundation": "2.5.*",-->
+        <!--"illuminate/database": "4.1.*",-->
+        <!--"illuminate/support": "4.1.*",-->
+        <!--"ncsu/auth": "dev-master",-->
+        <!--"twig/twig": "~1.16",-->
+        <!--"mathiasverraes/money": "v1.3.0",-->
+        <!--"monolog/monolog": "~1.12",-->
+        <!--"mpdf/mpdf": "dev-master"-->
+    <!--},-->
+    <!--"require-dev": {-->
+        <!--"codeception/codeception": "2.0.*",-->
+        <!--"codeception/specify": "*",-->
+        <!--"codeception/verify": "*",-->
+        <!--"fzaninotto/faker": "1.4.*",-->
+        <!--"phpunit/phpunit": "4.1.*",-->
+        <!--"mockery/mockery": "0.9.*",-->
+        <!--"symfony/var-dumper": "~2.6",-->
+        <!--"squizlabs/php_codesniffer": "2.*"-->
+    <!--},-->
+    <!--"autoload": {-->
+        <!--"psr-4": {-->
+        <!--"ITECS\\Scholarships\\": [ "src/", "app/core/" ],-->
+        <!--"Codeception\\Module\\": "src/",-->
+        <!--"Tests\\Substitute\\": "tests/_helpers/"-->
+    <!--}-->
+<!--}-->
+<!--</code></pre>-->
+                        <!--<span class="fragment current-only" data-code-focus="28-33"></span>-->
+                        <!--<aside class="notes">-->
+                            <!--<li>This is the full composer config file.  </li>-->
+                            <!--<li>The testing packages are only required in our development environment.</li>-->
+                            <!--<li>You can specify  packages and lock the version of the package.  We have a couple here that are using dev-master, but we shouldn't be doing that because mpdf, for example, is a code base we don't control</li>-->
+                            <!--<li>We will look at the autoload section in a little bit</li>-->
 
-                            <li>Let's look at Database migrations...</li>
-                        </aside>
-                    </section>
+                            <!--<li>Let's look at Database migrations...</li>-->
+                        <!--</aside>-->
+                    <!--</section>-->
                 </section>
                 <section>
                     <section>
@@ -912,50 +932,20 @@
                         <aside class="notes">
                             <li>Phinx was a criticial tool for us. It gave us the ability to alter our databases using a script.</li>
                             <li>Migrations give you the ability to do and undo these DB changes. Any change I made to my DB could
-                                also be made across the team's development environments, in staging, and production environments.</li>
+                                also be made across all environmentss.</li>
                             <li>If something unexpected happened at any point, it could be undone.</li>
-                            <li>It basically allowed us to version control DB changes. And although it isn't recommended, we did
+                            <li>It allowed us to version control DB changes. And although it isn't recommended, we did
                                 use it extensively for data migrations in addition to schema changes.</li>
-                            <li>In this project, we couldn't alter our database until we had completely eliminated our dependency on the old codebase</li>
+                            <li>In this project, we couldn't alter our schema until we had completely eliminated our dependency on the old codebase</li>
+                            <p>The way that you begin is generate the configuration file.  The file will be given a timestamp and class name. </p>
                         </aside>
                     </section>
                     <section>
-<pre><code>
-&lt;?php
-use Phinx\Migration\AbstractMigration;
-
-class CreateUserLoginsTable extends AbstractMigration
-{
-    /* Example One: Change */
-    public function change()
-    {
-        // create the table
-        $table = $this-&gt;table(&#39;user_logins&#39;);
-        $table-&gt;addColumn(&#39;user_id&#39;, &#39;integer&#39;)
-        -&gt;addColumn(&#39;created&#39;, &#39;datetime&#39;)
-        -&gt;create();
-    }
-}
-</code></pre>
-                        <span class="fragment current-only" data-code-focus="11"></span>
-                        <span class="fragment current-only" data-code-focus="12-13"></span>
-                        <span class="fragment current-only" data-code-focus="14"></span>
-                        <pre class="fragment"><code>$ vendor/bin/phinx migrate</code></></pre>
-                        <pre class="fragment"><code>$ vendor/bin/phinx rollback</code></></pre>
-                        <aside class="notes">
-                            <li>I've included two examples of a Phinx migration:</li>
-                            <li>First is the change method, which is a single function. Phinx is supposed to know how to do AND undo that
-                                change, so you don't have to write the undo query.</li>
-                        </aside>
-                    </section>
-                    <section>
-<pre><code>
-&lt;?php
+<pre><code>&lt;?php
     use Phinx\Migration\AbstractMigration;
 
     class CreateUserLoginsTable extends AbstractMigration
     {
-        /* Example Two: Up/Down with Migrate/Rollback */
         public function up()
         {
             $table = $this-&gt;table(&#39;users&#39;);
@@ -969,16 +959,15 @@ class CreateUserLoginsTable extends AbstractMigration
         }
     }
 </code></pre>
-                        <span class="fragment current-only" data-code-focus="8"></span>
-                        <span class="fragment current-only" data-code-focus="10"></span>
-                        <span class="fragment current-only" data-code-focus="11"></span>
-                        <span class="fragment current-only" data-code-focus="14"></span>
-                        <span class="fragment current-only" data-code-focus="17"></span>
+                        <span class="fragment current-only" data-code-focus="8-9"></span>
+                        <span class="fragment current-only" data-code-focus="14-15"></span>
                         <pre><code>$ vendor/bin/phinx migrate</code></pre>
                         <pre><code>$ vendor/bin/phinx rollback</code></pre>
                         <aside class="notes">
+                            <li>The generator will create three methods: change(), up(), and down()</li>
+                            <li></li>
                             <li>However, there are some queries that the change() method doesn't know how to undo.</li>
-                            <li>Example #2 is the type of migration we generally write. This example renames a DB column from bio to
+                            <li>This is the type of migration we generally write. This example renames a DB column from bio to
                                 biography.</li>
                             <li>The down() method undoes this change, renaming the column bio again. Along with this migrations, there
                                 would probably be a code change to queries of the 'bio' data.  Those commits would be in a single Pull Request
@@ -986,8 +975,138 @@ class CreateUserLoginsTable extends AbstractMigration
                             <li>Tests run after the migration would now pass, and that code could be merged.</li>
                         </aside>
                     </section>
+                    <section>
+<pre><code>
+&lt;?php
+use Phinx\Migration\AbstractMigration;
+
+class CreateUserLoginsTable extends AbstractMigration
+{
+    public function change()
+    {
+        // create the table
+        $table = $this-&gt;table(&#39;user_logins&#39;);
+        $table-&gt;addColumn(&#39;user_id&#39;, &#39;integer&#39;)
+        -&gt;addColumn(&#39;created&#39;, &#39;datetime&#39;)
+        -&gt;create();
+    }
+}
+</code></pre>
+                        <span class="fragment current-only" data-code-focus="10"></span>
+                        <span class="fragment current-only" data-code-focus="11-12"></span>
+                        <span class="fragment current-only" data-code-focus="13"></span>
+                        <pre><code>$ vendor/bin/phinx migrate</code></></pre>
+                        <pre><code>$ vendor/bin/phinx rollback</code></></pre>
+                        <aside class="notes">
+                            <li>The generator will create three methods: change(), up(), and down()</li>
+                            <li>The change method is a single function. Phinx is supposed to know how to do AND undo that
+                                change, so you don't have to write the undo query. </li>
+                        </aside>
+                    </section>
+
                 </section>
                 <section>
+                    <section data-background-image="img/boots/foundation.jpg" data-background-size="100%" data-background-position="center">
+                        <h1>The Good Stuff</h1>
+                        <aside class="notes">
+                            <li>Once we improved tooling of our project, we were able to write new code, but the trick was exposing that new code through the CI framework</li>
+                            <li>We had decided not to touch the old code or the database schema</li>
+                            <li>We wrote new code in a directory adjacent to the old application. </li>
+                            <li>We created new controllers that routed users to the new functionality</li>
+
+                        </aside>
+                    </section>
+                    <section data-background-image="img/boots/bounded_contexts.png"  data-background-size="60%" data-background-position="center">
+                        <aside class="notes">
+                            <ul>
+                                <li>Our plan was to build new infrastructure using Domain Driven Design, creating
+                                    bounded contexts for the Student, Selection, Foundation functionality, and as we were able to replace
+                                    pieces of the old application, we would remove them entirely.</li>
+                            </ul>
+                        </aside>
+                    </section>
+                    <section>
+                        <footer>
+                            <h3>Events</h3>
+                            <ul>
+                                <li><p>Student Submitted Application</p></li>
+                                <li><p>Budget Allocated To Scholarship</p></li>
+                                <li><p>Award Was Given To Student</p></li>
+                            </ul>
+                        </footer>
+                        <aside class="notes">
+                            <li>Also Event-Sourced the state change of Scholarship Money and Awards</li>
+                            <p>Events were created when an Event happened in our system, but they were also helpful to "notify" another bounded context</p>
+                            <li>Since we were logging events for important things that happened in our system, we could react to changes down the line</li>
+                        </aside>
+                    </section>
+                    <section>
+                        <h3>Bootstrapping:  Filetree</h3>
+                        <ul>
+                            <li>new code in '/src' alongside the '/app' directory</li>
+                        </ul>
+                        <p>
+                            <img src="img/boots/FileTree.png" alt="File tree">
+                            <img src="img/boots/FileTree-DDD.png" alt="DDD File tree">
+                        </p>
+                        <aside class="notes">
+                            <li>You should be able to see the directories for our bounded contexts. As well as Common and Infrastructure.
+                                This could just as easily have been new Models and other code formats.</li>
+                            <li>We wanted to be able to move this src folder to another framework or run without a framework when we
+                                had replaced the whole application.</li>
+                        </aside>
+                    </section>
+                    <section>
+                        <h3>Bootstrapping:  Namespaces</h3>
+                        <ul>
+                            <li><p>'/src' is given a namespace</p></li>
+                            <li><p>namespaces are autoloaded in composer</p></li>
+                        </ul>
+<pre><code>
+{
+    "name": "itecs/scholarships",
+    "description": "Scholarships application for the College of Engineering.",
+    ...
+    "autoload": {
+        "psr-4": {
+            "ITECS\\Scholarships\\": [ "src/", "app/core/" ],
+            "Codeception\\Module\\": "src/",
+            "Tests\\Substitute\\": "tests/_helpers/"
+        }
+    }
+}
+</code></pre>
+                        <span class="fragment current-only" data-code-focus="7-11"></span>
+                        <aside class="notes">
+                            <li>Composer allowed us to build this independent structure. </li>
+                            <li>We used it to load a lot of the tooling I already mentioned</li>
+                            <li>And we used it to autoload the namespaced code in our source folder.</li>
+                            <li>Here we label the /src folder as the namespace ITECS/Scholarships</li>
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h1>Dependency Injection</h1>
+                        <aside class="notes">
+                            <li>We positioned our new code adjacent to the framework</li>
+                            <li>We needed to bring the fully namespaced services into that framework</li>
+                            <li>Dependency Injection allowed us to do that</li>
+                            <li>We used Pimple to build our container and define the dependencies</li>
+                        </aside>
+                    </section>
+                    <section>
+                        <footer>
+                            <h3>Dependency Injection Container</h3>
+                            <ul>
+                                <!--<li>Dependency injection is a software design pattern that implements inversion of control for resolving dependencies.</li>-->
+                                <!--<li>A dependency is an object that can be used (a service).</li>-->
+                                <!--<li>An injection is the passing of a dependency to a dependent object (a client) that would use it.</li>-->
+                                <li>The Pimple Container helps us pass the Service or Object we need in the application along with all of its dependencies</li>
+                                <li>We don't have to wait to let the dependencies resolve when the user accesses the object, we can ensure they are there ahead of time</li>
+                            </ul>
+                        </footer>
+                    </section>
                     <section>
                         <header>
                             <h3>Configuration file</h3>
@@ -1098,87 +1217,7 @@ class CreateUserLoginsTable extends AbstractMigration
                         </aside>
                     </section>
                 </section>
-                <section data-background-image="img/boots/foundation.jpg" data-background-size="100%" data-background-position="center">
-                    <h1>The Good Stuff</h1>
-                    <aside class="notes">
-                        <li>Once we improved tooling of our project, we were able to begin work on improvements</li>
-                        <li>There was a great deal of risk with altering the database queries in the existing app as well as the
-                            code</li>
-                        <li>We wrote new code in a directory adjacent to the old application. </li>
-                        <li>We created new controllers that linked to the new functionality. </li>
-                        <li>Our plan was to build new infrastructure using Domain Driven Design, creating
-                            bounded contexts for the Student, Selection, Foundation functionality, and as we were able to replace
-                            pieces of the old application, we would remove them entirely.</li>
-                        <li>Also Event-Sourced the state change of Scholarship Money and Awards</li>
-                    </aside>
-                </section>
-                <section data-background-image="img/boots/bounded_contexts.png"  data-background-size="60%" data-background-position="center">
-                    <aside class="notes">
-                        <ul>
-                            <li>We recognized that our users were all accessing the scholarships in different ways.</li>
-                            <li>To students, the scholarship was an amount of money, but to the selection committee it was a set of rules that determined eligibility, and the amount of money could be distributed to many students</li>
-                            <li>Above all, the foundation wanted the scholarships to be distributed in line with the donor's wishes, but they did not want to choose recipients</li>
-                        </ul>
-                    </aside>
-                </section>
-                <section>
-                    <footer>
-                        <h3>Events</h3>
-                        <ul>
-                            <li><p>Student Submitted Application</p></li>
-                            <li><p>Budget Allocated To Scholarship</p></li>
-                            <li><p>Award Was Given To Student</p></li>
-                        </ul>
-                    </footer>
-                    <aside class="notes">
-                        <p>Events were created when an Event happened in our system, but they were also helpful in notifying another bounded context</p>
-                    </aside>
-                </section>
-                <section>
-                    <h3>Bootstrapping:  Filetree</h3>
-                    <ul>
-                        <li>new code in '/src' alongside the '/app' directory</li>
-                    </ul>
-                    <p>
-                        <img src="img/boots/FileTree.png" alt="File tree">
-                        <img src="img/boots/FileTree-DDD.png" alt="DDD File tree">
-                    </p>
-                    <aside class="notes">
-                        <li>All of our new infrastructure was built using DDD concepts, which was new to us all.</li>
-                        <li>You should be able to see the directories for our bounded contexts. As well as Common and Infrastructure.
-                            This could just as easily have been new Models and other code formats.</li>
-                        <li>We wanted to be able to move this src folder to another framework or run without a framework when we
-                            had replaced the whole application. This was a LONG term goal.</li>
-                    </aside>
-                </section>
-                <section>
-                    <h3>Bootstrapping:  Namespaces</h3>
-                    <ul>
-                        <li><p>'/src' is given a namespace</p></li>
-                        <li><p>namespaces are autoloaded in composer</p></li>
-                    </ul>
-<pre><code>
-{
-    "name": "itecs/scholarships",
-    "description": "Scholarships application for the College of Engineering.",
-    ...
-    "autoload": {
-        "psr-4": {
-            "ITECS\\Scholarships\\": [ "src/", "app/core/" ],
-            "Codeception\\Module\\": "src/",
-            "Tests\\Substitute\\": "tests/_helpers/"
-        }
-    }
-}
-</code></pre>
-                    <span class="fragment current-only" data-code-focus="7-11"></span>
-                    <aside class="notes">
-                        <li>Composer allowed us to build this independent structure. </li>
-                        <li>We used it to load a lot of the tooling I already mentioned</li>
-                        <li>And we used it to autoload the namespaced code in our source folder.</li>
-                        <li>Here we label the /src folder as the namespace ITECS/Scholarships</li>
-                    </aside>
-                </section>
+
                 <section>
                     <h3>Bootstrapping:  Connecting to the Framework</h3>
                     <ul>
@@ -1196,27 +1235,7 @@ class CreateUserLoginsTable extends AbstractMigration
                         <li>The services file is where we configured the database connections and twig templates and tooling and things like that.  This accessed our config variables from the config.php file</li>
                     </aside>
                 </section>
-                <section>
-                    <h1>Dependency Injection</h1>
-                    <aside class="notes">
-                        <li>We positioned our new code adjacent to the framework</li>
-                        <li>We needed to bring the fully namespaced services into that framework</li>
-                        <li>Dependency Injection allowed us to do that</li>
-                        <li>We used Pimple to build our container and define the dependencies</li>
-                    </aside>
-                </section>
-                <section>
-                    <footer>
-                        <h3>Dependency Injection Container</h3>
-                        <ul>
-                            <!--<li>Dependency injection is a software design pattern that implements inversion of control for resolving dependencies.</li>-->
-                            <!--<li>A dependency is an object that can be used (a service).</li>-->
-                            <!--<li>An injection is the passing of a dependency to a dependent object (a client) that would use it.</li>-->
-                            <li>The Pimple Container helps us pass the Service or Object we need in the application along with all of its dependencies</li>
-                            <li>We don't have to wait to let the dependencies resolve when the user accesses the object, we can ensure they are there ahead of time</li>
-                        </ul>
-                    </footer>
-                </section>
+
                 <section>
                     <footer>
                         <h3>Container</h3>
@@ -1587,63 +1606,73 @@ class BaseController extends \Controller {
                 <!---->
                 <!--</aside>-->
                 <!--</section>-->
-                <section>
-                    <h3>Summary: Scholarship Wins!</h3>
-                    <ul>
-                        <li>Implemented multiple majors successfully</li>
-                        <li>Eliminated unqualified candidates
-                            <ul><li>made the scoring easier to read</li>
-                                <li>reduced the manual review of candidates</li></ul>
-                        </li>
-                        <li>Selection process was entirely inside the application</li>
-                    </ul>
+                <section data-background-image="img/boots/summary.jpg" data-background-size="80%" data-background-position="center">
                     <aside class="notes">
-                        <li>We implmented multiple majors successfully</li>
-                        <li>By listing only Canddates who matched requirements, the scoring was simpler to understand and the selection committee had less manual review to choose the best match</li>
-                        <li>The selection process was entirely within our application. </li>
-
+                        <li>We're going to talk about Bootstrapping this application by leaving that code in place
+                            but adding new code in adjacent space and later tying it into the CodeIgniter app</li>
+                        <li>Dealing with legacy code requires a lot of organization and planning</li>
                     </aside>
                 </section>
                 <section>
-                    <h3>Summary: Scholarship Wins!</h3>
-                    <ul>
-                        <li>Restored confidence in selection process!</li>
-                        <li>Fewer awards were rejected!</li>
-                        <li>More Scholarship Money was awarded in the application than ever before!</li>
-                    </ul>
-                    <p><strong>By May 2015: Approximately $1,074,394 Awarded</strong></p>
-                    <aside class="notes">
-                        <li>We restored confidence in the application</li>
-                        <li>We simplified the process tremendously!</li>
-                        <li>The awards that were selected in our application had fewer rejections because the data was more up-to-date</li>
-                        <li>And more money was awarded...  over $1 MILLION</li>
-                    </aside>
-                </section>
-                <section>
-                    <h3>Summary: Lessons Learned</h3>
-                    <img src="img/boots/lessons_learned.png" width="70%">
-                    <p class="fragment">Tight deadlines with un-scoped work, we created technical debt that we would have to address in
-                            the next academic year</p>
-                    <aside class="notes">
+                    <section>
+                        <h3>Summary: Scholarship Wins!</h3>
                         <ul>
-                            <li><p>Huge time investment (approx. 9 months to complete selection) With more work over the summer to
-                                complete</p></li>
-                            <li><p>Over time we lost team participation because we have too many other projects needing attention</p></li>
-                            <li><p>Tight deadlines with un-scoped work, we created technical debt that we would have to address in
-                                the next academic year</p></li>
+                            <li>Implemented multiple majors successfully</li>
+                            <li>Eliminated unqualified candidates
+                                <ul><li>made the scoring easier to read</li>
+                                    <li>reduced the manual review of candidates</li></ul>
+                            </li>
+                            <li>Selection process was entirely inside the application</li>
                         </ul>
-                    </aside>
-                </section>
-                <section>
-                    <h3>Summary: Lessons Learned</h3>
-                    <ul>
-                        <li>Bootstrapping Legacy Apps</li>
-                        <li>Event Sourcing</li>
-                        <li>Domain-Driven Design</li>
-                        <li>Command Query Response Segregation</li>
-                        <li>Project Management</li>
-                        <li>A LOT!</li>
-                    </ul>
+                        <aside class="notes">
+                            <li>We implmented multiple majors successfully</li>
+                            <li>By listing only Canddates who matched requirements, the scoring was simpler to understand and the selection committee had less manual review to choose the best match</li>
+                            <li>The selection process was entirely within our application. </li>
+
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h3>Summary: Scholarship Wins!</h3>
+                        <ul>
+                            <li>Restored confidence in selection process!</li>
+                            <li>Fewer awards were rejected!</li>
+                            <li>More Scholarship Money was awarded in the application than ever before!</li>
+                        </ul>
+                        <p><strong>By May 2015: Approximately $1,074,394 Awarded</strong></p>
+                        <aside class="notes">
+                            <li>We restored confidence in the application</li>
+                            <li>We simplified the process tremendously!</li>
+                            <li>The awards that were selected in our application had fewer rejections because the data was more up-to-date</li>
+                            <li>And more money was awarded...  over $1 MILLION</li>
+                        </aside>
+                    </section>
+                    <section>
+                        <h3>Summary: Lessons Learned</h3>
+                        <img src="img/boots/lessons_learned.png" width="70%">
+                        <p class="fragment">Tight deadlines with un-scoped work, we created technical debt that we would have to address in
+                                the next academic year</p>
+                        <aside class="notes">
+                            <ul>
+                                <li><p>Huge time investment (approx. 9 months to complete selection) With more work over the summer to
+                                    complete</p></li>
+                                <li><p>Over time we lost team participation because we have too many other projects needing attention</p></li>
+                                <li><p>Tight deadlines with un-scoped work, we created technical debt that we would have to address in
+                                    the next academic year</p></li>
+                            </ul>
+                        </aside>
+                    </section>
+                    <section>
+                        <h3>Summary: Lessons Learned</h3>
+                        <ul>
+                            <li>Bootstrapping Legacy Apps</li>
+                            <li>Event Sourcing</li>
+                            <li>Domain-Driven Design</li>
+                            <li>Command Query Response Segregation</li>
+                            <li>Project Management</li>
+                            <li>A LOT!</li>
+                        </ul>
+                    </section>
                 </section>
                 <section>
                     <section>
@@ -1672,9 +1701,8 @@ class BaseController extends \Controller {
                         <li>Increase/Decrease of Funds</li>
                     </ul>
                 </section>
-                <section data-background-image="img/boots/Sad-Crying-Meme-Face-08.png" data-background-size="50%" class="sectionblock">
-                    <!--<h3>Summary: Was It Worth It?</h3>-->
-                    <h2 class="sectionblockbox">University is replacing it</h2>
+                <section data-background-image="img/boots/Sad-Crying-Meme-Face-08.png" data-background-size="30%" data-background-position="center">
+                    <h1 style="position: relative; top: -250px; align: bottom;left: -50px; color: #1E30FF;">University is replacing</h1>
                 </section>
                 <section>
                     <h3>What now?</h3>
