@@ -1269,6 +1269,58 @@ class BaseController extends \Controller {
                     </section>
                     <section>
                         <header>
+                            <h3>'app/services.php'</h3>
+                        </header>
+                        <myColBox>
+                            <article>
+<pre><code>
+&lt;?php
+
+    use Pimple\Container;
+    use Illuminate\Database\Capsule\Manager as Capsule;
+
+    $container = new Container();
+
+    $container['config'] = require_once('config.php');
+
+    $container['database'] = function ($c) {
+        $capsule = new Capsule;
+
+        // PHP 5.3 doesn't do array de-referencing.
+        // @todo update for php54
+        $config = $c['config'];
+
+        $capsule->addConnection(
+            array(
+                'driver'    => 'mysql',
+                'host'      => $config['db']['default']['hostname'],
+                'port'      => $config['db']['default']['port'],
+                'database'  => $config['db']['default']['database'],
+                'username'  => $config['db']['default']['username'],
+                'password'  => $config['db']['default']['password'],
+                'charset'   => 'utf8',
+                'collation' => 'utf8_unicode_ci',
+                'prefix'    => '',
+                ),
+                'default'
+            );
+
+        // Make this Capsule instance available globally via static methods... (optional)
+        $capsule->setAsGlobal();
+
+        return $capsule;
+    };
+</code></pre>
+                                <span class="fragment current-only" data-code-focus="7"></span>
+                                <span class="fragment current-only" data-code-focus="11"></span>
+                                <span class="fragment current-only" data-code-focus="12"></span>
+                                <span class="fragment current-only" data-code-focus="36"></span>
+                                <span class="fragment current-only" data-code-focus="9"></span>
+                            </article>
+                        </myColBox>
+                    </section>
+                    <section>
+                        <header>
                             <h3>Configuration file</h3>
                         </header>
                         <myColBox>
@@ -1381,12 +1433,15 @@ class BaseController extends \Controller {
                 <section>
                     <h3>Bootstrapping:  Connecting to the Framework</h3>
                     <ul>
-                        <li><p>'/app/bindings.php'
-                            <br>define container for new code and its dependencies</p></li>
                         <li><p>'/app/controllers'
                             <br>new controllers for the new functionality</></li>
                         <li><p>'/app/services.php'
-                            <br>defined and configured twig, database, et al</p></li>
+                            <br>defined and configured twig, database, et al
+                            <br>required in the CI index.php file</p></li>
+                        <li><p>'/app/bindings.php'
+                            <br>the roadmap of our new code and dependencies
+                            <br>required in the '/app/services.php' file</p></li>
+
                     </ul>
                     <aside class="notes">
                         <li>We created a file to define the container, Each class or service was added to the container array and the dependencies were included.</li>
@@ -1511,247 +1566,247 @@ class Selectionnext extends BaseController
                             <li>We can also include relevant Service container when we define Controller itself</li>
                         </aside>
                     </section>
-                    <section>
-                        <h3>Base Controller</h3>
-<pre><code>
-&lt;?php
+                    <!--<section>-->
+                        <!--<h3>Base Controller</h3>-->
+<!--<pre><code>-->
+<!--&lt;?php-->
 
-namespace ITECS\Scholarships;
+<!--namespace ITECS\Scholarships;-->
 
-use \ReflectionClass;
-use \Log;
+<!--use \ReflectionClass;-->
+<!--use \Log;-->
 
-/**
-* Base Application Controller Class
-*
-*/
-class BaseController extends \Controller {
+<!--/**-->
+<!--* Base Application Controller Class-->
+<!--*-->
+<!--*/-->
+<!--class BaseController extends \Controller {-->
 
-    const BAD_REQUEST=400;
-    const FORBIDDEN=403;
-    const NOT_FOUND=404;
-    const METHOD_NOT_ALLOWED=405;
-    const SERVER_ERROR=500;
+    <!--const BAD_REQUEST=400;-->
+    <!--const FORBIDDEN=403;-->
+    <!--const NOT_FOUND=404;-->
+    <!--const METHOD_NOT_ALLOWED=405;-->
+    <!--const SERVER_ERROR=500;-->
 
-    protected $serverResponseCodes;
-    protected $authenticationService;
+    <!--protected $serverResponseCodes;-->
+    <!--protected $authenticationService;-->
 
-    /**
-    * @var Pimple\Container
-    */
-    protected $container = null;
+    <!--/**-->
+    <!--* @var Pimple\Container-->
+    <!--*/-->
+    <!--protected $container = null;-->
 
-    /**
-    * Constructor
-    */
-    public function BaseController()
-    {
-        parent::Controller();
-
-
-        // In Ameyrika, BaseController Contains Container
-        global $container;
-        $this->container = $container;
-
-        $this->authenticationService = $this->container['ITECS\Scholarships\IdentityAccess\AuthenticationService'];
-
-        session_start();
-
-        $this->setExceptionHandler();
-
-        log_message('debug', "Base Controller Class Initialized");
-    }
-
-    /**
-    * Fetch the current user id
-    *
-    * @return string
-    */
-    protected function getCurrentUserIdentity()
-    {
-        return $this->authenticationService->getCurrentAuthenticatedUser();
-    }
-
-    /**
-    * Invoke twig to render content and immediately exit afterward
-    *
-    * @param String $name pathname of template to render
-    * @param Array
-    */
-    protected function render($name, array $context = array())
-    {
-        // This keeps CodeIgniter from getting frisky.
-        ob_end_clean();
-        echo $this->container['twig']->render($name, $context);
-        exit;
-    }
-
-    /**
-    * Force a redirect with a flash notice
-    *
-    * @param string $location where to redirect to
-    * @param string $title  a leading label for the notice
-    * @param string $title  the main message for the notice
-    * @param string $type   a (Twitter Bootstrap) alert type; success, info, warning, danger
-    *
-    */
-    protected function redirectAwayWithFlashNotice($location, $title, $message, $type='success')
-    {
-        $this->setFlashNotice($title, $message, $type);
-        redirect($location);
-        exit;
-    }
-
-    /**
-    * Push a flash notice into the session
-    * Note: Simplistic. Last notice pushed wins.
-    *
-    * @param string $title  a leading label for the notice
-    * @param string $title  the main message for the notice
-    * @param string $type   a (Twitter Bootstrap) alert type; success, info, warning, danger
-    */
-    protected function setFlashNotice($title, $message, $type)
-    {
-        $_SESSION['flash_notice'] = array(
-            'type' => $type,
-            'title'=>$title,
-            'message' => $message
-        );
-    }
-
-    /**
-    * Render a "Serious Error" page
-    * e.g.  $this->dieWithErrors(self::METHOD_NOT_ALLOWED, array("You go now!", "Bad Wookie!", "I am Groot!") );
-    * or    $this->dieWithErrors(self::BAD_REQUEST, "You not have done that.")
-    * or    $this->dieWithErrors(self::FORBIDDEN)
-    *
-    * @param int $statusCode  one of the codes we actually use: 400 (Bad Request), 403 (Forbiddeni), 404 (Not Found), 405 (Method Not Allowed), 500 (Server Error)
-    * @param mixed $messages  a string or array of error messages; optionally an integer code or other string-interpolatable object
-    */
-    protected function dieWithErrors($statusCode,$exception=NULL,$userMessages=NULL)
-    {
-        if (is_null($userMessages)) {
-            $userMessages=array();
-        } else if (is_string($userMessages)) {
-            $userMessages=array($userMessages);
-        } else if (!is_array($userMessages)) {
-            $userMessages=array("An unexpected error occurred: {$userMessages}");
-        }
-
-        if (!in_array($statusCode, array(self::BAD_REQUEST, self::FORBIDDEN, self::NOT_FOUND, self::METHOD_NOT_ALLOWED, self::SERVER_ERROR))) {
-            $statusCode = self::SERVER_ERROR;
-        }
-
-        $constants = new ReflectionClass('ITECS\Scholarships\BaseController');
-        $this->serverResponseCodes = array_flip($constants->getConstants());
-
-        $diagnosticMessages = array();
-        if (!is_null($exception)) {
-            $diagnosticMessages = array($exception->getMessage());
-
-            if ($statusCode == self::SERVER_ERROR) {
-                $this->reportUnhandledException($exception);
-            }
-        }
-
-        $this->render("error/{$statusCode}.twig", array(
-
-        'diagnosticMessages' => $diagnosticMessages,
-
-        'userErrorMessages' => $userMessages,
-
-        'currentUser'   => ( $statusCode == 403 ? array('name'=>'Access Denied') :  array('name'=>ucwords(strtolower(str_replace('_', ' ', $this->serverResponseCodes[$statusCode])))) ),
-
-        'currentUrlEncoded' => $current_url = str_replace('+','%20', urlencode(sprintf(
-        'Scholarships problem at %s://%s/%s',
-        isset($_SERVER['HTTPS']) ? 'https' : 'http',
-        $_SERVER['HTTP_HOST'],
-        $_SERVER['REQUEST_URI']
-        )))
-        ));
-
-        exit;
-    }
-
-    /**
-    * General exception handler; Guards against direct URL access
-    *
-    * @param Exception $exception
-    * @access private
-    */
-    public function handleUncaughtExceptions($exception)
-    {
-        $caller = debug_backtrace();
-        $caller = $caller[1]['function'];
-
-        if (!empty($caller)) {
-            $this->dieWithErrors(self::NOT_FOUND);
-        }
-
-        $this->dieWithErrors(self::SERVER_ERROR,$exception);
-    }
+    <!--/**-->
+    <!--* Constructor-->
+    <!--*/-->
+    <!--public function BaseController()-->
+    <!--{-->
+        <!--parent::Controller();-->
 
 
-    /**
-    * Set a default exception handler
-    */
-    protected function setExceptionHandler()
-    {
-        set_exception_handler(array($this, "handleUncaughtExceptions"));
-    }
+        <!--// In Ameyrika, BaseController Contains Container-->
+        <!--global $container;-->
+        <!--$this->container = $container;-->
 
-    /**
-    * Send an email notice to the team that an unhandled exception was detected
-    * @param Exception $exception
-    */
-    protected function reportUnhandledException($exception)
-    {
-        if ( $this->container['config']['errorHandling']['emailExceptions'] ) {
-            $mail_body = "An unhandled exception was detected in Scholarships.";
-            $mail_body .= "\n\nThe exception code was {$exception->getCode()}\n\nThe exception message was:\n{$exception->getMessage()}\n\nThe current user was '{$this->getCurrentUserIdentity()}'.\n\n";
-            $mail_body .= "Request URI: {$_SERVER['REQUEST_URI']}\n\n";
+        <!--$this->authenticationService = $this->container['ITECS\Scholarships\IdentityAccess\AuthenticationService'];-->
 
-            mail(
-                $recipient = 'engr-webmaster@ncsu.edu',
-                $subject   = '[Scholarships] Unhandled Exception on ' . date("F j, Y, g:i a"),
-                $mail_body,
-                $header    = "From: Scholarships Application <engr-webmaster@ncsu.edu>\r\n"
-            );
-        }
+        <!--session_start();-->
 
-        Log::error($exception, array('login' => $this->getCurrentUserIdentity()));
-    }
+        <!--$this->setExceptionHandler();-->
 
-    /**
-    * Check if request HTTP method is POST
-    *
-    * @return bool
-    */
-    protected function requestMethodIsPost()
-    {
-        return $this->container['request']->getMethod() === 'POST';
-    }
+        <!--log_message('debug', "Base Controller Class Initialized");-->
+    <!--}-->
 
-    /**
-    * Guard against access to a controller action except through POST method
-    *
-    * @param mixed $message   string or array of strings indicating cause of failure
-    * @access private
-    */
-    protected function methodMustBePost($message)
-    {
-        if ( !$this->requestMethodIsPost() ) {
-            $this->dieWithErrors(self::METHOD_NOT_ALLOWED, NULL, $message);
-        }
-    }
-}
+    <!--/**-->
+    <!--* Fetch the current user id-->
+    <!--*-->
+    <!--* @return string-->
+    <!--*/-->
+    <!--protected function getCurrentUserIdentity()-->
+    <!--{-->
+        <!--return $this->authenticationService->getCurrentAuthenticatedUser();-->
+    <!--}-->
 
-</code></pre>
-                        <span class="fragment current-only" data-code-focus="27,39"></span>
-                        <aside class="notes">
+    <!--/**-->
+    <!--* Invoke twig to render content and immediately exit afterward-->
+    <!--*-->
+    <!--* @param String $name pathname of template to render-->
+    <!--* @param Array-->
+    <!--*/-->
+    <!--protected function render($name, array $context = array())-->
+    <!--{-->
+        <!--// This keeps CodeIgniter from getting frisky.-->
+        <!--ob_end_clean();-->
+        <!--echo $this->container['twig']->render($name, $context);-->
+        <!--exit;-->
+    <!--}-->
 
-                        </aside>
-                    </section>
+    <!--/**-->
+    <!--* Force a redirect with a flash notice-->
+    <!--*-->
+    <!--* @param string $location where to redirect to-->
+    <!--* @param string $title  a leading label for the notice-->
+    <!--* @param string $title  the main message for the notice-->
+    <!--* @param string $type   a (Twitter Bootstrap) alert type; success, info, warning, danger-->
+    <!--*-->
+    <!--*/-->
+    <!--protected function redirectAwayWithFlashNotice($location, $title, $message, $type='success')-->
+    <!--{-->
+        <!--$this->setFlashNotice($title, $message, $type);-->
+        <!--redirect($location);-->
+        <!--exit;-->
+    <!--}-->
+
+    <!--/**-->
+    <!--* Push a flash notice into the session-->
+    <!--* Note: Simplistic. Last notice pushed wins.-->
+    <!--*-->
+    <!--* @param string $title  a leading label for the notice-->
+    <!--* @param string $title  the main message for the notice-->
+    <!--* @param string $type   a (Twitter Bootstrap) alert type; success, info, warning, danger-->
+    <!--*/-->
+    <!--protected function setFlashNotice($title, $message, $type)-->
+    <!--{-->
+        <!--$_SESSION['flash_notice'] = array(-->
+            <!--'type' => $type,-->
+            <!--'title'=>$title,-->
+            <!--'message' => $message-->
+        <!--);-->
+    <!--}-->
+
+    <!--/**-->
+    <!--* Render a "Serious Error" page-->
+    <!--* e.g.  $this->dieWithErrors(self::METHOD_NOT_ALLOWED, array("You go now!", "Bad Wookie!", "I am Groot!") );-->
+    <!--* or    $this->dieWithErrors(self::BAD_REQUEST, "You not have done that.")-->
+    <!--* or    $this->dieWithErrors(self::FORBIDDEN)-->
+    <!--*-->
+    <!--* @param int $statusCode  one of the codes we actually use: 400 (Bad Request), 403 (Forbiddeni), 404 (Not Found), 405 (Method Not Allowed), 500 (Server Error)-->
+    <!--* @param mixed $messages  a string or array of error messages; optionally an integer code or other string-interpolatable object-->
+    <!--*/-->
+    <!--protected function dieWithErrors($statusCode,$exception=NULL,$userMessages=NULL)-->
+    <!--{-->
+        <!--if (is_null($userMessages)) {-->
+            <!--$userMessages=array();-->
+        <!--} else if (is_string($userMessages)) {-->
+            <!--$userMessages=array($userMessages);-->
+        <!--} else if (!is_array($userMessages)) {-->
+            <!--$userMessages=array("An unexpected error occurred: {$userMessages}");-->
+        <!--}-->
+
+        <!--if (!in_array($statusCode, array(self::BAD_REQUEST, self::FORBIDDEN, self::NOT_FOUND, self::METHOD_NOT_ALLOWED, self::SERVER_ERROR))) {-->
+            <!--$statusCode = self::SERVER_ERROR;-->
+        <!--}-->
+
+        <!--$constants = new ReflectionClass('ITECS\Scholarships\BaseController');-->
+        <!--$this->serverResponseCodes = array_flip($constants->getConstants());-->
+
+        <!--$diagnosticMessages = array();-->
+        <!--if (!is_null($exception)) {-->
+            <!--$diagnosticMessages = array($exception->getMessage());-->
+
+            <!--if ($statusCode == self::SERVER_ERROR) {-->
+                <!--$this->reportUnhandledException($exception);-->
+            <!--}-->
+        <!--}-->
+
+        <!--$this->render("error/{$statusCode}.twig", array(-->
+
+        <!--'diagnosticMessages' => $diagnosticMessages,-->
+
+        <!--'userErrorMessages' => $userMessages,-->
+
+        <!--'currentUser'   => ( $statusCode == 403 ? array('name'=>'Access Denied') :  array('name'=>ucwords(strtolower(str_replace('_', ' ', $this->serverResponseCodes[$statusCode])))) ),-->
+
+        <!--'currentUrlEncoded' => $current_url = str_replace('+','%20', urlencode(sprintf(-->
+        <!--'Scholarships problem at %s://%s/%s',-->
+        <!--isset($_SERVER['HTTPS']) ? 'https' : 'http',-->
+        <!--$_SERVER['HTTP_HOST'],-->
+        <!--$_SERVER['REQUEST_URI']-->
+        <!--)))-->
+        <!--));-->
+
+        <!--exit;-->
+    <!--}-->
+
+    <!--/**-->
+    <!--* General exception handler; Guards against direct URL access-->
+    <!--*-->
+    <!--* @param Exception $exception-->
+    <!--* @access private-->
+    <!--*/-->
+    <!--public function handleUncaughtExceptions($exception)-->
+    <!--{-->
+        <!--$caller = debug_backtrace();-->
+        <!--$caller = $caller[1]['function'];-->
+
+        <!--if (!empty($caller)) {-->
+            <!--$this->dieWithErrors(self::NOT_FOUND);-->
+        <!--}-->
+
+        <!--$this->dieWithErrors(self::SERVER_ERROR,$exception);-->
+    <!--}-->
+
+
+    <!--/**-->
+    <!--* Set a default exception handler-->
+    <!--*/-->
+    <!--protected function setExceptionHandler()-->
+    <!--{-->
+        <!--set_exception_handler(array($this, "handleUncaughtExceptions"));-->
+    <!--}-->
+
+    <!--/**-->
+    <!--* Send an email notice to the team that an unhandled exception was detected-->
+    <!--* @param Exception $exception-->
+    <!--*/-->
+    <!--protected function reportUnhandledException($exception)-->
+    <!--{-->
+        <!--if ( $this->container['config']['errorHandling']['emailExceptions'] ) {-->
+            <!--$mail_body = "An unhandled exception was detected in Scholarships.";-->
+            <!--$mail_body .= "\n\nThe exception code was {$exception->getCode()}\n\nThe exception message was:\n{$exception->getMessage()}\n\nThe current user was '{$this->getCurrentUserIdentity()}'.\n\n";-->
+            <!--$mail_body .= "Request URI: {$_SERVER['REQUEST_URI']}\n\n";-->
+
+            <!--mail(-->
+                <!--$recipient = 'engr-webmaster@ncsu.edu',-->
+                <!--$subject   = '[Scholarships] Unhandled Exception on ' . date("F j, Y, g:i a"),-->
+                <!--$mail_body,-->
+                <!--$header    = "From: Scholarships Application <engr-webmaster@ncsu.edu>\r\n"-->
+            <!--);-->
+        <!--}-->
+
+        <!--Log::error($exception, array('login' => $this->getCurrentUserIdentity()));-->
+    <!--}-->
+
+    <!--/**-->
+    <!--* Check if request HTTP method is POST-->
+    <!--*-->
+    <!--* @return bool-->
+    <!--*/-->
+    <!--protected function requestMethodIsPost()-->
+    <!--{-->
+        <!--return $this->container['request']->getMethod() === 'POST';-->
+    <!--}-->
+
+    <!--/**-->
+    <!--* Guard against access to a controller action except through POST method-->
+    <!--*-->
+    <!--* @param mixed $message   string or array of strings indicating cause of failure-->
+    <!--* @access private-->
+    <!--*/-->
+    <!--protected function methodMustBePost($message)-->
+    <!--{-->
+        <!--if ( !$this->requestMethodIsPost() ) {-->
+            <!--$this->dieWithErrors(self::METHOD_NOT_ALLOWED, NULL, $message);-->
+        <!--}-->
+    <!--}-->
+<!--}-->
+
+<!--</code></pre>-->
+                        <!--<span class="fragment current-only" data-code-focus="27,39"></span>-->
+                        <!--<aside class="notes">-->
+
+                        <!--</aside>-->
+                    <!--</section>-->
 
                 </section>
                 <!--<section>-->
