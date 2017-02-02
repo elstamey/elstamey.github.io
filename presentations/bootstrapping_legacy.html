@@ -1111,6 +1111,8 @@ interface GpaService
                                 <li>Our plan was to build new infrastructure using Domain Driven Design, creating
                                     bounded contexts for the Student, Selection, Foundation functionality, and as we were able to replace
                                     pieces of the old application, we would remove them entirely.</li>
+                                <li>And we needed a way to pass information between bounded contexts</li>
+                                <li>Events allowed us to do this</li>
                             </ul>
                         </aside>
                     </section>
@@ -1141,16 +1143,129 @@ interface GpaService
                         </aside>
                     </section>
                     <section>
+                        <header>
+                            <h3>Dependencies</h3>
+                        </header>
+                        <myColBox>
+                            <article>
+                                <p>The <u>dependencies</u> are the objects your class needs to function</p>
+                                <p>GPAService needed a DB connection</p>
+                            </article>
+                        </myColBox>
+                    </section>
+                    <section>
+                        <header>
+                            <h3>Inject the Dependencies</h3>
+                        </header>
+                        <myColBox>
+                            <article>
+                                <p>Don't instantiate a dependency by using 'new GPAService()' inside the class</p>
+                                <p>Do take the dependency as a parameter in the constructor or use a setter</p>
+<pre><code>
+function __construct(Database $database)
+{
+    $this->database = $database;
+}
+</code></pre>
+                            </article>
+                        </myColBox>
+                    </section>
+                    <section>
+                        <header>
+                            <h3>Dependency Injection</h3>
+                        </header>
+                        <myColBox>
+                            <article>
+                                <ul>
+                                    <li>Decouples our code from low level implementation details</li>
+                                    <li>Instantiate our classes with their dependencies</li>
+                                    <li class="fragment"><u>AND</u> instantiate those dependencies</li>
+                                </ul>
+                            </article>
+                        </myColBox>
+                    </section>
+                    <section>
                         <footer>
                             <h3>Dependency Injection Container</h3>
                             <ul>
                                 <!--<li>Dependency injection is a software design pattern that implements inversion of control for resolving dependencies.</li>-->
                                 <!--<li>A dependency is an object that can be used (a service).</li>-->
                                 <!--<li>An injection is the passing of a dependency to a dependent object (a client) that would use it.</li>-->
-                                <li>The Pimple Container helps us pass the Service or Object we need in the application along with all of its dependencies</li>
-                                <li>We don't have to wait to let the dependencies resolve when the user accesses the object, we can ensure they are there ahead of time</li>
+                                <!--<li>The Pimple Container helps us pass the Service or Object we need in the application along with all of its dependencies</li>-->
+                                <!--<li>We don't have to wait to let the dependencies resolve when the user accesses the object, we can ensure they are there ahead of time</li>-->
+                                <li>A map of dependencies your class needs along with the logic to create those dependencies if they haven't been created yet</li>
+                                <li>Can resolve complex dependencies transparently</li>
+                                <li>Modular when you need to swap a dependency, only update the container</li>
                             </ul>
                         </footer>
+                    </section>
+                    <section>
+                        <header>
+                            <h3>Pimple</h3>
+                        </header>
+                        <myColBox>
+                            <article>
+                                <ul>
+                                    <li>Create your container by instantiating the Pimple class</li>
+                                </ul>
+                            </article>
+                        </myColBox>
+                    </section>
+                    <section>
+                        <h3>Base Controller</h3>
+<pre><code>
+&lt;?php
+
+namespace ITECS\Scholarships;
+
+use \ReflectionClass;
+use \Log;
+
+/**
+* Base Application Controller Class
+*
+*/
+class BaseController extends \Controller {
+
+    const BAD_REQUEST=400;
+    const FORBIDDEN=403;
+    const NOT_FOUND=404;
+    const METHOD_NOT_ALLOWED=405;
+    const SERVER_ERROR=500;
+
+    protected $serverResponseCodes;
+    protected $authenticationService;
+
+    /**
+    * @var Pimple\Container
+    */
+    protected $container = null;
+
+    /**
+    * Constructor
+    */
+    public function BaseController()
+    {
+        parent::Controller();
+
+        // In Ameyrika, BaseController Contains Container
+        global $container;
+        $this->container = $container;
+
+        $this->authenticationService = $this->container['ITECS\Scholarships\IdentityAccess\AuthenticationService'];
+
+        session_start();
+
+        $this->setExceptionHandler();
+
+        log_message('debug', "Base Controller Class Initialized");
+    }
+}
+</code></pre>
+                        <span class="fragment current-only" data-code-focus="27,38"></span>
+                        <aside class="notes">
+
+                        </aside>
                     </section>
                     <section>
                         <header>
