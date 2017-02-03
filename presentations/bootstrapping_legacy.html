@@ -76,8 +76,9 @@
                                     <li>1 UX professional</li>
                                 </ul>
                             </p>
-                            <p> We maintain 70 legacy applications</p>
-                            <p>Our applications support the College of Engineering, outside of the classroom</p>
+                            <p>Our applications support the College of Engineering, mostly outside of the classroom</p>
+                            <p class="fragment"> We maintain 70 legacy applications</p>
+
                         </article>
                         <article>
                             <myrowBox>
@@ -133,10 +134,7 @@
                         <li><p><strong>Bootstrapping</strong> meets you in the middle</p></li>
                     </ul>
                     <aside class="notes">
-                        <li>As web developers we support and maintain a lot of legacy</li>
-                        <li>It's tough to maintain that older application,</li>
-                        <li>many things that make legacy challenging</li>
-                        <li>In deciding replace or upgrade, you can actually choose both.</li>
+
                     </aside>
                 </section>
                 <section data-background-image="img/boots/mini_dictionary.jpg">
@@ -289,8 +287,8 @@
                         <li>I'm going to tell you about the Scholarships Project</li>
                         <li>It organizes requirements for scholarships to be awarded to Students in the COE</li>
                         <li>All development was in production.</li>
-                        <li>The codebase was an early version of Code Igniter. But that fact really doesn't mean much.
-                            It was an MVC application implemented by a student who didn't really understand how to use MVC.</li>
+                        <!--<li>The codebase was an early version of Code Igniter. But that fact really doesn't mean much.-->
+                            <!--It was an MVC application implemented by a student who didn't really understand how to use MVC.</li>-->
                         <li>The application was used most of the Academic year, so that gave me a month at the end of the summer to
                             "FIX IT", test it, and have it ready for the next Academic year. </li>
                         <li>This month was a gift, they wanted me to do it in two weeks.</li>
@@ -398,8 +396,9 @@
                     <p><strong>Process was inconsistent with the application</strong></p>
                     <ul>
                         <li>Language of the customer was different from the application</li>
-                        <li><p>Selection Committee used spreadsheet to manage budgets</p></li>
-                        <li><p>Candidates were added to a spreadsheet Student ID and Amount and Term of award</p></li>
+                        <li class="fragment">Selection Committee used spreadsheet to manage budgets</li>
+                        <li class="fragment">Candidates were added to a spreadsheet
+                            <br>(Student ID, Amount, Term)</li>
                     </ul>
                     <aside class="notes">
                         <li>The application was not consistent with their process</li>
@@ -1133,7 +1132,7 @@ interface GpaService
                     </section>
                 </section>
                 <section>
-                    <section>
+                    <section data-background-image="img/boots/dependency_puzzle.png" data-background-size="20%" data-background-position="top">
                         <h1>Dependency Injection</h1>
                         <aside class="notes">
                             <li>We positioned our new code adjacent to the framework</li>
@@ -2010,7 +2009,7 @@ class Selectionnext extends BaseController
 				slideNumber: true,
 
 				// Push each slide change to the browser history
-				history: false,
+				history: true,
 
 				// Enable keyboard shortcuts for navigation
 				keyboard: true,
