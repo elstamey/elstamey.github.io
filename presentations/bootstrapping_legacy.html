@@ -119,9 +119,6 @@
                         <p>- Joel Spolsky</p>
                     </blockquote>
                     <aside class="notes">
-                        <li>Let's get down to business.. Legacy</li>
-                        <li>Most of us don't want to work in someone else's code</li>
-                        <li>Why?</li>
                         <li>Starting with someone else's code is hard</li>
                         <li>Our tendency, as developers, is to replace it with more familiar code, our own.</li>
                         <li>But these legacy applications have grown beyond simple CRUD applications and now have a lot of
@@ -133,12 +130,16 @@
                     <h3>Bootstrapping is important</h3>
                     <ul>
                         <li><p>We support <strong>legacy</strong> applications, some very old</p></li>
-                        <li><p>Updating <b>spaghetti</b> codebases is HARD</p></li>
-                        <li><p>Rewriting large legacy applications is HARD</p></li>
+                        <li><p>Updating <b>spaghetti</b> codebases is RISKY</p></li>
+                        <li><p>Rewriting large legacy applications is TIME CONSUMING</p></li>
                         <li><p><strong>Bootstrapping</strong> meets you in the middle</p></li>
                     </ul>
                     <aside class="notes">
-
+                        <ul>
+                            <li>There are a lot of considerations working on a legacy project</li>
+                            <li>We'll talk about a few of them</li>
+                            <li>click</li>
+                        </ul>
                     </aside>
                 </section>
                 <section data-background-image="img/boots/mini_dictionary.jpg">
@@ -188,7 +189,6 @@
                     <aside class="notes">
                         <li>Spaghetti code is when the code is tangled with itself</li>
                         <li>It's tough to change without causing ripples throughout your app</li>
-                        <li>This also applies to models that don't meet the Single Responsibility principle.</li>
                         <li>In PHP:
                             <ul>
                                 <li>spaghetti code that uses includes ...</li>
@@ -244,22 +244,16 @@
                         </article>
                     </myColBox>
                     <aside class="notes">
-                        <li>Code that was left alone </li>
-                        <li>Sometimes our application is built on a framework or uses a package that cannot be upgraded easily</li>
-                        <li>We touch it as little as possible; treat it as fragile</li>
-                        <p>&nbsp;</p>
-                        <li>When we are developing an application without a clear picture of the problem or under a tight deadline, we are creating technical debt</li>
-                        <li>If we patch an application we don't "know" we are usually making tech debt</li>
-                        <p>&nbsp;</p>
+                        <li>Code that was left alone. We touch it as little as possible; treat it as fragile </li>
+                        <li>...developing an application without a clear picture of the problem or under a tight deadline</li>
                         <li>At State, our students develop many simple apps. They are great for learning/teaching.</li>
                         <li>Our dept can't get enough of the instant gratification of building a tool that helps someone do their job.</li>
-                        <li>But does it help our whole organization?</li>
+                        <li>But there are consequences for our organization</li>
                         <li>Prof developers know it will eventually bite us. That simple app that one person uses will
                             break and need an urgent fix, when we're working on something else.</li>
-                        <li>The student who built it won't be here anymore. </li>
-                        <p>&nbsp;</p>
+                        <li>The student/developer who built it won't be here anymore. </li>
                         <li>Sometimes apps that began in this way GROW </li>
-                        <li>many developers have touched the code => archaeology => a spaghetti monster</li>
+                        <li>many developers have touched the code => archaeology</li>
                         <li>Many of these apps have grown too big to be maintained by students. The
                             users are too high on the org chart to risk failure or let the app die.</li>
                     </aside>
@@ -282,7 +276,7 @@
                     <aside class="notes">
                         <li>In my experience, bootstrapping gives you options beyond the black and white rewrite or refactor</li>
                         <li>When do we get the opportunity to refactor an application without new features being needed?</li>
-                        <li>Bootstrapping is a combination of refactoring and new features; </li>
+                        <li>Bootstrapping is a combination of refactoring, replacing, and adding new features; </li>
                         <li>it allows you to modernize your legacy application without replacing the whole thing.</li>
                     </aside>
                 </section>
@@ -323,7 +317,7 @@
                     </section>
                     <section data-background-image="img/boots/aug_financial_aid.png" data-background-size="60%" data-background-position="center">
                         <aside class="notes">
-                            <li>Scholarship Coordinator gives the information to Financial Aid.  Each award is the amount of money, the recipient, and when the money will be given, the following Fall and/or Spring.</li>
+                            <li>Scholarship Coordinator gives the information to Financial Aid.  Each award is the amount of money, the recipient, and when the money will be given.</li>
                         </aside>
                     </section>
                     <section data-background-image="img/boots/fall_money.png" data-background-size="60%" data-background-position="center">
@@ -386,13 +380,13 @@
 						<p><strong><mark>Don’t rely on developer feedback</mark></strong></p>
 					</span>
                     <aside class="notes">
-                        <li>Talking to the previous developer does NOT count as talking to your users.</li>
                         <li>you want to know about their WHOLE process</li>
                         <li>does it match what they are doing in the application.</li>
                         <li>Identify pain points they have using the application</li>
                         <li>Finally, do they have concerns? Do they trust the app? Hate it?</li>
                         <li>This is all necessary feedback.</li>
                         <li>This is your chance to deliver REAL value, so pay attention!</li>
+                        <li>Talking to the previous developer does NOT count as talking to your users.</li>
                     </aside>
                 </section>
                 <section data-background-image="img/boots/notebook-page3.jpg" data-background-size="100%" data-background-position="left" data-state="dimbg">
@@ -402,15 +396,15 @@
                         <li>Language of the customer was different from the application</li>
                         <li class="fragment">Selection Committee used spreadsheet to manage budgets</li>
                         <li class="fragment">Candidates were added to a spreadsheet
-                            <br>(Student ID, Amount, Term)</li>
+                            <br>(Scholarship Account, Student ID, Amount, Term)</li>
                     </ul>
                     <aside class="notes">
                         <li>The application was not consistent with their process</li>
                         <li>It was forcing some terminology and behavior on them that didn't exist in the College</li>
-                        <li>The Selection Committee received a spreadsheet of scholarships and available money.</li>
+                        <li>(*) The Selection Committee received a spreadsheet of scholarships and available money.</li>
                         <li>They used our tool to review the applicants and make selections but reported those selections in another spreadsheet </li>
-                        <li>Each row was the scholarship account number, student id number, amount and when they should
-                            receive the money.</li>
+                        <li>(*) Each row was the scholarship account number, student id number, dollar amount, and when they should
+                            receive the money.  All numbers!</li>
                     </aside>
                 </section>
                 <section data-background-image="img/boots/notebook-page3.jpg" data-background-size="100%" data-background-position="left" data-state="dimbg">
@@ -420,7 +414,7 @@
                     <aside class="notes">
                         <li>We saw quickly that the Selection process was a giant pain point for all involved</li>
                         <li>They were in and out of the tool with spreadsheets filling the gaps.</li>
-                        <li>This had a high margin of error. </li>
+                        <li>(*)This had a high margin of error. </li>
                         <li>Manual entry of numbers.</li>
                         <li>It was tedious and painful</li>
                     </aside>
@@ -438,21 +432,18 @@
                     <aside class="notes">
                         <li>We also learned they didn't trust the application or that selection committee was choosing valid
                             applicants</li>
-                        <li>Financial Aid would reject a lot of awards: could have been the student unenrolled, co-oping, etc</li>
-                        <li>An award could be rejected if a student's enrollment, major, or GPA changed between selection and disbursement Aug/Jan</li>
-                        <li>When FA rejected the awards, it created mistrust of the selection committee and of the app,
+                        <li>(*)Financial Aid would reject a lot of awards: could have been the student unenrolled, co-oping, etc</li>
+                        <li>A student's major, or GPA may have changed between selection and time the money was given</li>
+                        <li>(*)When FA rejected the awards, it created mistrust of the selection committee and of the app,
                             even though there was no way the app could predict what students would later do</li>
-                        <p>&nbsp;</p>
-                        <li>Our scoring algorithm had a problem. Early on, they didn't want to exclude applicants, even if they didn't match requirements.</li>
+                        <li>(*)Our scoring algorithm had a problem. Early on, they didn't want to exclude applicants, even if they didn't match requirements.</li>
                         <li>This meant that a student who matched 2 required and 1 optional criteria, had the same score as
                             match against 3 required criteria.</li>
-                        <li>A selection committee member had to scrutinize the candidates or could choose a bad match.</li>
-                        <p>&nbsp;</p>
-                        <li>It didn't allow multiple majors, and this was causing inconsistent probems.</li>
-                        <li>Some students, would get their non-COE majors and they couldn't match for dept scholarships</li>
-                        <p>&nbsp;</p>
-                        <li>One year, there was a lot of money that had been left ungiven</li>
-                        <li>Donors were upset</li>
+                        <li>A selection committee member had to manually scrutinize the candidates & could choose a bad match.</li>
+                        <li>(*)It didn't allow multiple majors, and this was causing inconsistent problems.</li>
+                        <li>The app would choose the first major, sometimes a non-COE major and they wouldn't get dept questions</li>
+                        <li>(*)One year, there was a lot of money that had been left ungiven</li>
+                        <li>(*)Donors were upset</li>
                         <li>This had to be fixed!</li>
                     </aside>
                 </section>
@@ -483,15 +474,15 @@
                 <section data-background-image="img/boots/notebook-page3.jpg" data-background-size="100%" data-background-position="left" data-state="dimbg">
                     <h3>Codebase of Scholarships</h3>
                     <ul>
-                        <li><p class="fragment">Large App model</p>
+                        <li><p>Large App model</p>
                             <ul>
-                                <li class="fragment"><p>SQL queries, only slightly dynamic</p></li>
-                                <li class="fragment"><p>Functions weren’t single-purpose</p></li>
-                                <li class="fragment"><p>No Bounded Contexts between Students, Selection, and Foundation</p></li>
+                                <li><p>SQL queries, only slightly dynamic</p></li>
+                                <li><p>Functions weren’t single-purpose</p></li>
+                                <li><p>No Bounded Contexts between Students, Selection, and Foundation</p></li>
                             </ul></li>
                     </ul>
                     <aside class="notes">
-                        <li>This is where we really saw the danger in our large app model.</li>
+                        <li>We had a large app model that was essentially a functions.php file.</li>
                         <li>Functions with large SQL queries were being used in multiple places in the app</li>
                         <li>There were no boundaries between selection and foundation queries, so it was impossible to change one without affecting the other</li>
                     </aside>
@@ -499,16 +490,16 @@
                 <section data-background-image="img/boots/notebook-page3.jpg" data-background-size="100%" data-background-position="left" data-state="dimbg">
                     <h3>Codebase of Scholarship</h3>
                     <ul>
-                        <li class="fragment"><p>Student application data was a single row in table</p>
+                        <li><p>Student application data was a single row in table</p>
                             <ul>
-                                <li class="fragment"><p>Academic information wasn’t updated when it changed</p></li>
-                                <li class="fragment"><p>Major was a single column in that row</p></li>
+                                <li><p>Academic information wasn’t updated when it changed</p></li>
+                                <li><p>Major was a single column in that row</p></li>
                             </ul></li>
                     </ul>
                     <aside class="notes">
                         <li>Student's applications were a single row in a table. </li>
-                        <li>Their major was a column in that row.</li>
                         <li>When the student applied, their GPA, major, etc was saved to the application. It wasn't updated prior to selection </li>
+                        <li>Their major was a column in that row.</li>
                         <li>This caused students not to match for scholarships or to match when they shouldn't have.</li>
                     </aside>
                 </section>
@@ -537,9 +528,9 @@
                 <section data-background-image="img/boots/notebook-page3.jpg" data-background-size="100%" data-background-position="left" data-state="dimbg">
                     <h3>New Features: Scholarships</h3>
                     <ul>
-                        <li class="fragment"><p>Explicit criteria matching, excluded non-matching applicants</p></li>
-                        <li class="fragment"><p>Current student data, query their GPA, Major, etc at time of selection</p></li>
-                        <li class="fragment"><p>Students have multiple majors</p></li>
+                        <li><p>Explicit criteria matching, excluded non-matching applicants</p></li>
+                        <li><p>Current student data, query their GPA, Major, etc at time of selection</p></li>
+                        <li><p>Students have multiple majors</p></li>
                     </ul>
                     <aside class="notes">
                         <li>For scholarships they agreed to exclude applicants who didn't match requirements</li>
@@ -580,7 +571,7 @@
                         <li>Before starting this huge project, we heard the University might be buying a tool for the University scholarships. </li>
                         <li>It claimed to do all the work our application did and more. </li>
                         <li>We met with them, but they didn't have enough of the colleges' support to justify the expense.  </li>
-                        <li>We decided we needed to improve the accuracy of our selections and reduce the number of
+                        <li>So we needed to improve the accuracy of our selections and reduce the number of
                             rejected awards.</li>
                     </aside>
                 </section>
@@ -651,12 +642,11 @@
                         </article>
                     </myColBox>
                     <aside class="notes">
-                        <li>Bootstrapping can become a large project quickly</li>
+                        <li>Bootstrapping grows fast!</li>
                         <li>The larger the project, the more developers and users will need to be involved</li>
                         <li>It can be difficult to keep everyone engaged for the length of time required.</li>
-                        <li>Creating smaller bites of work is ideal for getting people on board and familiar with the process.</li>
-                        <li>Make sure when you organize the works into those logical, bite-size tasks, that you're keeping users
-                            informed of what you're agreeing to work on and why. It can help with the feature creep.</li>
+                        <li>Creating smaller bites of work is ideal</li>
+                        <li>Make sure that you tie the work to the objective it is solving. It can help with the feature creep and scoping problems.</li>
                     </aside>
                 </section>
                 <!--<section data-background-image="img/boots/scholarships_diagram.png" data-background-size="60%" data-background-position="center">-->
@@ -681,13 +671,15 @@
                     <aside class="notes">
                         <li>That being said, when it came to planning work for Scholarships, we grouped features in logical sections, and scheduled them
                             based on what would be used next</li>
+                    </aside>
+                </section>
+                <section data-background-image="img/boots/scholarships_plan.png" data-background-size="70%" data-background-position="center">
+                    <aside class="notes">
                         <li>As I mentioned, the plan was to leave the existing application alone as much as possible.</li>
                         <li>We would develop new features adjacent to the framework and use Domain-Driven Design </li>
                         <li>We'd connect the new code into the framework's routing layer</li>
                         <li>We wanted to replace the application in pieces, but we didn't want to get stuck rebuilding the parts that worked.</li>
                     </aside>
-                </section>
-                <section data-background-image="img/boots/scholarships_plan.png" data-background-size="70%" data-background-position="center">
                 </section>
                 <section data-background-image="img/boots/Niamh-OReilly-Acrobat.jpg">
                     <h1 style="position: relative; top: 400px; align: bottom;left: -100px;">Mitigate Risk</h1>
@@ -733,10 +725,8 @@
                     <aside class="notes">
                         <li>We needed to use version control, first. Our department had just bought Github Enterprise, so that helped a lot.</li>
                         <li>Next, we needed development environments that closely matched our production web servers.  This
-                            required a vagrant box and puppet configuration files that our group had begun building for the production servers.
-                            One of my coworkers was able to put these pieces together, and we perfected it during this project.
-                            This saved us from a lot of deployment issues, and we could run the application locally, which had been impossible using MAMP</li>
-                        <li>We also created Staging space on the server. </li>
+                            required a vagrant box and puppet configuration files that our group had begun building for the production servers.</li>
+                        <li>This saved us from a lot of deployment issues, and we could run the application locally, which had been impossible using MAMP</li>
                     </aside>
                 </section>
                 <section>
@@ -767,9 +757,7 @@
                     </myColBox>
                     <aside class="notes">
                         <li>We were building onto an untested application. There were no "units", muchless unit tests</li>
-                        <li>These units are individual classes with testable behavior. </li>
-                        <li>There WAS functionality we were expecting to keep working while we implemented new features.</li>
-                        and restructured how Selection would work.
+                        <li>However there WAS functionality we were expecting to keep working while we implemented new features.</li>
                         <li>Testing was critical in this process! </li>
                         <li>We began with a set of Acceptance tests for the Student Application.  We were only changing the templates, but
                             wanted to verify the student data stayed the same</li>
@@ -823,7 +811,7 @@
                             </article>
                         </myColBox>
                         <aside class="notes">
-                            <li>In order to use those testing packages, we used composer</li>
+                            <li>We used it to bring in Codecention and phpunit</li>
                             <li>Twig templates gave us some really nice functionality for the new User Interfaces we built</li>
                             <!--We used a package called MoneyPHP for handling the dollar amounts of the scholarships-->
                             <li>Pimple container was extremely useful for our bootstrapping, and I'll explain them soon.</li>
@@ -870,10 +858,10 @@
                         <!--</span>-->
                         <aside class="notes">
                             In your composer.json file, you specify the packages and the versions you will accept.
-                            <br>Package name = the vendor name and the project's name
+                            <!--<br>Package name = the vendor name and the project's name-->
                             <br>`composer install` puts all of those packages into your vendor folder, and specifies the installed version in a composer.lock file
                             <br>we checked in our composer.json and composer.lock files but .gitignored the vendor folder
-                            2.0.* of Codeception. This means any version in the 2.0 development branch. It is the equivalent of saying versions that match >=1.0 <1.1.
+                            <!--2.0.* of Codeception. This means any version in the 2.0 development branch. It is the equivalent of saying versions that match >=1.0 <1.1.-->
                         </aside>
                     </section>
                     <!--<section>-->
@@ -940,7 +928,7 @@
                             <li>It allowed us to version control DB changes. And although it isn't recommended, we did
                                 use it extensively for data migrations in addition to schema changes.</li>
                             <li>In this project, we couldn't alter our schema until we had completely eliminated our dependency on the old codebase</li>
-                            <p>The way that you begin is generate the configuration file.  The file will be given a timestamp and class name. </p>
+                            <p>(*)You start by generating the configuration file.  The file will be given a timestamp and class name. </p>
                             <li>The generator will create three methods: change(), up(), and down()</li>
                         </aside>
                     </section>
@@ -968,14 +956,12 @@
                         <pre><code>$ vendor/bin/phinx migrate</code></pre>
                         <pre><code>$ vendor/bin/phinx rollback</code></pre>
                         <aside class="notes">
-                            <li>The generator will create three methods: change(), up(), and down()</li>
-                            <li></li>
-                            <li>However, there are some queries that the change() method doesn't know how to undo.</li>
-                            <li>This is the type of migration we generally write. This example renames a DB column from bio to
+                            <li>(*)This is the type of migration we generally write. This example renames a DB column from bio to
                                 biography.</li>
-                            <li>The down() method undoes this change, renaming the column bio again. Along with this migrations, there
+                            <li>(*)The down() method undoes this change, renaming the column bio again. Along with this migrations, there
                                 would probably be a code change to queries of the 'bio' data.  Those commits would be in a single Pull Request
                                 with this migration.  Otherwise the change would break the code</li>
+                            <li>We run this change by calling the migrate command, and we undo the changes using rollback</li>
                             <li>Tests run after the migration would now pass, and that code could be merged.</li>
                         </aside>
                     </section>
@@ -1004,6 +990,10 @@ class CreateUserLoginsTable extends AbstractMigration
                         <aside class="notes">
                             <li>The change method is a single function. Phinx is supposed to know how to do AND undo that
                                 change, so you don't have to write the undo query. </li>
+                            <li>(*)We name the table we want to create </li>
+                            <li>(*)Specify the columns</li>
+                            <li>(*)and apply the create method</li>
+                            <li>Phinx knows how to roll this back, if needed</li>
                         </aside>
                     </section>
                 </section>
@@ -1033,7 +1023,7 @@ class CreateUserLoginsTable extends AbstractMigration
                         </footer>
                         <aside class="notes">
                             <li>You should be able to see the directories for our bounded contexts. As well as Common and Infrastructure.
-                                This could just as easily have been new Models and other code formats.</li>
+                                This could just as easily have been new Models.</li>
                             <li>We wanted to be able to move this src folder to another framework or run without a framework when we
                                 had replaced the whole application.</li>
                         </aside>
@@ -1162,8 +1152,8 @@ interface GpaService
                         </header>
                         <myColBox>
                             <article>
-                                <p>Don't instantiate a dependency by using 'new GPAService()' inside the class</p>
-                                <p>Do take the dependency as a parameter in the constructor or use a setter</p>
+                                <!--<p>Don't instantiate a dependency by using 'new GPAService()'</p>-->
+                                <p>Instantiate the dependency as a parameter in the constructor or use a setter</p>
 <pre><code>
 function __construct(Database $database)
 {
@@ -1267,7 +1257,7 @@ class BaseController extends \Controller {
 </code></pre>
                         <span class="fragment current-only" data-code-focus="27,38"></span>
                         <aside class="notes">
-
+                            <li>We defined our container in the BaseC Controller of the CI app </li>
                         </aside>
                     </section>
                     <section>
@@ -1317,10 +1307,18 @@ class BaseController extends \Controller {
                                 <span class="fragment current-only" data-code-focus="7"></span>
                                 <span class="fragment current-only" data-code-focus="11"></span>
                                 <span class="fragment current-only" data-code-focus="12"></span>
+                                <span class="fragment current-only" data-code-focus="18-31"></span>
                                 <span class="fragment current-only" data-code-focus="36"></span>
                                 <span class="fragment current-only" data-code-focus="9"></span>
                             </article>
                         </myColBox>
+                        <aside class="notes">
+                            <li>In out services.php file in CodeIgniter, we initialized the container</li>
+                            <li>We could then build our database connections in the container</li>
+                            <li>We made a new capsule, applied the connection parameters from our config file, and returned the capsule</li>
+                            <li>Just above this, we had included our configuration file and assigned it to a config container</li>
+                            <li></li>
+                        </aside>
                     </section>
                     <section>
                         <header>
@@ -1336,11 +1334,10 @@ class BaseController extends \Controller {
                             </ul>
                         </myColBox>
                         <aside class="notes">
-                            <li>Another piece that allowed us to support the many environments: development, staging, production was a configuration file. </li>
+                            <li>This config file allowed us to support the many environments: development, staging, production was a configuration file. </li>
                             <li>This was not version controlled. But a template was.</li>
                             <li>We could download that template and fill in our local DB connections, the base_url path</li>
-                            <li>We could set paths to twig templates, custom notice messages and temporary config variables for the
-                                services we implemented that we needed flexibility for</li>
+                            <li>We could set paths to twig templates, custom notice messages and many other things</li>
                         </aside>
                     </section>
                     <section>
@@ -1419,16 +1416,15 @@ class BaseController extends \Controller {
 
 ?&gt;
 </code></pre>
-                        <p>We passed this array into a <b>$config</b> variable that could be accessed as `$config['app']['base_url']`</p>
+                        <p>We passed this array into a <b>$container['config']</b> variable</p>
                         <aside class="notes">
                             <li>setting the base_url was very helpful in supporting paths to resources in both our local environment and production </li>
-                            <li>Our project used two DBs and we were able to configure both using this config variables. The
-                                parts of CodeIgniter that configured the DB could then pull in our config values for 'default' and
-                                'student_info' databases to allow our queries to continue working regardless of the server</li>
+                            <li>Our project used two DBs and we were able to configure both using this. The
+                                parts of CodeIgniter that configured the DB could then pull in our config variable to remain consistent</li>
                             <li>We also put paths to twig templates, which were then configured into the framework similarly to the DB connections</li>
-                            <li>We created an authorization array to limit access to the portions of the app
-                                because this would give us flexibility to turn access on and off when we needed to change
-                                the application</li>
+                            <!--<li>We created an authorization array to limit access to the portions of the app-->
+                                <!--because this would give us flexibility to turn access on and off when we needed to change-->
+                                <!--the application</li>-->
                         </aside>
                     </section>
                 </section>
@@ -1447,10 +1443,10 @@ class BaseController extends \Controller {
 
                     </ul>
                     <aside class="notes">
-                        <li>We created a file to define the container, Each class or service was added to the container array and the dependencies were included.</li>
-                        <li>We also created new controllers to separate new features from the old</li>
-                        <li>These controllers linked to our container and passed the required classes and services to be used in the requests and templates</li>
+                        <li>We  created new controllers to separate new features from the old</li>
+                        <li>These controllers linked to our container and passed the required classes and services we needed in the requests and templates</li>
                         <li>The services file is where we configured the database connections and twig templates and tooling and things like that.  This accessed our config variables from the config.php file</li>
+                        <li>The bindings was our complete class map for our dependency injection container</li>
                     </aside>
                 </section>
 
@@ -1475,10 +1471,12 @@ class BaseController extends \Controller {
                     </footer>
 
                     <aside class="notes">
-                        <li>We needed an injector to bring our code dependencies into our CodeIgniter framework.  </li>
-                        <li>In order to do this, we defined container in a file called `bindings.php`</li>
-                        <li>The controller could then inject the service container and receive its dependencies.</li>
-                        <li>The first example is our GPA Service, which only required a DB connection to query</li>
+                        <!--<li>We needed an injector to bring our code dependencies into our CodeIgniter framework.  </li>-->
+                        <!--<li>In order to do this, we defined container in a file called `bindings.php`</li>-->
+                        <!--<li>T</li>-->
+                        <!--<li>The controller could then inject the service container and receive its dependencies.</li>-->
+                        <li>The first example is our GPA Service, (*)which only required a DB connection to query</li>
+                        <li>(*)We applied it to the container using the fully namespaced classname</li>
                     </aside>
                 </section>
                 <section>
@@ -1504,13 +1502,11 @@ $container['Scholarships\Selection\ApplicantQueryService'] = function($c) {
                     <span class="fragment current-only" data-code-focus="6,9"></span>
                     <span class="fragment current-only" data-code-focus="10-14"></span>
                     <aside class="notes">
-                        <li>We were bringing in large chunks of code.  Importing a Service might involve 5 or more dependencies, and
+                        <li>We were bringing in large chunks of code.  Some Services involved more dependencies, and
                             preserving them was critical</li>
-                        <li>We needed an injector to bring those dependencies into our CodeIgniter framework.  </li>
-                        <li>In order to do this, we defined the container in a file called `bindings.php`</li>
-                        <li>The controller could then inject the service container and receive its dependencies.</li>
-                        <li>The first example is our GPA Service, which only required a DB connection to query</li>
-                        <li>In our second example, the Applicant Query Service, we needed Students, Their Residency, GPAs, Unmet Financial Need, and their qualification for the scholarship.  Each of those dependencies had their own dependencies.  Defining them in one file meant we could include the container and name it simply. </li>
+                        <li>(*) We included the class</li>
+                        <li>(*)In this example, the Applicant Query Service, we needed Students, Their Residency, GPAs, Unmet Financial Need, and their qualification for the scholarship.  Each of those dependencies had their own dependencies. </li>
+                        <li>And they were all included in this mapping for out DIC</li>
                     </aside>
                 </section>
                 <!--<section data-background="#f05b62">-->
@@ -1561,12 +1557,13 @@ class Selectionnext extends BaseController
                         <span class="fragment current-only" data-code-focus="27"></span>
                         <span class="fragment current-only" data-code-focus="22"></span>
                         <span class="fragment current-only" data-code-focus="31"></span>
-                        <span class="fragment current-only" data-code-focus="34"></span>
+                        <!--<span class="fragment current-only" data-code-focus="34"></span>-->
 
                         <aside class="notes">
-                            <li>Our controller included the Applicant Query Service as it built the Scholarship Dashboard</li>
-                            <li>This defined a presenter to compile and display the Scholarship, its requirements, valid candidates, and any awards alredy given.</li>
-                            <li>We can also include relevant Service container when we define Controller itself</li>
+                            <li>Our controller extended the BaseController, so we could access the container variable</li>
+                            <li>(*)Here is our new Selection controller and (*)in its function, we could define the classes we needed in all methods </li>
+                            <li>(*) here in the selection dashboard we are accessing the Applicant Query Service to show our Qualified Students</li>
+                            <li>(*)This informed a presenter to display the Scholarship, its requirements, valid candidates, and any awards already given.</li>
                         </aside>
                     </section>
                     <!--<section>-->
@@ -1826,9 +1823,8 @@ class Selectionnext extends BaseController
                 <!--</section>-->
                 <section data-background-image="img/boots/summary.jpg" data-background-size="80%" data-background-position="center">
                     <aside class="notes">
-                        <li>We're going to talk about Bootstrapping this application by leaving that code in place
-                            but adding new code in adjacent space and later tying it into the CodeIgniter app</li>
-                        <li>Dealing with legacy code requires a lot of organization and planning</li>
+                        <li>That was a lot of information and code, and I hope you will talk to me after if you have any questions at all</li>
+                        <li>Let's talk about how this project ended up</li>
                     </aside>
                 </section>
                 <section>
@@ -1918,6 +1914,11 @@ class Selectionnext extends BaseController
                         <li>Beginning of the year Fund allocations</li>
                         <li>Increase/Decrease of Funds</li>
                     </ul>
+                    <aside class="notes">
+                        <li>We hadn't built a mechanism to handle the academic year, and we needed a way to differentiate them</li>
+                        <li>We wanted to replace the forms foundation managed their scholarships to reflect the accurate naming of things and a few new parameters we had added</li>
+                        <li>We wanted them to be able to fully manage budgets in the application instead of importing them with a spreadsheet</li>
+                    </aside>
                 </section>
                 <section data-background-image="img/boots/Sad-Crying-Meme-Face-08.png" data-background-size="30%" data-background-position="center">
                     <h1 style="position: relative; top: -250px; align: bottom;left: -50px; color: #1E30FF;">University is replacing</h1>
@@ -1933,13 +1934,6 @@ class Selectionnext extends BaseController
                     </ul>
                 </section>
                 <section>
-                    <img src="img/boots/sunshinephp_logo_2017_800px.png">
-                    <h1>Thank You!</h1>
-                    <p>Emily Stamey</p>
-                    <p>Twitter: <a href="https://twitter.com/elstamey">@elstamey</a></p>
-                    <p>Joind.in: <a href="https://joind.in/talk/a8341">https://joind.in/talk/a8341</a></p>
-                </section>
-                <section>
                     <p>Recommended reading</p>
                     <ul>
                         <li>Blog with Bootstrapping details: <a href="http://www.elstamey.com/">elstamey.com</a></li>
@@ -1947,6 +1941,14 @@ class Selectionnext extends BaseController
                         <li><a href="https://www.youtube.com/watch?v=IKD2-MAkXyQ&spfreload=5">Dependency Injection</a> - Anthony Ferrara</li>
                     </ul>
                 </section>
+                <section>
+                    <img src="img/boots/sunshinephp_logo_2017_800px.png">
+                    <h1>Thank You!</h1>
+                    <p>Emily Stamey</p>
+                    <p>Twitter: <a href="https://twitter.com/elstamey">@elstamey</a></p>
+                    <p>Joind.in: <a href="https://joind.in/talk/a8341">https://joind.in/talk/a8341</a></p>
+                </section>
+
 
 			</div>
 		</div>
