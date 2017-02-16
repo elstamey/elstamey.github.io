@@ -372,56 +372,77 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
   </div>
   <div class="slide hidden" id="slide-2">
     <section class="slide-content"><p>Definition Event Sourcing</p>
-<p>The fundamental idea of Event Sourcing is that of ensuring every change to the state of an application is captured in an event object, and that these event objects are themselves stored in the sequence they were applied for the same lifetime as the application state itself.</p>
+<p>The fundamental idea of Event Sourcing is that of ensuring <strong>every change to the state</strong> of an application <strong>is captured in an event object</strong>, and that these event objects are themselves stored in the sequence they were applied for the same lifetime as the application state itself.</p>
 <ul>
 <li>Martin Fowler</li>
 </ul>
 </section>
   </div>
   <div class="slide hidden" id="slide-3">
-    <section class="slide-content"><h2 id="forms">Forms</h2>
-<p>A lot of our applications are built to facilitate or replace paper processes</p>
-<p>When we stick to this idea, we find ourselves using status flags on an object 
-to tell where in the process we are.</p>
-<p>But these states can carry knowledge of the process without clearly saying what happened.</p>
-<p>Status meaning or names can change over time without conveying process changes</p>
+    <section class="slide-content"><h2 id="what-s-important-about-events">What&#39;s important about Events</h2>
+<ul>
+<li>Events</li>
+<li>Details of the Event (attributes)</li>
+<li>Order/Sequence</li>
+</ul>
 </section>
   </div>
   <div class="slide hidden" id="slide-4">
-    <section class="slide-content"><h3 id="something-happened">Something happened</h3>
-<p>In a workflow, usually something happens and then your object&#39;s status is
-updated to reflect that something happened.</p>
-<p>Similar to a stamp on your form</p>
+    <section class="slide-content"><h2 id="forms">Forms</h2>
+<p>A lot of our systems are built to facilitate or replace paper processes</p>
+<p>They often closely map to this physical form.</p>
+<p><img src="https://c1.staticflickr.com/8/7091/6988157282_e62624f274_b.jpg" alt="Paper form"></p>
 </section>
   </div>
   <div class="slide hidden" id="slide-5">
-    <section class="slide-content"><p><img src="http://previews.123rf.com/images/kabby/kabby0711/kabby071100002/2079196-A-crumpled-up-home-loan-application-stamped-with-the-word-Stock-Photo.jpg" alt="stamped application"></p>
+    <section class="slide-content"><h2 id="status">Status</h2>
+<p>When we stick to this idea, we find ourselves using status flags on an object 
+to tell where in the process we are.</p>
+<p>But these states carry assumed knowledge of the process without clearly saying what happened.</p>
+<p>Status meaning or names can change over time without conveying process changes</p>
 </section>
   </div>
   <div class="slide hidden" id="slide-6">
+    <section class="slide-content"><h2 id="paper-forms-in-a-process">Paper Forms in a process</h2>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Copies_of_documents_at_European_Parliament_in_Strasbourg.jpg/1024px-Copies_of_documents_at_European_Parliament_in_Strasbourg.jpg" alt="Paper forms sorted for a process"></p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-7">
+    <section class="slide-content"><h3 id="something-happened">Something happened</h3>
+<p>In a workflow, usually something happens and then your object&#39;s status is
+updated to reflect that something happened.</p>
+<p>Similar to a stamp on your form or sorting the form into a pile</p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-8">
+    <section class="slide-content"><p><img src="http://previews.123rf.com/images/kabby/kabby0711/kabby071100002/2079196-A-crumpled-up-home-loan-application-stamped-with-the-word-Stock-Photo.jpg" alt="stamped application"></p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-9">
     <section class="slide-content"><p>But that stamp doesn&#39;t indicate why or communicate to the applicant what happened</p>
 <p>When our Online Student Registration Request is denied, sometimes the student has 
 to do something to resolve the issue.  After the hold is fixed, their request can proceed.  It can even be approved.</p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-7">
-    <section class="slide-content"><p>As our applications become aware of these events, we can adapt, flex, or
+  <div class="slide hidden" id="slide-10">
+    <section class="slide-content"><p>As our software becomes aware of these events, we can adapt, flex, or
 reorient.  </p>
-<p>Instead of putting the application in the trash, we can reconsider it.</p>
-<p>Instead of looking in the denied pile and manually checking the student&#39;s record, we
+<p>Instead of putting the form in the trash, we can reconsider it.</p>
+<p>Instead of reviewing the pile of HOLD forms and manually checking the student&#39;s record, we
 can register the event that a hold is lifted.</p>
-<p>That event can trigger the request to be reviewed by an administrator again.</p>
+<p>That event that a hold is lifted can trigger the request to be reviewed 
+by an administrator.</p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-8">
+  <div class="slide hidden" id="slide-11">
     <section class="slide-content"><p>Workflows</p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-9">
+  <div class="slide hidden" id="slide-12">
     <section class="slide-content"><p>How workflows become complex</p>
 </section>
   </div>
-  <div class="slide hidden  code" id="slide-10">
+  <div class="slide hidden  code" id="slide-13">
     <section class="slide-content"><p>Sometimes your workflow forks in multiple directions or involved long 
 lists to capture the complexity of the business process</p>
 <p><B>Change to Status:</B></p>
@@ -475,44 +496,54 @@ lists to capture the complexity of the business process</p>
     <option value="WITHDRAWN">WITHDRAWN</em></option>
 </select></section>
   </div>
-  <div class="slide hidden" id="slide-11">
-    <section class="slide-content"></section>
+  <div class="slide hidden" id="slide-14">
+    <section class="slide-content"><h3 id="event-sourcing">Event Sourcing</h3>
+<p>ensures that every change to the state of an application is captured in an event object, and that these event objects are themselves stored in the sequence they were applied for the same lifetime as the application state itself.</p>
+</section>
   </div>
-  <div class="slide hidden" id="slide-12">
+  <div class="slide hidden" id="slide-15">
     <section class="slide-content"><p>Events are usually named as past-tense verbs</p>
 <p>Should store values, never an aggregate root or model/collection/object</p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-13">
+  <div class="slide hidden" id="slide-16">
+    <section class="slide-content"><h3 id="events-vs-status">Events vs. Status</h3>
+<p>The fact that an event happened in your system in the past doesn&#39;t ever 
+change even though the behavior around what that event</p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-17">
+    <section class="slide-content"></section>
+  </div>
+  <div class="slide hidden" id="slide-18">
     <section class="slide-content"><p>Event can be wrapped by Domain message</p>
 <p>This contains a version, timestamp, id, and the event itself</p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-14">
+  <div class="slide hidden" id="slide-19">
     <section class="slide-content"><p>Event Store</p>
 <p>Event Store is a domain specific database for people who use the Event Sourcing pattern in their apps. It is a functional database which based on a publish-subscribe messages pattern.</p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-15">
+  <div class="slide hidden" id="slide-20">
     <section class="slide-content"></section>
   </div>
-  <div class="slide hidden" id="slide-16">
+  <div class="slide hidden" id="slide-21">
     <section class="slide-content"><h3 id="a-textual-example">A textual example</h3>
 <p>Content can be written in <strong>Markdown!</strong> New lines no longer need two angle brackets.</p>
 <p>This will be in a separate paragraph</p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-17">
-    <section class="slide-content"><h3 id="a-list-of-things">A list of things</h3>
+  <div class="slide hidden" id="slide-22">
+    <section class="slide-content"><h3 id="links-for-further-reading">Links for further reading</h3>
 <ul>
-<li>Item 1</li>
-<li>Item B</li>
-<li>Item gamma</li>
+<li><a href="https://www.youtube.com/watch?v=JHGkaShoyNs">Greg Young CQRS and Event Sourcing</a></li>
+<li><a href="https://www.youtube.com/watch?v=whCk1Q87_ZI">Greg Young - long class</a></li>
+<li><a href="https://www.youtube.com/watch?v=LDW0QWie21s">Greg Young - A Decade of DDD, CQRS, Event Sourcing</a></li>
 </ul>
-<p>No need for multiple templates!</p>
 </section>
   </div>
-  <div class="slide hidden author-slide" id="slide-18">
+  <div class="slide hidden author-slide" id="slide-23">
     <section class="slide-content"><div class="author">
   <h1 class="name">Emily Stamey</h1>
     <h3 class="twitter">

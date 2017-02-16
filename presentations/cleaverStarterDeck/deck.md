@@ -17,22 +17,47 @@ controls: true
 
 Definition Event Sourcing
 
-The fundamental idea of Event Sourcing is that of ensuring every change to the state of an application is captured in an event object, and that these event objects are themselves stored in the sequence they were applied for the same lifetime as the application state itself.
+The fundamental idea of Event Sourcing is that of ensuring **every change to the state** of an application **is captured in an event object**, and that these event objects are themselves stored in the sequence they were applied for the same lifetime as the application state itself.
 
 - Martin Fowler
 
 --
 
+## What's important about Events
+
+- Events
+- Details of the Event (attributes)
+- Order/Sequence
+
+
+--
+
 ## Forms
 
-A lot of our applications are built to facilitate or replace paper processes
+A lot of our systems are built to facilitate or replace paper processes
+
+They often closely map to this physical form.
+
+![Paper form](https://c1.staticflickr.com/8/7091/6988157282_e62624f274_b.jpg)
+
+--
+
+## Status
 
 When we stick to this idea, we find ourselves using status flags on an object 
 to tell where in the process we are.
 
-But these states can carry knowledge of the process without clearly saying what happened.
+But these states carry assumed knowledge of the process without clearly saying what happened.
 
 Status meaning or names can change over time without conveying process changes
+
+--
+
+## Paper Forms in a process
+
+![Paper forms sorted for a process](https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Copies_of_documents_at_European_Parliament_in_Strasbourg.jpg/1024px-Copies_of_documents_at_European_Parliament_in_Strasbourg.jpg)
+
+
 
 --
 
@@ -41,7 +66,7 @@ Status meaning or names can change over time without conveying process changes
 In a workflow, usually something happens and then your object's status is
 updated to reflect that something happened.
 
-Similar to a stamp on your form
+Similar to a stamp on your form or sorting the form into a pile 
 
 --
  
@@ -56,15 +81,16 @@ to do something to resolve the issue.  After the hold is fixed, their request ca
 
 --
 
-As our applications become aware of these events, we can adapt, flex, or
+As our software becomes aware of these events, we can adapt, flex, or
 reorient.  
 
-Instead of putting the application in the trash, we can reconsider it.
+Instead of putting the form in the trash, we can reconsider it.
 
-Instead of looking in the denied pile and manually checking the student's record, we
+Instead of reviewing the pile of HOLD forms and manually checking the student's record, we
 can register the event that a hold is lifted.
 
-That event can trigger the request to be reviewed by an administrator again.
+That event that a hold is lifted can trigger the request to be reviewed 
+by an administrator.
 
 
 --
@@ -136,6 +162,10 @@ lists to capture the complexity of the business process
 --
 
 
+###Event Sourcing 
+
+ensures that every change to the state of an application is captured in an event object, and that these event objects are themselves stored in the sequence they were applied for the same lifetime as the application state itself.
+
 
 
 --
@@ -145,6 +175,19 @@ Events are usually named as past-tense verbs
 Should store values, never an aggregate root or model/collection/object 
 
 --
+
+### Events vs. Status
+
+The fact that an event happened in your system in the past doesn't ever 
+change even though the behavior around what that event  
+
+--
+
+
+
+--
+
+
 
 Event can be wrapped by Domain message
 
@@ -174,10 +217,8 @@ This will be in a separate paragraph
 
 --
 
-### A list of things
+### Links for further reading
 
-* Item 1
-* Item B
-* Item gamma
-
-No need for multiple templates!
+* [Greg Young CQRS and Event Sourcing](https://www.youtube.com/watch?v=JHGkaShoyNs)
+* [Greg Young - long class](https://www.youtube.com/watch?v=whCk1Q87_ZI)
+* [Greg Young - A Decade of DDD, CQRS, Event Sourcing](https://www.youtube.com/watch?v=LDW0QWie21s)
