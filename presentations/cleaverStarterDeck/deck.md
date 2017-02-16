@@ -3,7 +3,7 @@ author:
   name: Emily Stamey
   twitter: elstamey
   url: http://elstamey.com
-theme: sudoki/reveal-cleaver-theme
+theme: elstamey/reveal-cleaver-theme
 style: basic-style.css
 output: index.html
 controls: true
@@ -13,21 +13,15 @@ controls: true
 # Status Change: 
 ## Now Using Event Sourcing
 
---
-
-Definition Event Sourcing
-
-The fundamental idea of Event Sourcing is that of ensuring **every change to the state** of an application **is captured in an event object**, and that these event objects are themselves stored in the sequence they were applied for the same lifetime as the application state itself.
-
-- Martin Fowler
 
 --
 
-## What's important about Events
+## What we'll cover:
 
-- Events
-- Details of the Event (attributes)
-- Order/Sequence
+- Handling **process** in our apps then and now
+- What is Event Sourcing?
+- Why would we want to use it?  
+- Introducing what this code looks like (I hope)
 
 
 --
@@ -47,63 +41,100 @@ They often closely map to this physical form.
 When we stick to this idea, we find ourselves using status flags on an object 
 to tell where in the process we are.
 
-But these states carry assumed knowledge of the process without clearly saying what happened.
+![Process showing approve and reject of employee request](http://ivero.net/solutions/ApprovalManager/images/WorkflowDiagram.png)
+
+--
+
+## Example: Student Enrollment Request
+
+The admin reviews the Request and the student:
+- prerequisites
+- academic hold
+- financial hold
+- student type
+
+--
+
+## Example: Student Enrollment Request
+
+Admin responds to the request:
+- enroll
+- reject
+- hold
+- waitlist
+
+
+--
+
+
+## Example: Student Enrollment Request
+
+- prerequisites 
+
+        => yes enroll
+        => no reject
+- academic hold 
+
+        => hold
+- financial hold
+ 
+        => hold
+- student type
+
+        => waitlist
+
+
+--
+
+## Paper Forms handling state
+
+![Paper forms sorted for a process](https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Copies_of_documents_at_European_Parliament_in_Strasbourg.jpg/1024px-Copies_of_documents_at_European_Parliament_in_Strasbourg.jpg)
+
+--
+ 
+## Paper Forms handling state
+
+![stamped application](http://previews.123rf.com/images/kabby/kabby0711/kabby071100002/2079196-A-crumpled-up-home-loan-application-stamped-with-the-word-Stock-Photo.jpg)
+ 
+--
+
+## But that stamp doesn't indicate why or communicate to the applicant what happened
+
+
+--
+
+## Why are they in their current state?
+
+These states carry assumed knowledge of the process without clearly saying what happened.
+
+Sometimes they are separated from the request's history.
 
 Status meaning or names can change over time without conveying process changes
 
 --
 
-## Paper Forms in a process
+## Preserving some history
+- add columns to the table with form data
+- add a related table for notes
+- more statuses to include the many forks in the process (like what type of hold)
 
-![Paper forms sorted for a process](https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Copies_of_documents_at_European_Parliament_in_Strasbourg.jpg/1024px-Copies_of_documents_at_European_Parliament_in_Strasbourg.jpg)
+--
 
+## Example: Enrollment Request States
+
+- Approved
+- **Hold**
+- Waitlist
+- Rejected
 
 
 --
 
-### Something happened
-
-In a workflow, usually something happens and then your object's status is
-updated to reflect that something happened.
-
-Similar to a stamp on your form or sorting the form into a pile 
-
---
- 
-![stamped application](http://previews.123rf.com/images/kabby/kabby0711/kabby071100002/2079196-A-crumpled-up-home-loan-application-stamped-with-the-word-Stock-Photo.jpg)
- 
---
-
-But that stamp doesn't indicate why or communicate to the applicant what happened
-
-When our Online Student Registration Request is denied, sometimes the student has 
-to do something to resolve the issue.  After the hold is fixed, their request can proceed.  It can even be approved.
-
---
-
-As our software becomes aware of these events, we can adapt, flex, or
-reorient.  
-
-Instead of putting the form in the trash, we can reconsider it.
-
-Instead of reviewing the pile of HOLD forms and manually checking the student's record, we
-can register the event that a hold is lifted.
-
-That event that a hold is lifted can trigger the request to be reviewed 
-by an administrator.
-
-
---
-
-Workflows
-
---
-
-How workflows become complex
+## How workflows become complex
 
 -- code
 
-Sometimes your workflow forks in multiple directions or involved long 
+Sometimes your workflow forks in multiple directions or involves long 
 lists to capture the complexity of the business process
 
 
@@ -159,20 +190,72 @@ lists to capture the complexity of the business process
 </select>
       
 
+
+--
+
+### Something happened
+
+In a workflow, usually something happens and then your object's status is
+updated to reflect that something happened.
+
+
+
+--
+
+As our software becomes aware of these events, we can adapt, flex, or
+reorient.  
+
+--
+
+Instead of putting the form in the trash, we can reconsider it.
+
+-- 
+
+Instead of reviewing the pile of HOLD forms and manually checking the student's record, we
+can register the event that a hold is lifted.
+
+--
+
+
+That Hold Removed event can trigger the request to be reviewed 
+by an administrator.
+
+
+
+--
+
+## Definition Event Sourcing
+
+The fundamental idea of Event Sourcing is that of ensuring **every change to the state** of an application **is captured in an event object**, and that these event objects are themselves stored in the sequence they were applied for the same lifetime as the application state itself.
+
+- Martin Fowler
+
+--
+
+## What's important about Events
+
+- Events
+- Details of the Event (attributes)
+- Order/Sequence
+
+
 --
 
 
 ###Event Sourcing 
 
-ensures that every change to the state of an application is captured in an event object, and that these event objects are themselves stored in the sequence they were applied for the same lifetime as the application state itself.
+- Ensures that every change in the process is captured in an event object 
 
-
+- Event objects are stored in the sequence they were applied 
 
 --
 
-Events are usually named as past-tense verbs
 
-Should store values, never an aggregate root or model/collection/object 
+###Events
+
+- Events are usually named as past-tense verbs
+
+- Should store values, never an aggregate root or model/collection/object 
 
 --
 
@@ -181,39 +264,61 @@ Should store values, never an aggregate root or model/collection/object
 The fact that an event happened in your system in the past doesn't ever 
 change even though the behavior around what that event  
 
---
-
-
 
 --
 
+## StudentWasEnrolled (Class)
 
+- student id
+- course id
+- semester
+
+
+--
+
+## Domain Message Wrapper (Class)
 
 Event can be wrapped by Domain message
 
 This contains a version, timestamp, id, and the event itself
 
+- id
+- Event Type
+- version
+- timestamp
 
 
 --
 
-Event Store
+## Event Store 
 
-Event Store is a domain specific database for people who use the Event Sourcing pattern in their apps. It is a functional database which based on a publish-subscribe messages pattern.
-
-
-
---
-
+Event Store is a domain specific database for people who use the Event 
+Sourcing pattern in their apps. It is a functional database which based 
+on a publish-subscribe messages pattern.
 
 
 --
 
-### A textual example
+## Listeners (Class)
 
-Content can be written in **Markdown!** New lines no longer need two angle brackets.
+- create listeners that listen to certain events and determine what they mean
+- StudentProfileProjector
 
-This will be in a separate paragraph
+--
+
+## Pros
+
+- maps closely to the process
+- flexible to changes in process
+- meaning of events can change without altering history
+
+--
+
+## Cons
+
+- a lot of classes
+- more design patterns to adjust to (complicated)
+
 
 --
 
