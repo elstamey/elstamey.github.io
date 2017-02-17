@@ -327,3 +327,5 @@ on a publish-subscribe messages pattern.
 * [Greg Young CQRS and Event Sourcing](https://www.youtube.com/watch?v=JHGkaShoyNs)
 * [Greg Young - long class](https://www.youtube.com/watch?v=whCk1Q87_ZI)
 * [Greg Young - A Decade of DDD, CQRS, Event Sourcing](https://www.youtube.com/watch?v=LDW0QWie21s)
+* [PHP Round Table - Event Sourcing](https://www.phproundtable.com/episode/event-sourcing-in-php)
+* [Broadway - framework for CQRS and ES](https://github.com/broadway/broadway)
