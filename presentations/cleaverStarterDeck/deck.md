@@ -36,52 +36,19 @@ They often closely map to this physical form.
 
 --
 
+<!-- ![Process showing approve and reject of employee request](http://ivero.net/solutions/ApprovalManager/images/WorkflowDiagram.png) -->
+![FormProcess](FormProcess.svg)
+
+
+--
+
 ## Status
 
-When we stick to this idea, we find ourselves using status flags on an object 
-to tell where in the process we are.
+These piles were effectively our status of the form
 
-![Process showing approve and reject of employee request](http://ivero.net/solutions/ApprovalManager/images/WorkflowDiagram.png)
+In our web forms we began using a drop-down menu to change the status.
 
---
-
-## Example: Student Enrollment Request
-
-The admin reviews the Request and the student:
-- prerequisites
-- academic hold
-- financial hold
-- student type
-
---
-
-## Example: Student Enrollment Request
-
-Admin responds to the request:
-- enroll
-- reject
-- hold
-- waitlist
-
-
---
-
-
-## Example: Student Enrollment Request
-
-- prerequisites 
-
-        => yes enroll
-        => no reject
-- academic hold 
-
-        => hold
-- financial hold
- 
-        => hold
-- student type
-
-        => waitlist
+As the process matured, this increased complexity of status.
 
 
 --
@@ -113,24 +80,77 @@ Status meaning or names can change over time without conveying process changes
 
 --
 
-## Preserving some history
+## Compensating with Web Forms
+### Preserving some history
 - add columns to the table with form data
 - add a related table for notes
 - more statuses to include the many forks in the process (like what type of hold)
 
 --
 
-## Example: Enrollment Request States
+![compensating_measures.jpg](compensating_measures.jpg)
 
-- Approved
-- **Hold**
-- Waitlist
-- Rejected
+--
+
+ <!-- ## Example: Student Enrollment Request -->
+
+ <!-- The admin reviews the Request and the student: -->
+ <!-- - prerequisites -->
+ <!-- - academic hold -->
+ <!-- - financial hold -->
+ <!-- - student type -->
+
+ <!-- -- -->
+
+ <!-- ## Example: Student Enrollment Request -->
+
+ <!-- Admin responds to the request: -->
+ <!-- - enroll -->
+ <!-- - reject -->
+ <!-- - hold -->
+ <!-- - waitlist -->
+
+
+ <!-- -- -->
+
+
+ <!-- ## Example: Student Enrollment Request -->
+
+ <!-- - prerequisites  -->
+<!--
+         <!-- => yes enroll -->
+<!--          
+         <!-- => no reject -->
+<!-- - academic hold  -->
+<!-- 
+         <!-- => hold -->
+ <!-- - financial hold -->
+<!--  
+         <!-- => hold -->
+ <!-- - student type -->
+<!--
+         <!-- => waitlist -->
+<!-- -->
+
+
+ <!-- -- -->
+
+ <!-- ## Example: Enrollment Request States -->
+
+ <!-- - Approved -->
+ <!-- - **Hold** -->
+ <!-- - Waitlist -->
+ <!-- - Rejected -->
 
 
 --
 
 ## How workflows become complex
+
+--
+
+![more_statuses.jpg](more_statuses.jpg)
+
 
 -- code
 
@@ -190,15 +210,20 @@ lists to capture the complexity of the business process
 </select>
       
 
+--
+
+# Something Happened
 
 --
 
 ### Something happened
 
-In a workflow, usually something happens and then your object's status is
+In a workflow, usually something happens and THEN your object's status is
 updated to reflect that something happened.
 
+There aren't 9 PENDING states.  There is ONE PENDING and 9 reasons for it to be PENDING 
 
+Events can record what happened
 
 --
 
@@ -207,19 +232,23 @@ reorient.
 
 --
 
+DENIED FORM IMAGE
+
 Instead of putting the form in the trash, we can reconsider it.
 
 -- 
+When a student hasn't paid fees, or completed their registration, their request is put on HOLD
 
-Instead of reviewing the pile of HOLD forms and manually checking the student's record, we
-can register the event that a hold is lifted.
-
---
-
+Instead of reviewing all forms in a HOLD state to see if they can proceed,
+An event can tell us the hold is lifted.
 
 That Hold Removed event can trigger the request to be reviewed 
 by an administrator.
 
+
+--
+
+# Enter Event Sourcing
 
 
 --
@@ -267,7 +296,7 @@ change even though the behavior around what that event
 
 --
 
-## StudentWasEnrolled (Class)
+## EnrollmentRequestWasApproved (Class)
 
 - student id
 - course id
