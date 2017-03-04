@@ -1802,51 +1802,15 @@ based on dark.css by Ivan Sagalaev
 
   </section>
   <section>
+    <p><!-- ![Process showing approve and reject of employee request](http://ivero.net/solutions/ApprovalManager/images/WorkflowDiagram.png) -->
+<img src="FormProcess.svg" alt="FormProcess"></p>
+
+  </section>
+  <section>
     <h2 id="status">Status</h2>
-<p>When we stick to this idea, we find ourselves using status flags on an object 
-to tell where in the process we are.</p>
-<p><img src="http://ivero.net/solutions/ApprovalManager/images/WorkflowDiagram.png" alt="Process showing approve and reject of employee request"></p>
-
-  </section>
-  <section>
-    <h2 id="example-student-enrollment-request">Example: Student Enrollment Request</h2>
-<p>The admin reviews the Request and the student:</p>
-<ul>
-<li>prerequisites</li>
-<li>academic hold</li>
-<li>financial hold</li>
-<li>student type</li>
-</ul>
-
-  </section>
-  <section>
-    <h2 id="example-student-enrollment-request">Example: Student Enrollment Request</h2>
-<p>Admin responds to the request:</p>
-<ul>
-<li>enroll</li>
-<li>reject</li>
-<li>hold</li>
-<li>waitlist</li>
-</ul>
-
-  </section>
-  <section>
-    <h2 id="example-student-enrollment-request">Example: Student Enrollment Request</h2>
-<ul>
-<li><p>prerequisites </p>
-<pre><code>  =&gt; yes enroll
-  =&gt; no reject</code></pre>
-</li>
-<li><p>academic hold </p>
-<pre><code>  =&gt; hold</code></pre>
-</li>
-<li><p>financial hold</p>
-<pre><code>  =&gt; hold</code></pre>
-</li>
-<li><p>student type</p>
-<pre><code>  =&gt; waitlist</code></pre>
-</li>
-</ul>
+<p>These piles were effectively our status of the form</p>
+<p>In our web forms we began using a drop-down menu to change the status.</p>
+<p>As the process matured, this increased complexity of status.</p>
 
   </section>
   <section>
@@ -1871,7 +1835,8 @@ to tell where in the process we are.</p>
 
   </section>
   <section>
-    <h2 id="preserving-some-history">Preserving some history</h2>
+    <h2 id="compensating-with-web-forms">Compensating with Web Forms</h2>
+<h3 id="preserving-some-history">Preserving some history</h3>
 <ul>
 <li>add columns to the table with form data</li>
 <li>add a related table for notes</li>
@@ -1880,17 +1845,66 @@ to tell where in the process we are.</p>
 
   </section>
   <section>
-    <h2 id="example-enrollment-request-states">Example: Enrollment Request States</h2>
-<ul>
-<li>Approved</li>
-<li><strong>Hold</strong></li>
-<li>Waitlist</li>
-<li>Rejected</li>
-</ul>
+    <p><img src="compensating_measures.jpg" alt="compensating_measures.jpg"></p>
 
   </section>
   <section>
+    <!-- ## Example: Student Enrollment Request -->
+
+ <!-- The admin reviews the Request and the student: -->
+ <!-- - prerequisites -->
+ <!-- - academic hold -->
+ <!-- - financial hold -->
+ <!-- - student type -->
+
+ <!-- -- -->
+
+ <!-- ## Example: Student Enrollment Request -->
+
+ <!-- Admin responds to the request: -->
+ <!-- - enroll -->
+ <!-- - reject -->
+ <!-- - hold -->
+ <!-- - waitlist -->
+
+
+ <!-- -- -->
+
+
+ <!-- ## Example: Student Enrollment Request -->
+
+ <!-- - prerequisites  -->
+<!--
+         <!-- => yes enroll -->
+<!--          
+         <!-- => no reject -->
+<!-- - academic hold  -->
+<!-- 
+         <!-- => hold -->
+ <!-- - financial hold -->
+<!--  
+         <!-- => hold -->
+ <!-- - student type -->
+<!--
+         <!-- => waitlist -->
+<!-- -->
+
+
+ <!-- -- -->
+
+ <!-- ## Example: Enrollment Request States -->
+
+ <!-- - Approved -->
+ <!-- - **Hold** -->
+ <!-- - Waitlist -->
+ <!-- - Rejected -->
+  </section>
+  <section>
     <h2 id="how-workflows-become-complex">How workflows become complex</h2>
+
+  </section>
+  <section>
+    <p><img src="more_statuses.jpg" alt="more_statuses.jpg"></p>
 
   </section>
   <section>
@@ -1948,9 +1962,15 @@ lists to capture the complexity of the business process</p>
 </select>
   </section>
   <section>
+    <h1 id="something-happened">Something Happened</h1>
+
+  </section>
+  <section>
     <h3 id="something-happened">Something happened</h3>
-<p>In a workflow, usually something happens and then your object&#39;s status is
+<p>In a workflow, usually something happens and THEN your object&#39;s status is
 updated to reflect that something happened.</p>
+<p>There aren&#39;t 9 PENDING states.  There is ONE PENDING and 9 reasons for it to be PENDING </p>
+<p>Events can record what happened</p>
 
   </section>
   <section>
@@ -1959,17 +1979,20 @@ reorient.</p>
 
   </section>
   <section>
-    <p>Instead of putting the form in the trash, we can reconsider it.</p>
+    <p>DENIED FORM IMAGE</p>
+<p>Instead of putting the form in the trash, we can reconsider it.</p>
 
   </section>
   <section>
-    <p>Instead of reviewing the pile of HOLD forms and manually checking the student&#39;s record, we
-can register the event that a hold is lifted.</p>
-
-  </section>
-  <section>
-    <p>That Hold Removed event can trigger the request to be reviewed 
+    <p>When a student hasn&#39;t paid fees, or completed their registration, their request is put on HOLD</p>
+<p>Instead of reviewing all forms in a HOLD state to see if they can proceed,
+An event can tell us the hold is lifted.</p>
+<p>That Hold Removed event can trigger the request to be reviewed 
 by an administrator.</p>
+
+  </section>
+  <section>
+    <h1 id="enter-event-sourcing">Enter Event Sourcing</h1>
 
   </section>
   <section>
@@ -2016,7 +2039,7 @@ change even though the behavior around what that event</p>
 
   </section>
   <section>
-    <h2 id="studentwasenrolled-class-">StudentWasEnrolled (Class)</h2>
+    <h2 id="enrollmentrequestwasapproved-class-">EnrollmentRequestWasApproved (Class)</h2>
 <ul>
 <li>student id</li>
 <li>course id</li>
