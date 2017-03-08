@@ -296,6 +296,16 @@ change even though the behavior around what that event
 
 --
 
+![why_events.jpg](why_events.jpg)
+
+
+--
+
+![event_rules.jpg](event_rules.jpg)
+
+
+--
+
 ## EnrollmentRequestWasApproved (Class)
 
 - student id
@@ -340,6 +350,8 @@ on a publish-subscribe messages pattern.
 - maps closely to the process
 - flexible to changes in process
 - meaning of events can change without altering history
+- scholarships; able to back up all events to roll over a new year.  
+Didn't need to preserve full database. 
 
 --
 
