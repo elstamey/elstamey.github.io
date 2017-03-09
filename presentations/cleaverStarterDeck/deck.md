@@ -234,6 +234,9 @@ reorient.
 
 DENIED FORM IMAGE
 
+![stamped application](http://previews.123rf.com/images/kabby/kabby0711/kabby071100002/2079196-A-crumpled-up-home-loan-application-stamped-with-the-word-Stock-Photo.jpg)
+
+
 Instead of putting the form in the trash, we can reconsider it.
 
 -- 
@@ -303,6 +306,26 @@ change even though the behavior around what that event
 
 ![event_rules.jpg](event_rules.jpg)
 
+--
+
+The event is less likely to change.  Things like Approve and Reject a 
+Request may later require additional attributes, but the part of the 
+ process that will change is most likely the result that follows that event.
+ 
+ The structure of the resulting data is more likely to change than the behavior
+ 
+--
+ 
+ ## The Code
+ 
+ There are many classes involved:
+ - Events
+ - Domain Message
+ - Classes with Listeners
+     - Projections
+     - Read Models
+ - Commands & Handlers (CQRS)
+
 
 --
 
@@ -312,6 +335,9 @@ change even though the behavior around what that event
 - course id
 - semester
 
+--
+
+Event code
 
 --
 
@@ -326,6 +352,10 @@ This contains a version, timestamp, id, and the event itself
 - version
 - timestamp
 
+--
+
+Domain Message
+
 
 --
 
@@ -335,6 +365,14 @@ Event Store is a domain specific database for people who use the Event
 Sourcing pattern in their apps. It is a functional database which based 
 on a publish-subscribe messages pattern.
 
+--
+
+snapshot of the Events table
+
+--
+
+code for the eventstore
+code that tells which Events to pick from the eventstore
 
 --
 
@@ -342,6 +380,29 @@ on a publish-subscribe messages pattern.
 
 - create listeners that listen to certain events and determine what they mean
 - StudentProfileProjector
+- EnrollmentRequests Read Model
+
+--
+
+code for projections
+
+--
+
+code for read model
+
+--
+
+Commands
+
+--
+
+Handlers
+
+--
+
+
+--
+
 
 --
 

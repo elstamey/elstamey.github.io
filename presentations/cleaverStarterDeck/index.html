@@ -1980,6 +1980,7 @@ reorient.</p>
   </section>
   <section>
     <p>DENIED FORM IMAGE</p>
+<p><img src="http://previews.123rf.com/images/kabby/kabby0711/kabby071100002/2079196-A-crumpled-up-home-loan-application-stamped-with-the-word-Stock-Photo.jpg" alt="stamped application"></p>
 <p>Instead of putting the form in the trash, we can reconsider it.</p>
 
   </section>
@@ -2047,12 +2048,38 @@ change even though the behavior around what that event</p>
 
   </section>
   <section>
+    <p>The event is less likely to change.  Things like Approve and Reject a 
+Request may later require additional attributes, but the part of the 
+ process that will change is most likely the result that follows that event.</p>
+<p> The structure of the resulting data is more likely to change than the behavior</p>
+
+  </section>
+  <section>
+    <h2 id="the-code">The Code</h2>
+<p> There are many classes involved:</p>
+<ul>
+<li>Events</li>
+<li>Domain Message</li>
+<li>Classes with Listeners<ul>
+<li>Projections</li>
+<li>Read Models</li>
+</ul>
+</li>
+<li>Commands &amp; Handlers (CQRS)</li>
+</ul>
+
+  </section>
+  <section>
     <h2 id="enrollmentrequestwasapproved-class-">EnrollmentRequestWasApproved (Class)</h2>
 <ul>
 <li>student id</li>
 <li>course id</li>
 <li>semester</li>
 </ul>
+
+  </section>
+  <section>
+    <p>Event code</p>
 
   </section>
   <section>
@@ -2068,6 +2095,10 @@ change even though the behavior around what that event</p>
 
   </section>
   <section>
+    <p>Domain Message</p>
+
+  </section>
+  <section>
     <h2 id="event-store">Event Store</h2>
 <p>Event Store is a domain specific database for people who use the Event 
 Sourcing pattern in their apps. It is a functional database which based 
@@ -2075,12 +2106,44 @@ on a publish-subscribe messages pattern.</p>
 
   </section>
   <section>
+    <p>snapshot of the Events table</p>
+
+  </section>
+  <section>
+    <p>code for the eventstore
+code that tells which Events to pick from the eventstore</p>
+
+  </section>
+  <section>
     <h2 id="listeners-class-">Listeners (Class)</h2>
 <ul>
 <li>create listeners that listen to certain events and determine what they mean</li>
 <li>StudentProfileProjector</li>
+<li>EnrollmentRequests Read Model</li>
 </ul>
 
+  </section>
+  <section>
+    <p>code for projections</p>
+
+  </section>
+  <section>
+    <p>code for read model</p>
+
+  </section>
+  <section>
+    <p>Commands</p>
+
+  </section>
+  <section>
+    <p>Handlers</p>
+
+  </section>
+  <section>
+    
+  </section>
+  <section>
+    
   </section>
   <section>
     <h2 id="pros">Pros</h2>
