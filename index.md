@@ -17,3 +17,4 @@ Application Developer @ NC State University
 
 [Presentations](./presentations/)
 
+[The Dollop episode recommendations](./DollopRecomendations.md)
