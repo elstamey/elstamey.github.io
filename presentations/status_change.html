@@ -156,6 +156,7 @@
                         <li>Try to follow the way I'm describing how it can be used moreso than the code examples.  Those will be available for you to look at.</li>
                         <li>And unfortunately I don't have all of this tied together yet, as with MANY of the online Event Sourcing examples</li>
                         <li>But you will gain a better understanding of how this can be useful, and some resources to get you started</li>
+                        <li>Be patient with yourself and know that you may do more reading before this clicks</li>
                     </aside>
                 </section>
                 <section>
@@ -166,20 +167,28 @@
                         <article>
                             <p>A lot of our systems are built to facilitate or replace paper processes</p>
                             <p>They often closely map to this physical form.</p>
-                            <p><img src="https://c1.staticflickr.com/8/7091/6988157282_e62624f274_b.jpg" alt="Paper form"></p>
+                        </article>
+                        <article>
+                            <img src="https://c1.staticflickr.com/8/7091/6988157282_e62624f274_b.jpg" alt="Paper form">
                         </article>
                     </myColBox>
                     <aside class="notes">
+                        <li>What I see a lot at the University is that many of our applications began with a need to
+                            digitize data from paper forms that students were filling out.</li>
+                        <li>As administration became comfortable with computers, more of the process went into our applications</li>
+                        <li>Often this meant increased complexity in the tools</li>
                     </aside>
                 </section>
                 <section>
                     <myColBox>
                         <article>
-                            <p><!-- ![Process showing approve and reject of employee request](http://ivero.net/solutions/ApprovalManager/images/WorkflowDiagram.png) -->
                             <img src="img/status_change/FormProcess.svg" alt="FormProcess"></p>
                         </article>
                     </myColBox>
                     <aside class="notes">
+                        <li>For this application, a student requests enrollment in a distance Ed class</li>
+                        <li> That request is either approved or rejected</li>
+                        <li>The paper version of this process meant the Admin put the request form into an approve or reject pile</li>
                     </aside>
                 </section>
                 <section>
@@ -188,12 +197,15 @@
                     </myTitleBox>
                     <myColBox>
                         <article>
-                            <p>These piles were effectively our status of the form</p>
-                            <p>In our web forms we began using a drop-down menu to change the status.</p>
+                            <p>These piles were effective status of the form</p>
+                            <p>Web forms used a drop-down menu to indicate status.</p>
                             <p>As the process matured, this increased complexity of status.</p>
                         </article>
                     </myColBox>
                     <aside class="notes">
+                        <li>These piles indicated the status of the request</li>
+                        <li>As the form moved to the web, we created an admin panel with a drop-down to indicate status</li>
+                        <li>Over time this drop-down grew in complexity</li>
                     </aside>
                 </section>
                 <section>
