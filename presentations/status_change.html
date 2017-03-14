@@ -103,10 +103,10 @@
 						</article>
                     </myColBox>
                     <aside class="notes">
-                        <li>So we will talk about these web processes going from paper forms to web forms.</li>
-                        <li>Then the definitions and terminology around Event Sourcing</li>
-                        <li>We'll talk about what the code may look like in this event sourced application</li>
-                        <li>Finally, we'll look at pros and cons.  It's a REAL mental shift coming from an older application to ES</li>
+                        <li>We will talk about these web processes going from paper forms to web forms.</li>
+                        <li>The definitions and terminology around Event Sourcing</li>
+                        <li>We'll talk about what the PHP code generally looks like in this event sourced application</li>
+                        <li>Finally, we'll look at pros and cons.  It's a REAL mental shift coming from a legacy application to Event Sourcing</li>
 
                     </aside>
                 </section>
@@ -122,6 +122,7 @@
                         </article>
                     </myRowBox>
                     <aside class="notes">
+                        <li>So be patient with yourself</li>
                         <li>If you've ever done this, you know it's tough.  The strategy is to point into the waves and paddle HARD</li>
                     </aside>
                 </section>
@@ -137,23 +138,19 @@
                         </article>
                     </myRowBox>
                     <aside class="notes">
-                        <li>If you try to fight or change direction, you often tip over like this.</li>
-                        <li>This is my way of asking that you try to listen and follow along with me.</li>
+                        <li>If you try to change direction, you often tip over like this.</li>
+                        <li>This is my way of asking that you try to follow along with me.</li>
                     </aside>
                 </section>
                 <section>
-                    <myTitleBox>
-                        <h1>Thinking Caps!</h1>
-                    </myTitleBox>
                     <myRowBox>
                         <article>
-                            <img src="img/status_change/thinking_cap_travel_oriented.jpg">
-                            <h5 class="attrib" style="position: relative; top: 500px; align: bottom;left: -100px;">&copy; photo by <a
-                                    href="https://www.flickr.com/photos/traveloriented/">Travel Oriented</a></h5>
+                            <img src="img/status_change/exercising_brain.jpg">
                         </article>
                     </myRowBox>
                     <aside class="notes">
-                        <li>It's a REAL mental shift coming from an older application to ES, so let's loosen up your brains a little</li>
+                        <li>It's completely normal to feel like this when you're learning about Event Sourcing</li>
+                        <li>It's a REAL mental shift coming from an older application to ES, so try to relax your brains a little</li>
                         <li>Try to follow the way I'm describing how it can be used moreso than the code examples.  Those will be available for you to look at.</li>
                         <li>And unfortunately I don't have all of this tied together yet, as with MANY of the online Event Sourcing examples</li>
                         <li>But you will gain a better understanding of how this can be useful, and some resources to get you started</li>
@@ -166,19 +163,20 @@
                     </myTitleBox>
                     <myColBox>
                         <article>
-                            <p>A lot of our systems are built to facilitate or replace paper processes</p>
+                            <p>A lot of our systems were built to replace paper processes</p>
                             <p>They often closely map to this physical form.</p>
-                            <h5 class="attrib" style="">&copy; photo by <a
-                                    href="https://www.flickr.com/photos/aidanmorgan/">Aidan Morgan</a></h5>
+
                         </article>
                         <article>
                             <img src="img/status_change/tax_form_aidanmorgan.jpg" alt="Paper form">
+                            <h5 class="attrib" style="">&copy; photo by <a
+                                    href="https://www.flickr.com/photos/aidanmorgan/">Aidan Morgan</a></h5>
                         </article>
                     </myColBox>
                     <aside class="notes">
                         <li>What I see a lot at the University is that many of our applications began with a need to
-                            digitize data from paper forms that students were filling out.</li>
-                        <li>As administration became comfortable with computers, more of the process went into our applications</li>
+                            collect data from paper forms that students were filling out.</li>
+                        <li>As the administration became comfortable with computers, more of the process went into our applications</li>
                         <li>Often this meant increased complexity in the tools</li>
                     </aside>
                 </section>
@@ -189,42 +187,40 @@
                         </article>
                     </myColBox>
                     <aside class="notes">
-                        <li>For this application, a student requests enrollment in a distance Ed class</li>
+                        <li>For this application, a student requests enrollment in a Distance Ed class</li>
                         <li> That request is either approved or rejected</li>
                         <li>The paper version of this process meant the Admin put the request form into an approve or reject pile</li>
                     </aside>
                 </section>
                 <section>
                     <myTitleBox>
-                        <h2>Status</h2>
+                        <h2>Paper Forms handling state</h2>
                     </myTitleBox>
                     <myColBox>
                         <article>
-                            <p>Piles indicate status of the form</p>
-                            <p>Web forms used a drop-down menu</p>
-                            <p>Over time the list became complex</p>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Copies_of_documents_at_European_Parliament_in_Strasbourg.jpg/1024px-Copies_of_documents_at_European_Parliament_in_Strasbourg.jpg" alt="Paper forms sorted for a process">
                         </article>
                         <article>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Copies_of_documents_at_European_Parliament_in_Strasbourg.jpg/1024px-Copies_of_documents_at_European_Parliament_in_Strasbourg.jpg" alt="Paper forms sorted for a process">
+                            <p>Piles indicate status of the form</p>
                         </article>
                     </myColBox>
                     <aside class="notes">
                         <li>These piles indicated the status of the request</li>
-                        <li>As the form moved to the web, we created an admin panel with a drop-down to indicate status</li>
-                        <li>Over time this drop-down grew in complexity</li>
+                        <li>On the web, we created an admin panel with a drop-down to indicate status</li>
+                        <li>Over time the concept of status grew in complexity</li>
                         <li>Processes that handled lots of forms could become much more complex, even in trying to organize them</li>
                     </aside>
                 </section>
                 <section>
                     <myTitleBox>
-                            <h2>Paper Forms handling state</h2>
-                        </myTitleBox>
-                        <myColBox>
-                            <article>
-                               <img src="img/status_change/collegerejection.jpg" alt="stamped application">
+                        <h2>Paper Forms handling state</h2>
+                    </myTitleBox>
+                    <myColBox>
+                        <article>
+                           <img src="img/status_change/collegerejection.jpg" alt="stamped application">
                         </article>
                         <article>
-                            <p>But that stamp doesn&#39;t communicate why or what happened</p>
+                            <p>Status doesn&#39;t really communicate why or what happened</p>
                         </article>
                     </myColBox>
                     <aside class="notes">
@@ -238,11 +234,7 @@
                         <h2>Why are they in the current state?</h2>
                     </myTitleBox>
                     <myColBox>
-                        <article>
-                            <p>Lost what happened</p>
-                            <p>Lost the request's history</p>
-                            <p>Lost changes within the process</p>
-                        </article>
+                        <article></article>
                         <article>
                             <img src="img/status_change/history_book.png">
                         </article>
