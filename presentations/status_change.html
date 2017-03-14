@@ -81,6 +81,12 @@
                             </article>
                         </myColBox>
                     </header>
+                    <aside class="notes">
+                        <p>We are going to talk about Event Sourcing, but we will begin in a sort of roundabout way because
+                            at State we have been adding Event Sourcing to many of our legacy projects.  We have one project
+                            that we are rewriting, and it's a good case study for an older approach with status flags and we are rewriting it to use
+                            event sourcing.</p>
+                    </aside>
                 </section>
                 <section>
                     <myTitleBox>
@@ -97,11 +103,6 @@
 						</article>
                     </myColBox>
                     <aside class="notes">
-                        <p>We are going to talk about Event Sourcing, but we will begin in a sort of roundabout way because
-                        at State we have been adding Event Sourcing to many of our legacy projects.  We have one project
-                        that we are rewriting, and it's a good case study for an older approach with status flags and we are rewriting it to use
-                        event sourcing.</p>
-
                         <li>So we will talk about these web processes going from paper forms to web forms.</li>
                         <li>Then the definitions and terminology around Event Sourcing</li>
                         <li>We'll talk about what the code may look like in this event sourced application</li>
@@ -427,6 +428,11 @@
                         </article>
                     </myColBox>
                     <aside class="notes">
+                        <p>A lot of what we read about Event Sourcing comes from Martin Fowler.  But I like Greg Young's talks the best.  His examples are clear</p>
+                        <p>The idea of Event Sourcing is that of ensuring <strong>every change to the state</strong> of an application <strong>is captured in an event object</strong>,</p>
+                        <p>These event objects are then stored in the order they were applied for always and forever</p>
+                        <p></p>
+
                     </aside>
                 </section>
                 <section>
@@ -443,6 +449,13 @@
                         </article>
                     </myColBox>
                     <aside class="notes">
+                        <p>We will collect the details of the event, its attributes</p>
+                        <p>we will also capture the timestamp in order to apply it in the correct order</p>
+                        <p>If we were tracking transactions for a bank account, we would have events like Deposit Money
+                            and Withdraw money.  Those would have an amount and an account number.  And the order in
+                            which they happened would be critical to having an accurate balance</p>
+                        <p>We are capturing the crucial details with those events.  And our system will later apply them
+                            using the rules of our process</p>
                     </aside>
                 </section>
                 <section>
@@ -451,10 +464,11 @@
                     </myTitleBox>
                     <myColBox>
                         <article>
-                            <ul>
-                                <li><p>Ensures that every change in the process is captured in an event object </p></li>
-                                <li><p>Event objects are stored in the sequence they were applied</p></li>
-                            </ul>
+                            <ol>
+                                <li>Every change is captured in an event object</li>
+                                <li>Event objects are stored in the sequence they happened</li>
+                                <li>That sequence determines the order they will be applied in our code</li>
+                            </ol>
                         </article>
                     </myColBox>
                     <aside class="notes">
@@ -467,27 +481,37 @@
                     <myColBox>
                         <article>
                             <ul>
-                                <li><p>Events are usually named as past-tense verbs</p>
-                                </li>
-                                <li><p>Should store values, never an aggregate root or model/collection/object</p>
+                                <li>Events are usually named as past-tense verbs</li>
+                                <li>Have attributes that are values
+                                    <ul>
+                                        <li>never an aggregate root </li>
+                                        <li>never a model/collection/object</li>
+                                    </ul>
                                 </li>
                             </ul>
                         </article>
                     </myColBox>
                     <aside class="notes">
+                        <p>You will see event names like Enrolllment Request Was Approved because validation was done prior to recording the event,
+                        and these are KNOWN happenings in our system</p>
+                        <p>This Event will have attributes, like the student id, the course id, who the approver was
+                            because this is important information</p>
+                        <p>We wouldn't store the Enrollment Request Object because if we ever changed that object, we'd
+                            have difficulty applying the event or reconstructing that object</p>
+                        <p>Storing the VALUES on our Event gives us the flexibility for the system to change later
+                            But that event never will</p>
                     </aside>
                 </section>
                 <section>
-                    <myTitleBox>
-                        <h3>Events vs. Status</h3>
-                    </myTitleBox>
                     <myColBox>
                         <article>
-                            <p>The fact that an event happened in your system in the past doesn&#39;t ever
-                            change even though the behavior around what that event</p>
+                            <h2>The fact that an event happened <u>doesn&#39;t ever
+                            change</u> even though the <u>behavior</u> around it may have</h2>
                         </article>
                     </myColBox>
                     <aside class="notes">
+                        <p>Read it</p>
+                        <p>So unlike statuses in our system which evolve over time and could change meaning, You will never change this event</p>
                     </aside>
                 </section>
                 <section>
@@ -497,6 +521,26 @@
                         </article>
                     </myColBox>
                     <aside class="notes">
+                        <li>The events that got us to this state are more important than the current status</li>
+                        <li>We now have an audit log, and proof of how we got to this state</li>
+                        <li>That history is more important that the current state BECAUSE</li>
+                        <li>We are able to replay those events to prove the state</li>
+                        <li>With our Scholarships Application, we collected the attributes that helped a student match for the scholarship to keep a record of why they were chosen </li>
+                        <li>If we needed to see the budgets on any given day in the past, we could produce that information</li>
+                        <li>And when they completely changed the format of budgets they wanted to review, we could easily rebuild that without affecting the amounts.</li>
+                    </aside>
+                </section>
+                <section>
+                    <myColBox>
+                        <article>
+                            <img src="img/status_change/dont_delete_events.jpg" alt="event_rules.jpg">
+                        </article>
+                    </myColBox>
+                    <aside class="notes">
+                        <p>Greg Young in a talk makes a point of how difficult it was to find a picture of an accountant erasing
+                            because that's not something they do.  They make a correction undoing a mistake and then make the intended adjustment</p>
+                        <p>So to fix one event, you may have two other events, but that event will (almost) never be deleted</p>
+                        <p>You want to adjust your thinking in this way</p>
                     </aside>
                 </section>
                 <section>
@@ -506,6 +550,12 @@
                         </article>
                     </myColBox>
                     <aside class="notes">
+                        <p>notes for the picture:  not event2</p>
+                        <p>In our system, we have an event with some meaning, and a listener that sees that event when it happens
+                        <li>the apply method tells our system what should happen in this context and it produces this result</li>
+                        <li>but what if our understanding of the event changes.  We might rewrite that apply event method, which produces a different result</li>
+                        <li>Maybe these are two different views in our system, that handle different behavior, those would coexist; like reports for two different types of users</li>
+                        <li>But it could also be that we rewrite what it means to apply that event and the new apply method stays, with the new report, and the old is deleted</li></p>
                     </aside>
                 </section>
                 <section>
