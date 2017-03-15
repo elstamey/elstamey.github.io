@@ -591,9 +591,9 @@
                     <myColBox>
                         <article>
                             <ul>
+                                <li>request id</li>
                                 <li>student id</li>
-                                <li>course id</li>
-                                <li>semester</li>
+                                <li>course offering id</li>
                             </ul>
                         </article>
                     </myColBox>
@@ -601,11 +601,69 @@
                     </aside>
                 </section>
                 <section>
-                    <myColBox>
-                        <article>
-                           <p>Event code</p>
-                        </article>
-                    </myColBox>
+<pre><code>
+    &lt;?php
+
+namespace App\Enrollment\Domain\Events;
+
+use App\Enrollment\Domain\CourseOfferingId;
+use App\Enrollment\Domain\StudentId;
+use App\Support\Domain\Uuid;
+use App\Support\EventHandling\Event;
+
+class EnrollmentRequestRejected implements Event
+{
+
+    /**
+     * @var Uuid
+     */
+    public $enrollmentRequestId;
+
+    /**
+     * @var StudentId
+     */
+    public $studentId;
+
+    /**
+     * @var CourseOfferingId
+     */
+    public $courseOfferingId;
+
+    public function __construct(Uuid $enrollmentRequestId, StudentId $studentId, CourseOfferingId $courseOfferingId)
+    {
+
+        $this->enrollmentRequestId = $enrollmentRequestId;
+    $this->studentId = $studentId;
+    $this->courseOfferingId = $courseOfferingId;
+    }
+
+    /**
+    * @return array
+    */
+    public function serialize()
+    {
+    return [
+    'id' => $this->enrollmentRequestId->toString(),
+    'student_id' => $this->studentId->toNative(),
+    'course_offering_id' => $this->courseOfferingId->toNative(),
+    ];
+    }
+
+    /**
+    * @param array $data
+    *
+    * @return static
+    */
+    public static function deserialize($data)
+    {
+    return new StudentRequestedEnrollment(
+    Uuid::fromString($data['id']),
+    StudentId::fromNative($data['student_id']),
+    CourseOfferingId::fromNative($data['course_offering_id'])
+    );
+    }
+    }
+</code></pre>
                     <aside class="notes">
                     </aside>
                 </section>
@@ -618,10 +676,10 @@
                             <p>Event can be wrapped by Domain message</p>
                             <p>This contains a version, timestamp, id, and the event itself</p>
                             <ul>
-                                <li>id</li>
-                                <li>Event Type</li>
+                                <li>stream id</li>
                                 <li>version</li>
-                                <li>timestamp</li>
+                                <li>payload (The Event)</li>
+                                <li>recorded on</li>
                             </ul>
                         </article>
                     </myColBox>
@@ -629,11 +687,108 @@
                     </aside>
                 </section>
                 <section>
-                    <myColBox>
-                        <article>
-                           <p>Domain Message</p>
-                        </article>
-                    </myColBox>
+<pre><code>
+&lt;?php
+
+namespace App\Support\Domain;
+
+use App\Support\EventHandling\Event;
+use DateTime;
+
+class DomainMessage
+{
+
+    /**
+     * @var string
+     */
+    private $streamId;
+
+    /**
+     * @var int
+     */
+    private $version;
+
+    /**
+     * @var Event
+     */
+    private $payload;
+
+    /**
+     * @var DateTime
+     */
+    private $recordedOn;
+
+    /**
+     * @param          $streamId
+     * @param int      $version
+     * @param Event    $payload
+     * @param DateTime $recordedOn
+     *
+     * @internal param string $id
+     */
+    public function __construct($streamId, $version, Event $payload, DateTime $recordedOn)
+    {
+        $this->streamId = (string) $streamId;
+    $this->version = $version;
+    $this->payload = $payload;
+    $this->recordedOn = $recordedOn;
+    }
+
+    /**
+    * @param       $streamId
+    * @param int   $version
+    * @param Event $payload
+    *
+    * @return DomainMessage
+    * @internal param string $id
+    */
+    public static function recordNow($streamId, $version, Event $payload)
+    {
+    return new DomainMessage($streamId, $version, $payload, new DateTime());
+    }
+
+    /**
+    * {@inheritDoc}
+    */
+    public function getStreamId()
+    {
+    return $this->streamId;
+    }
+
+    /**
+    * {@inheritDoc}
+    */
+    public function getVersion()
+    {
+    return $this->version;
+    }
+
+    /**
+    * {@inheritDoc}
+    */
+    public function getPayload()
+    {
+    return $this->payload;
+    }
+
+    /**
+    * {@inheritDoc}
+    */
+    public function getRecordedOn()
+    {
+    return $this->recordedOn;
+    }
+
+    /**
+    * {@inheritDoc}
+    */
+    public function getType()
+    {
+    return get_class($this->payload);
+    }
+    }
+
+</code></pre>
                     <aside class="notes">
                     </aside>
                 </section>
