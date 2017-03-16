@@ -61,26 +61,24 @@
                     </aside>
                 </section>
                 <section>
-                    <myTitleBox>
-                        <h2>Hi, I'm Emily!</h2>
-                    </myTitleBox>
                     <myColBox>
                         <article>
+                            <h2>Hi, I'm Emily!</h2>
                             <p>I work at NC State</p>
                             <p>Our applications support the College of Engineering, mostly outside of the classroom</p>
                             <p>We maintain 70 legacy applications</p>
                         </article>
+                        <article>
+                            <myrowBox>
+                                <article>
+                                    <img src="img/me/developer.png" alt="developer">
+                                </article>
+                                <article>
+                                    <img src="img/me/ncsu_block_s.png" alt="NC State University logo">
+                                </article>
+                            </myrowBox>
+                        </article>
                     </myColBox>
-                    <header>
-                        <myColBox >
-                            <article>
-                                <img src="img/me/developer.png" alt="developer">
-                            </article>
-                            <article>
-                                <img src="img/me/ncsu_block_s.png" alt="NC State University logo">
-                            </article>
-                        </myColBox>
-                    </header>
                     <aside class="notes">
                         <p>We are going to talk about Event Sourcing, but we will begin in a sort of roundabout way because
                             at State we have been adding Event Sourcing to many of our legacy projects.  We have one project
@@ -807,22 +805,271 @@ class DomainMessage
                     </aside>
                 </section>
                 <section>
+                    <myTitleBox>
+                        <h2>Events Table - no Wrapper</h2>
+                    </myTitleBox>
                     <myColBox>
                         <article>
-                           <p>snapshot of the Events table</p>
+                            <img src="img/status_change/events_schol_struct.png">
+                        </article>
+                    </myColBox>
+                    <aside class="notes">
+                        The events in our Scholarships application did not use the Domain Message, so the timestamp was contained in the event itself.
+                    </aside>
+                </section>
+                <section>
+                    <myTitleBox>
+                        <h2>Events Table - no Wrapper</h2>
+                    </myTitleBox>
+                    <myColBox>
+                        <article>
+                            <img src="img/status_change/events_schol_content.png">
+                        </article>
+                    </myColBox>
+                    <aside class="notes">
+                        We used the fully namespaced path of the Event to reference it as an aggregate type and we used an aggregate id
+                        This is a direct contradiction to what we spoke about before with not storing an aggregate or an object as you
+                    </aside>
+                </section>
+                <section>
+<p><code>
+    O:92:"ITECS\Scholarships\Selection\Domain\Scholarship\AwardWasAssignedToCandidateByCommitteeMember"
+    :9:{s:6:"amount";O:39:"ITECS\Scholarships\Common\Values\Amount":1:{s:46:" ITECS\Scholarships\Common\Values\Amount money";
+    O:11:"Money\Money":2:{s:19:" Money\Money amount";i:285000;s:21:" Money\Money currency";
+    O:14:"Money\Currency":1:{s:20:" Money\Currency name";s:3:"USD";
+    }}}s:11:"applicantId";
+    s:9:"222222235";
+    s:13:"scholarshipId";
+    O:61:"ITECS\Scholarships\Selection\Domain\Scholarship\ScholarshipId":1:{s:76:" ITECS\Scholarships\Selection\Domain\Scholarship\ScholarshipId scholarshipId";
+    i:360;}s:17:"selectionCriteria";O:59:"ITECS\Scholarships\Selection\Domain\Scholarship\CriteriaSet":1:{s:69:" ITECS\Scholarships\Selection\Domain\Scholarship\CriteriaSet criteria";a:1:{i:0;O:93:"ITECS\Scholarships\Selection\Domain\Scholarship\SelectionCriteria\MemberOfDepartmentCriterion":4:{s:106:" ITECS\Scholarships\Selection\Domain\Scholarship\SelectionCriteria\MemberOfDepartmentCriterion departments";a:1:{i:0;O:43:"ITECS\Scholarships\Common\Values\Department":2:{s:50:" ITECS\Scholarships\Support\Types\CodedValue label";s:17:"Civil Engineering";s:49:" ITECS\Scholarships\Support\Types\CodedValue code";s:2:"CE";}}s:99:" ITECS\Scholarships\Selection\Domain\Scholarship\SelectionCriteria\SelectionCriterion isRequirement";b:1;s:101:" ITECS\Scholarships\Selection\Domain\Scholarship\SelectionCriteria\SelectionCriterion otherProperties";a:3:{s:4:"type";s:10:"department";s:5:"value";a:1:{i:0;s:2:"CE";}s:8:"priority";i:1;}s:14:" * description";N;}}}s:17:"committeeMemberId";s:8:"elstamey";s:4:"term";s:18:"Both Fall & Spring";s:19:"snapshottedCriteria";a:1:{i:0;a:3:{s:8:"required";b:1;s:7:"matched";b:1;s:11:"description";s:69:"Must be a student within one of these departments: Civil Engineering.";}}s:13:"applicantName";s:13:"Alana  Feeney";s:9:"occuredOn";O:8:"DateTime":3:{s:4:"date";s:26:"2015-12-07 14:26:12.000000";s:13:"timezone_type";i:3;s:8:"timezone";s:16:"America/New_York";}}
+</code></p>
+                    <aside class="notes">
+
+                    </aside>
+                </section>
+                <section>
+                    <myTitleBox>
+                        <h2>Events Table - with Domain Message</h2>
+                    </myTitleBox>
+                    <myColBox>
+                        <article>
+                            <img src="img/status_change/events_eol_struct.png">
                         </article>
                     </myColBox>
                     <aside class="notes">
                     </aside>
                 </section>
                 <section>
+                    <myTitleBox>
+                        <h2>Events Table - with Domain Message</h2>
+                    </myTitleBox>
                     <myColBox>
                         <article>
-                            <p>code for the eventstore
-                                code that tells which Events to pick from the eventstore</p>
+                            <img src="img/status_change/events_eol_content.png">
                         </article>
                     </myColBox>
                     <aside class="notes">
+                    </aside>
+                </section>
+                <section>
+<pre><code>&lt;?php
+
+namespace App\Support\EventStore;
+
+use App\Support\Domain\DomainMessage;
+use Illuminate\Database\Connection;
+use Illuminate\Database\QueryException;
+use Illuminate\Database\Schema\Blueprint;
+
+class DatabaseEventStore implements EventStore
+{
+    /**
+     * @var string
+     */
+    protected $tableClass;
+
+    /**
+     * @var Connection
+     */
+    private $connection;
+
+    const MAX_EVENT_PAYLOAD_LENGTH = 65535;
+
+    public function __construct($tableClass, Connection $connection)
+    {
+        $this->tableClass = $tableClass;
+    $this->connection = $connection;
+    }
+
+    /**
+    * @param $streamId
+    *
+    * @return DomainMessage[]
+    */
+    public function load($streamId)
+    {
+        $streamId = (string) $streamId;
+
+        $rows = $this->connection->table($this->tableClass)
+        ->where('stream_id', $streamId)
+        ->orderBy('version', 'asc')
+        ->get();
+
+        if (! count($rows)) {
+            throw EventStoreException::streamNotFound($streamId);
+        }
+
+        return $rows->map(function ($row) {
+            return $this->deserializeEvent($row);
+        })->all();
+    }
+
+    private function deserializeEvent($row)
+    {
+        $eventName = $row->type;
+        $recordedOn = new \DateTime();
+        $recordedOn->setTimestamp($row->recorded_on);
+
+        return new DomainMessage(
+            $row->stream_id,
+            $row->version,
+            $eventName::deserialize(json_decode($row->payload, true)),
+            $recordedOn
+        );
+    }
+
+    /**
+    * @param                 $streamId
+    * @param DomainMessage[] $messages
+    */
+    public function append($streamId, $messages)
+    {
+        $streamId = (string) $streamId;
+
+        if (! is_array($messages)) {
+            $messages = [$messages];
+        }
+
+        $this->connection->beginTransaction();
+
+        try {
+
+            foreach ($messages as $message) {
+                $payloadData = $message->getPayload()->serialize();
+
+                if (! is_array($payloadData)) {
+                    throw EventStoreException::eventNotSerializable();
+                }
+
+                $encodedPayload = json_encode($payloadData);
+
+                if (strlen($encodedPayload) >= self::MAX_EVENT_PAYLOAD_LENGTH) {
+                    throw EventStoreException::encodedPayloadTooLarge($message->getType());
+                }
+
+                $this->connection->table($this->tableClass)->insert([
+                        'stream_id' => $streamId,
+                        'version' => $message->getVersion(),
+                        'payload' => $encodedPayload,
+                        'recorded_on' => $message->getRecordedOn()->getTimestamp(),
+                        'type' => $message->getType(),
+                    ]);
+            }
+
+                $this->connection->commit();
+
+        } catch (QueryException $e) {
+            $this->connection->rollBack();
+
+            throw EventStoreException::optimisticLockingConflict($message->getStreamId(), $message->getVersion());
+        }
+    }
+
+    public function configureSchema()
+    {
+        $schema = $this->connection->getSchemaBuilder();
+        $schema->create($this->tableClass, function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('stream_id', 255);
+            $table->integer('version')->unsigned();
+            $table->text('payload');
+            $table->integer('recorded_on')->unsigned();
+            $table->string('type');
+
+            $table->index('stream_id');
+            $table->index('type');
+            $table->unique(['stream_id', 'version']);
+        });
+    }
+
+    /**
+    * @param $streamId
+    *
+    * @return int current version of the stream
+    */
+    public function version($streamId)
+    {
+        $streamId = (string) $streamId;
+
+        $lastEvent = $this->connection->table($this->tableClass)
+        ->where('stream_id', $streamId)
+        ->orderBy('version', 'desc')
+        ->first(['version']);
+
+        if (! $lastEvent) {
+            throw EventStoreException::streamNotFound($streamId);
+        }
+
+        return $lastEvent->version;
+    }
+
+    /**
+    * @param Criteria $criteria
+    * @param callable $handle
+    *
+    * @return DomainMessage[] $messages
+    */
+    public function visit(Criteria $criteria, callable $handle)
+    {
+        $this->connection->table($this->tableClass)->chunk(100, function ($events) use ($criteria, $handle) {
+
+            foreach ($events as $event) {
+                $message = $this->deserializeEvent($event);
+
+                if ($criteria->isSatisfiedBy($message)) {
+                    $handle($message);
+                }
+            }
+        });
+    }
+
+    /**
+    * @param string|null $streamId
+    *
+    * @return int the number of events in the store
+    */
+    public function count($streamId = null)
+    {
+        $events = $this->connection->table($this->tableClass);
+
+        if ($streamId) {
+            $events->where('stream_id', $streamId);
+        }
+
+        return $events->count();
+    }
+}
+</code></pre>
+                    <aside class="notes">
+                        <p>code for the eventstore</p>
+                    </aside>
+                </section>
+                <section>
+<pre><code>
+    
+</code></pre>
+                    <aside class="notes">
+                        <p>code that tells which Events to pick from the eventstore</p>
                     </aside>
                 </section>
                 <section>
