@@ -74,7 +74,6 @@ myRowBox > article > img {
     width: 100%;
     max-width: 50% !important;
     max-height:50% !important;
-
 }
 
 
@@ -111,6 +110,12 @@ h5.attrib a:hover {
 
 .line.focus .hljs-comment, .line.focus .hljs-quote {
     color: #586e75;
+}
+
+.slides {
+    position: absolute;
+    top: 30%;
+    left: 0;
 }
 
 .reveal .slides section .fragment.current-only {
