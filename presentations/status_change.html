@@ -113,7 +113,7 @@
                         <h2>Sign the waiver</h2>
                     </myTitleBox>
                     <myColBox>
-                        <article>I, __(state our name)__, will not sue Emily if Event Sourcing makes my head explode, and I will not leave a bad review.</article>
+                        <article>I, __(state your name)__, will not blame or sue Emily if Event Sourcing makes my head explode. I promise I will not leave a bad review. And I promise to be kind to myself as I learn new things.</article>
                         <article><img src="img/status_change/head_explode.gif" class="fragment"></article>
                     </myColBox>
                     <footer>
@@ -236,7 +236,8 @@
                     <aside class="notes">
                         <li>You may have also seen a paper form with a stamp to indicate status.</li>
                         <li>But what if things change, and a rejection can be undone. Suppose it was rejected because tuition wasn't paid, the student paid</li>
-                        <li>What if an application changes state multiple times through the process?  The history doesn't convey between piles.</li>
+                        <li>What if an request changes state multiple times through the process?  And each time the status overwrites itself?</li>
+                        <!--<li>The history doesn't convey between piles. And sometimes our application doesn't retain that information either</li>-->
                     </aside>
                 </section>
                 <section>
@@ -250,18 +251,16 @@
                         </article>
                     </myColBox>
                     <aside class="notes">
-                        <li>The status tells where it is in the process, but it doesn't tell you what happened </li>
-                        <p>States also carry assumed knowledge of the process without that cause/effect.</p>
+                        <li>The status tells where it is in the process, but it doesn't tell you what happened to get it there</li>
+                        <p>Status names often carry assumed knowledge of the process without the system reflecting that meaning.</p>
                         <p>We are separated from the request&#39;s history.</p>
-                        <p>Status labels & meaning can change without conveying process changes</p>
+                        <p>Status labels & meaning can change without conveying process changes or changing things in the app.</p>
                     </aside>
                 </section>
                 <section>
-                    <myColBox>
-                        <article>
-                            <img src="img/status_change/compensating_measures.jpg" alt="compensating_measures.jpg">
-                        </article>
-                    </myColBox>
+                    <footer>
+                        <img src="img/status_change/compensating_measures.jpg" alt="compensating_measures.jpg">
+                    </footer>
                     <aside class="notes">
                         <p>Compensating measures this app made to attempt to preserve history</p>
                         <li>add columns to the table with form data</li>
@@ -273,11 +272,9 @@
                     <myTitleBox>
                         <h2>How workflows become complex</h2>
                     </myTitleBox>
-                    <myColBox>
-                        <article>
-                           <p><img src="img/status_change/more_statuses.jpg" alt="more_statuses.jpg"></p>
-                        </article>
-                    </myColBox>
+                    <footer>
+                       <img src="img/status_change/more_statuses.jpg" alt="more_statuses.jpg">
+                    </footer>
                     <aside class="notes">
                         <p>Sometimes your workflow forks in multiple directions or involves long
                             lists in order to capture the complexity of the business process</p>
@@ -380,29 +377,30 @@
                         <p>In a workflow, usually something happens and THEN your object&#39;s status is
                             updated to reflect that something happened.</p>
                         <p>There aren&#39;t 9 PENDING states.  There is ONE PENDING and 9 reasons for it to be PENDING </p>
-                        <p>Events can record what happened</p>
-                        <p>As our software becomes aware of these events, we can adapt, flex, or reorient.</p>
+                        <p>Events can record what ACTUALLY happened and the important details of that event.  It is actually your history!</p>
+                        <p>Our code can then be written to describe what that event means with context.</p>
                     </aside>
                 </section>
                 <section>
+                    <myTitleBox>
+                        <h2>The Request Doesn't Get Stuck</h2>
+                    </myTitleBox>
                     <myColBox>
                         <article>
                             <img src="img/status_change/speech-bubbles.png">
                         </article>
-                        <article>
-                            <p>The request doesn't get stuck</p>
-                            <p>A Hold can be lifted, and the request process continue</p>
-                            <p>The request can move to a next state </p>
-                            <p>History is preserved</p>
-                        </article>
+                        <!--<article>-->
+                            <!--<p>The request doesn't get stuck.  One event can happen, and then another event can occur after it.</p>-->
+                            <!--<p>A Hold can be lifted, and the request can continue through the process</p>-->
+                            <!--<p>The request can move to a next state </p>-->
+                            <!--<p>History is preserved</p>-->
+                        <!--</article>-->
                     </myColBox>
                     <aside class="notes">
-                        <p>Instead of putting the form in the trash, we can reconsider it.</p>
-                        <p>When a student hasn&#39;t paid fees, or completed their registration, their request is put on HOLD</p>
-                        <p>Instead of reviewing all forms in a HOLD state to see if they can proceed,
-                            An event can tell us the hold is lifted.</p>
-                        <p>That Hold Removed event can trigger the request to be reviewed
-                            by an administrator.</p>
+                        <p>The request doesn't get stuck.  One event can happen, and then another event can occur after it.</p>
+                        <p>A Hold can be lifted, and the request can continue through the process</p>
+                        <p>The request can move to a next state </p>
+                        <p>History is preserved</p>
                     </aside>
                 </section>
                 <section>
@@ -433,8 +431,6 @@
                         <p>A lot of what we read about Event Sourcing comes from Martin Fowler.  But I like Greg Young's talks the best.  His examples are clear</p>
                         <p>The idea of Event Sourcing is that of ensuring <strong>every change to the state</strong> of an application <strong>is captured in an event object</strong>,</p>
                         <p>These event objects are then stored in the order they were applied for always and forever</p>
-                        <p></p>
-
                     </aside>
                 </section>
                 <section>
@@ -452,12 +448,12 @@
                     </myColBox>
                     <aside class="notes">
                         <p>We will collect the details of the event, its attributes</p>
-                        <p>we will also capture the timestamp in order to apply it in the correct order</p>
+                        <p>The timestamp is important in order to apply it in the correct order</p>
                         <p>If we were tracking transactions for a bank account, we would have events like Deposit Money
-                            and Withdraw money.  Those would have an amount and an account number.  And the order in
+                            and Withdraw Money.  Those would have an amount and an account number.  And the order in
                             which they happened would be critical to having an accurate balance</p>
                         <p>We are capturing the crucial details with those events.  And our system will later apply them
-                            using the rules of our process</p>
+                            using the rules of OUR process</p>
                     </aside>
                 </section>
                 <section>
@@ -1649,7 +1645,7 @@ class EnrollmentPeriodHandler extends CommandHandler
                                 <li><a href="https://www.youtube.com/watch?v=JHGkaShoyNs">Greg Young CQRS and Event Sourcing</a></li>
                                 <li><a href="https://www.youtube.com/watch?v=whCk1Q87_ZI">Greg Young - long class</a></li>
                                 <li><a href="https://www.youtube.com/watch?v=LDW0QWie21s">Greg Young - A Decade of DDD, CQRS, Event Sourcing</a></li>
-                                <li><a href="https://www.phproundtable.com/episode/event-sourcing-in-php">PHP Round Table - Event Sourcing</a></li>
+                                <li><a href="https://www.phproundtable.com/episode/event-sourcing-in-php">PHP Round Table - Event Sourcing</a> (+2 more)</li>
                                 <li><a href="https://github.com/broadway/broadway">Broadway - framework for CQRS and ES</a></li>
                             </ul>
                         </article>
