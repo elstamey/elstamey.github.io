@@ -957,7 +957,7 @@ O:92:"ITECS\Scholarships\Selection\Domain\Scholarship\AwardWasAssignedToCandidat
 }
 </code></pre>
                     <aside class="notes">
-                        This is what the payload of the event looked like in that project, and it was really unwieldy to try to read from the events
+                        This is what the payload of the event looked like in that project, and it was really unwieldy to try to read from the events because it was a serialized object
                     </aside>
                 </section>
                 <section>
@@ -982,6 +982,60 @@ O:92:"ITECS\Scholarships\Selection\Domain\Scholarship\AwardWasAssignedToCandidat
                         </article>
                     </myColBox>
                     <aside class="notes">
+                    </aside>
+                </section>
+                <section>
+<pre><code>
+{
+    "namespace":"App\\StudentInformation\\Entities\\Student",
+    "identity":"ophelia.zieme",
+    "data":{
+        "id":"ophelia.zieme",
+        "ferpa":"0",
+        "personal":{
+            "first_name":"Evan",
+            "middle_name":"Jalon",
+            "last_name":"Armstrong",
+            "dob":"2007-06-16",
+            "gender":"M"
+        },
+        "contact":{
+            "student_id":"000811740",
+            "username":"ophelia.zieme",
+            "email":"ophelia.zieme@ncsu.edu",
+            "phone":"935-516-1228"
+        },
+        "address":{
+            "physical":{
+                "street1":"707 Nasir Pass",
+                "street2":"Jett Loop",
+                "street3":null,
+                "street4":"",
+                "city":"Clemmons",
+                "state":"NC",
+                "zip":"27012",
+                "country":"USA"
+            },
+            "permanent":{
+                "street1":"759 Bashirian Plains",
+                "street2":null,
+                "street3":null,
+                "street4":"",
+                "city":"Clemmons",
+                "state":"NC",
+                "zip":"27012",
+                "country":"USA"
+            }
+        },
+        "citizenship":{
+            "nc_resident":true,
+            "country":"USA",
+            "visa":null
+        }
+    }
+}</code></pre>
+                    <aside class="notes">
+                        <li>We learned from that pain and stored the payload as a json object this time</li>
                     </aside>
                 </section>
                 <section>
