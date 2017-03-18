@@ -580,11 +580,15 @@
                         </article>
                     </myColBox>
                     <aside class="notes">
+                        There are several patterns that we use here, and I'm going to try to describe how the pieces fit
+                        together, but there are support classes that I won't be  able to go into in the time.  You can peruse the
+                        code more closely on your own, but there is flexibility to how you built this in your application, so
+                        take this approach with a grain of salt
                     </aside>
                 </section>
                 <section>
                     <myTitleBox>
-                        <h2>EnrollmentRequestWasApproved (Class)</h2>
+                        <h2>Enrollment Request Rejected (Event)</h2>
                     </myTitleBox>
                     <myColBox>
                         <article>
@@ -596,11 +600,14 @@
                         </article>
                     </myColBox>
                     <aside class="notes">
+                        <li>We will look at the Enrollment Request Rejected event for parts of this process</li>
+                        <li>We have a couple of other sections we may jump to to explain the parts, so this won't all
+                            connect together</li>
+                        <li>The event has a few values we care about </li>
                     </aside>
                 </section>
                 <section>
-<pre><code>
-    &lt;?php
+<pre><code>&lt;?php
 
 namespace App\Enrollment\Domain\Events;
 
@@ -631,8 +638,8 @@ class EnrollmentRequestRejected implements Event
     {
 
         $this->enrollmentRequestId = $enrollmentRequestId;
-    $this->studentId = $studentId;
-    $this->courseOfferingId = $courseOfferingId;
+        $this->studentId = $studentId;
+        $this->courseOfferingId = $courseOfferingId;
     }
 
     /**
@@ -640,11 +647,11 @@ class EnrollmentRequestRejected implements Event
     */
     public function serialize()
     {
-    return [
-    'id' => $this->enrollmentRequestId->toString(),
-    'student_id' => $this->studentId->toNative(),
-    'course_offering_id' => $this->courseOfferingId->toNative(),
-    ];
+        return [
+            'id' => $this->enrollmentRequestId->toString(),
+            'student_id' => $this->studentId->toNative(),
+            'course_offering_id' => $this->courseOfferingId->toNative(),
+        ];
     }
 
     /**
@@ -654,15 +661,20 @@ class EnrollmentRequestRejected implements Event
     */
     public static function deserialize($data)
     {
-    return new StudentRequestedEnrollment(
-    Uuid::fromString($data['id']),
-    StudentId::fromNative($data['student_id']),
-    CourseOfferingId::fromNative($data['course_offering_id'])
-    );
+        return new StudentRequestedEnrollment(
+            Uuid::fromString($data['id']),
+            StudentId::fromNative($data['student_id']),
+            CourseOfferingId::fromNative($data['course_offering_id'])
+        );
     }
-    }
+}
 </code></pre>
+                    <span class="fragment current-only" data-code-focus="10"></span>
+                    <span class="fragment current-only" data-code-focus="28"></span>
                     <aside class="notes">
+                        <li>(*) The Enrollment Request Rejected Event inherits from an Event class that outlines a bit of behavior.  </li>
+                        <li>(*) The constructor sets the values we care about with the event object</li>
+                        <li>And below we serialize and deserialize these attributes.  </li>
                     </aside>
                 </section>
                 <section>
@@ -682,11 +694,15 @@ class EnrollmentRequestRejected implements Event
                         </article>
                     </myColBox>
                     <aside class="notes">
+                        <li>In the first app we used Event Sourcing, scholarships, we included timestamp data on the
+                            event, but for this application, my teammate had seen more consensus that the Event and
+                            Message should be separated</li>
+                        <li>We are able to keep the sequence and timestamp on the message, which holds the event as its payload</li>
+                        <li>The version is useful ina  workflow project, where we want to upgrade these to use a new workflow.  We can keep track of which process was used to build something. </li>
                     </aside>
                 </section>
                 <section>
-<pre><code>
-&lt;?php
+<pre><code>&lt;?php
 
 namespace App\Support\Domain;
 
@@ -727,9 +743,9 @@ class DomainMessage
     public function __construct($streamId, $version, Event $payload, DateTime $recordedOn)
     {
         $this->streamId = (string) $streamId;
-    $this->version = $version;
-    $this->payload = $payload;
-    $this->recordedOn = $recordedOn;
+        $this->version = $version;
+        $this->payload = $payload;
+        $this->recordedOn = $recordedOn;
     }
 
     /**
@@ -742,7 +758,7 @@ class DomainMessage
     */
     public static function recordNow($streamId, $version, Event $payload)
     {
-    return new DomainMessage($streamId, $version, $payload, new DateTime());
+        return new DomainMessage($streamId, $version, $payload, new DateTime());
     }
 
     /**
@@ -750,7 +766,7 @@ class DomainMessage
     */
     public function getStreamId()
     {
-    return $this->streamId;
+        return $this->streamId;
     }
 
     /**
@@ -758,7 +774,7 @@ class DomainMessage
     */
     public function getVersion()
     {
-    return $this->version;
+        return $this->version;
     }
 
     /**
@@ -766,7 +782,7 @@ class DomainMessage
     */
     public function getPayload()
     {
-    return $this->payload;
+        return $this->payload;
     }
 
     /**
@@ -774,7 +790,7 @@ class DomainMessage
     */
     public function getRecordedOn()
     {
-    return $this->recordedOn;
+        return $this->recordedOn;
     }
 
     /**
@@ -782,12 +798,67 @@ class DomainMessage
     */
     public function getType()
     {
-    return get_class($this->payload);
+        return get_class($this->payload);
     }
-    }
+}
 
 </code></pre>
+                    <span class="fragment current-only" data-code-focus="39"></span>
+                    <span class="fragment current-only" data-code-focus="55"></span>
+                    <span class="fragment current-only" data-code-focus="63"></span>
                     <aside class="notes">
+                        <li>This is our Domain Message class  </li>
+                        <li>(*) The constructor sets the values for our stream id, version, payload, and timestamp</li>
+                        <li>(*) We use the Record Now method to record that the event happened, returning the new Domain message</li>
+                        <li>This at first seemed like extra work, but I've grown to like it a little more</li>
+                        <li>Below we have getters to get attributes of the Domain Message </li>
+                    </aside>
+                </section>
+                <section>
+                    <myTitleBox>
+                        <h2>Simple Event Listener </h2>
+                    </myTitleBox>
+<pre><code>&lt;?php
+
+namespace App\Support\EventHandling;
+
+use App\Support\Domain\DomainMessage;
+
+abstract class SimpleEventListener implements EventListener
+{
+    /**
+    * @param DomainMessage $message
+    */
+    public function handle(DomainMessage $message)
+    {
+        $event = $message->getPayload();
+        $method = $this->getHandleMethod($event);
+
+        if (! method_exists($this, $method)) {
+            return;
+        }
+
+        $this->$method($event, $message);
+    }
+
+    private function getHandleMethod(Event $event)
+    {
+        return 'handle' . class_basename($event);
+    }
+}
+</code></pre>
+                    <span class="fragment current-only" data-code-focus="7"></span>
+                    <span class="fragment current-only" data-code-focus="12"></span>
+                    <span class="fragment current-only" data-code-focus="15"></span>
+                    <span class="fragment current-only" data-code-focus="24"></span>
+                    <aside class="notes">
+                        <li>The Simple Event Listener Is one of our Support classes that does Event Handling</li>
+                        <li>(*) there is a handle method that takes the Domain Message</li>
+                        <li>It separates the Event from the message</li>
+                        <li>(*) It calls a getHandle Method on the event.
+                            (*) which uses the name of the event to construct its handle method</li>
+                        <li>In addition to our Event classes, we have written methods that handle those events named
+                            handleEventName, so this format allows us to handle the events in this way</li>
                     </aside>
                 </section>
                 <section>
@@ -796,12 +867,14 @@ class DomainMessage
                     </myTitleBox>
                     <myColBox>
                         <article>
-                           <p>Event Store is a domain specific database for people who use the Event
-                        Sourcing pattern in their apps. It is a functional database which based
-                        on a publish-subscribe messages pattern.</p>
+                            <p>A domain specific database </p>
+                            <p>A functional database based on a publish-subscribe messages pattern</p>
                         </article>
                     </myColBox>
                     <aside class="notes">
+                        <li>The Event Store, in our cases is a database table.  We aren't each event in its own table, so</li>
+                        <li>We build the table to generically describe ALL of our events.</li>
+                        <li>The classes that listen to those events subscribe only to the events that matter in that context</li>
                     </aside>
                 </section>
                 <section>
@@ -832,19 +905,47 @@ class DomainMessage
                     </aside>
                 </section>
                 <section>
-<p><code>
-    O:92:"ITECS\Scholarships\Selection\Domain\Scholarship\AwardWasAssignedToCandidateByCommitteeMember"
-    :9:{s:6:"amount";O:39:"ITECS\Scholarships\Common\Values\Amount":1:{s:46:" ITECS\Scholarships\Common\Values\Amount money";
-    O:11:"Money\Money":2:{s:19:" Money\Money amount";i:285000;s:21:" Money\Money currency";
-    O:14:"Money\Currency":1:{s:20:" Money\Currency name";s:3:"USD";
-    }}}s:11:"applicantId";
-    s:9:"222222235";
-    s:13:"scholarshipId";
-    O:61:"ITECS\Scholarships\Selection\Domain\Scholarship\ScholarshipId":1:{s:76:" ITECS\Scholarships\Selection\Domain\Scholarship\ScholarshipId scholarshipId";
-    i:360;}s:17:"selectionCriteria";O:59:"ITECS\Scholarships\Selection\Domain\Scholarship\CriteriaSet":1:{s:69:" ITECS\Scholarships\Selection\Domain\Scholarship\CriteriaSet criteria";a:1:{i:0;O:93:"ITECS\Scholarships\Selection\Domain\Scholarship\SelectionCriteria\MemberOfDepartmentCriterion":4:{s:106:" ITECS\Scholarships\Selection\Domain\Scholarship\SelectionCriteria\MemberOfDepartmentCriterion departments";a:1:{i:0;O:43:"ITECS\Scholarships\Common\Values\Department":2:{s:50:" ITECS\Scholarships\Support\Types\CodedValue label";s:17:"Civil Engineering";s:49:" ITECS\Scholarships\Support\Types\CodedValue code";s:2:"CE";}}s:99:" ITECS\Scholarships\Selection\Domain\Scholarship\SelectionCriteria\SelectionCriterion isRequirement";b:1;s:101:" ITECS\Scholarships\Selection\Domain\Scholarship\SelectionCriteria\SelectionCriterion otherProperties";a:3:{s:4:"type";s:10:"department";s:5:"value";a:1:{i:0;s:2:"CE";}s:8:"priority";i:1;}s:14:" * description";N;}}}s:17:"committeeMemberId";s:8:"elstamey";s:4:"term";s:18:"Both Fall & Spring";s:19:"snapshottedCriteria";a:1:{i:0;a:3:{s:8:"required";b:1;s:7:"matched";b:1;s:11:"description";s:69:"Must be a student within one of these departments: Civil Engineering.";}}s:13:"applicantName";s:13:"Alana  Feeney";s:9:"occuredOn";O:8:"DateTime":3:{s:4:"date";s:26:"2015-12-07 14:26:12.000000";s:13:"timezone_type";i:3;s:8:"timezone";s:16:"America/New_York";}}
-</code></p>
+<pre><code>
+O:92:"ITECS\Scholarships\Selection\Domain\Scholarship\AwardWasAssignedToCandidateByCommitteeMember":9:{
+    s:6:"amount"    ;O:39:    "ITECS\Scholarships\Common\Values\Amount":1:{
+        s:46:"ITECS\Scholarships\Common\Values\Amountmoney"        ;
+        O:11:        "Money\Money":2:{
+            s:19:"Money\Moneyamount"            ;i:285000            ;s:21:"Money\Moneycurrency"            ;
+            O:14:            "Money\Currency":1:{
+                s:20:"Money\Currencyname"                ;s:3:"USD"                ;
+            }
+        }
+    }    s:11:"applicantId"    ;
+    s:9:"222222235"    ;
+    s:13:"scholarshipId"    ;
+    O:61:    "ITECS\Scholarships\Selection\Domain\Scholarship\ScholarshipId":1:{
+        s:76:"ITECS\Scholarships\Selection\Domain\Scholarship\ScholarshipIdscholarshipId"        ;
+        i:360        ;
+    }    s:17:"selectionCriteria"    ;O:59:    "ITECS\Scholarships\Selection\Domain\Scholarship\CriteriaSet":1:{
+    s:69:"ITECS\Scholarships\Selection\Domain\Scholarship\CriteriaSetcriteria"        ;a:1:{
+        i:0            ;O:93:            "ITECS\Scholarships\Selection\Domain\Scholarship\SelectionCriteria\MemberOfDepartmentCriterion":4:{
+            s:106:"ITECS\Scholarships\Selection\Domain\Scholarship\SelectionCriteria\MemberOfDepartmentCriteriondepartments"                ;a:1:{
+                i:0                    ;O:43:                    "ITECS\Scholarships\Common\Values\Department":2:{
+                s:50:"ITECS\Scholarships\Support\Types\CodedValuelabel"                        ;s:17:"Civil Engineering"                        ;s:49:"ITECS\Scholarships\Support\Types\CodedValuecode"                        ;s:2:"CE"                        ;
+                }
+            }                s:99:"ITECS\Scholarships\Selection\Domain\Scholarship\SelectionCriteria\SelectionCriterionisRequirement"                ;b:1                ;s:101:"ITECS\Scholarships\Selection\Domain\Scholarship\SelectionCriteria\SelectionCriterionotherProperties"                ;a:3:{
+                s:4:"type"                    ;s:10:"department"                    ;s:5:"value"                    ;a:1:{
+                    i:0                        ;s:2:"CE"                        ;
+                }                    s:8:"priority"                    ;i:1                    ;
+            }                s:14:"*description"                ;N;
+        }
+    }
+}    s:17:"committeeMemberId"    ;s:8:"elstamey"    ;s:4:"term"    ;s:18:"Both Fall & Spring"    ;s:19:"snapshottedCriteria"    ;a:1:{
+        i:0        ;a:3:{
+            s:8:"required"            ;b:1            ;s:7:"matched"            ;b:1            ;s:11:"description"            ;s:69:"Must be a student within one of these departments: Civil Engineering."            ;
+        }
+    }    s:13:"applicantName"    ;s:13:"Alana  Feeney"    ;s:9:"occuredOn"    ;O:8:    "DateTime":3:{
+        s:4:"date"        ;s:26:"2015-12-07 14:26:12.000000"        ;s:13:"timezone_type"        ;i:3        ;s:8:"timezone"        ;s:16:"America/New_York"        ;
+    }
+}
+</code></pre>
                     <aside class="notes">
-
+                        This is what the payload of the event looked like in that project, and it was really unwieldy to try to read from the events
                     </aside>
                 </section>
                 <section>
@@ -872,6 +973,9 @@ class DomainMessage
                     </aside>
                 </section>
                 <section>
+                    <myTitleBox>
+                        <h2>Event Store</h2>
+                    </myTitleBox>
 <pre><code>&lt;?php
 
 namespace App\Support\EventStore;
@@ -1065,11 +1169,153 @@ class DatabaseEventStore implements EventStore
                     </aside>
                 </section>
                 <section>
-<pre><code>
-    
+                    <myTitleBox>
+                        <h2>Projector </h2>
+                    </myTitleBox>
+<pre><code>&lt;?php
+
+namespace App\Enrollment\ReadModel;
+
+
+use App\Enrollment\Domain\Events\EnrollmentRequestRejected;
+use App\Enrollment\Domain\Events\StudentRequestedEnrollment;
+use App\Support\ReadModel\Replayable;
+use App\Support\ReadModel\SimpleProjector;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Connection;
+
+class EnrollmentRequestProjector extends SimpleProjector implements Replayable
+{
+
+    /**
+     * @var Connection
+     */
+    private $connection;
+
+    /**
+     * @var string table we're playing events into
+     */
+    private $table = 'proj_enrollment_requests';
+
+    public function __construct(Connection $connection)
+    {
+        $this->connection = $connection;
+    }
+
+    public function beforeReplay()
+    {
+        $builder = $this->connection->getSchemaBuilder();
+
+        $builder->dropIfExists('proj_enrollment_requests_tmp');
+        $builder->create('proj_enrollment_requests_tmp', function (Blueprint $schema) {
+        $schema->string('id');
+        $schema->string('student_id');
+        $schema->string('course_offering_id');
+        $schema->string('status');
+
+        $schema->primary('id');
+        });
+
+        $this->table = 'proj_enrollment_requests_tmp';
+    }
+
+    public function afterReplay()
+    {
+        $builder = $this->connection->getSchemaBuilder();
+
+        $builder->dropIfExists('proj_enrollment_requests');
+        $builder->rename('proj_enrollment_requests_tmp', 'proj_enrollment_requests');
+
+        $this->table = 'proj_enrollment_requests';
+    }
+
+    /**
+    * @param StudentRequestedEnrollment $event
+    */
+    public function applyStudentRequestedEnrollment(StudentRequestedEnrollment $event)
+    {
+        $enrollmentRequest = new EnrollmentRequest();
+        $enrollmentRequest->setTable($this->table);
+
+        $enrollmentRequest->id = $event->enrollmentRequestId->toString();
+        $enrollmentRequest->student_id = $event->studentId->toNative();
+        $enrollmentRequest->course_offering_id = $event->courseOfferingId->toNative();
+        $enrollmentRequest->status = 'requested';
+
+        $enrollmentRequest->save();
+    }
+
+    /**
+    * @param EnrollmentRequestRejected $event
+    */
+    public function applyEnrollmentRequestRejected(EnrollmentRequestRejected $event)
+    {
+        $enrollmentRequest = new EnrollmentRequest();
+        $enrollmentRequest->setTable($this->table);
+
+        $enrollmentRequest = EnrollmentRequest::where('id',  $event->enrollmentRequestId->toString());
+        $enrollmentRequest->delete();
+    }
+
+}
+
 </code></pre>
+                    <span class="fragment current-only" data-code-focus="13"></span>
+                    <span class="fragment current-only" data-code-focus="24"></span>
+                    <span class="fragment current-only" data-code-focus="31"></span>
+                    <span class="fragment current-only" data-code-focus="48"></span>
+                    <span class="fragment current-only" data-code-focus="61"></span>
+                    <span class="fragment current-only" data-code-focus="77"></span>
                     <aside class="notes">
-                        <p>code that tells which Events to pick from the eventstore</p>
+                        <li>The Projector Builds a report based on the events; populates a table based on what those events mean to us</li>
+                        <li>(*) This is our Enrollment Request Project, based on the Simple Projector</li>
+                        <li>(*) It establishes a database connection,a nd we name the table</li>
+                        <li>(*) BeforeReplay sets a temp table to replay events to, and as long as we don't have an error</li>
+                        <li>(*) After Replay will move the temp table to a primary one</li>
+                        <li>(*) This method applies a Student Requested Enrollment event; taking attributes from the event; We decided that for this projector, we want to add a row to the table when a new request comes in, and we set the status to "requested"</li>
+                        <li>(*) Apply the Enrollment Request Rejected events</li>
+                    </aside>
+                </section>
+                <section>
+                    <myTitleBox>
+                        <h2>Read Model </h2>
+                    </myTitleBox>
+<pre><code>&lt;?php
+
+    namespace App\Enrollment\ReadModel;
+
+
+    use Carbon\Carbon;
+    use Illuminate\Database\Eloquent\Model;
+
+    /**
+    * @codeCoverageIgnore
+    */
+    class EnrollmentRequest extends Model
+    {
+    protected  $table = 'proj_enrollment_requests';
+    public $incrementing = false;
+    public $timestamps = false;
+
+    public static function current()
+    {
+    return static::where('student_id', auth()->user()->name)->get();
+    }
+
+    public static function lookupRequestsFor($username)
+    {
+    return static::where('student_id', $username)->get();
+    }
+
+    public function offering()
+    {
+    return $this->hasOne(CourseOffering::class, 'id', 'course_offering_id');
+    }
+    }
+</code></pre>
+                    <span class="fragment current-only" data-code-focus="10"></span>
+                    <aside class="notes">
+                        <li>The Read Model looks at that projection, the source of truth, and allows us to request data from the projection</li>
                     </aside>
                 </section>
                 <section>
@@ -1088,6 +1334,7 @@ class DatabaseEventStore implements EventStore
                     <aside class="notes">
                     </aside>
                 </section>
+
                 <section>
                     <myColBox>
                         <article>
@@ -1112,16 +1359,170 @@ class DatabaseEventStore implements EventStore
                            <p>Commands</p>
                         </article>
                     </myColBox>
+<pre><code>&lt;?php
+
+namespace App\Enrollment\Commands;
+
+use App\Support\CommandHandling\Command;
+use App\Common\SemesterTerm;
+use DateTime;
+use Illuminate\Http\Request;
+
+class ScheduleEnrollmentPeriod implements Command
+{
+    const DATE_FORMAT = DateTime::ATOM;
+
+    /**
+     * @var DateTime
+     */
+    public $open;
+
+    /**
+     * @var DateTime
+     */
+    public $close;
+
+    /**
+     * @var SemesterTerm
+     */
+    public $strm;
+
+    public function __construct(DateTime $open, DateTime $close, SemesterTerm $strm)
+    {
+        $this->open = $open;
+        $this->close = $close;
+        $this->strm = $strm;
+    }
+
+    public static function fromRequest(Request $request)
+    {
+        return new static(
+            static::parseDate($request->input('open'),'opened'),
+            static::parseDate($request->input('close'),'closed'),
+            SemesterTerm::fromNative($request->input('strm'))
+        );
+    }
+
+    /**
+    * The UI is presently sending a date 'Y-m-d' rather than a date-time, so attempt to parse as both if needed.
+    *
+    * @param $dateStr
+    * @param $name
+    * @return bool|DateTime
+    */
+    private static function parseDate($dateStr, $name)
+    {
+        // It should be noted that the time zone is presently set arbitrarily to EST all year around.
+        // The standard HTML5 datetime-local (if we use it) will provide the local timezone selected.
+        // The browser-supplied local timezone will possibly be different from the system timezone.
+        // This will not be a problem right now, but may become confusing if open/close specify hours
+        $dt = DateTime::createFromFormat(self::DATE_FORMAT, $dateStr."T00:00:00-05:00");
+
+        if ($dt === FALSE) {
+            $dt = DateTime::createFromFormat(self::DATE_FORMAT, $dateStr);
+        }
+
+        // This may be a bit defensive but createFromFormat does not throw exceptions
+        // we don't expect bad dates to be passed in because it should be validated by the caller
+        if ($dt === FALSE) {
+            throw new \InvalidArgumentException(sprintf("%s date '%s' does not conform to the required format of '%s'",$name, $dateStr, self::DATE_FORMAT));
+        }
+
+        return $dt;
+    }
+
+    /**
+    * @return array
+    */
+    public function serialize()
+    {
+        return [
+            'open' => $this->open->format(self::DATE_FORMAT),
+            'close' => $this->close->format(self::DATE_FORMAT),
+            'strm' => $this->strm->toNative(),
+        ];
+    }
+
+    /**
+    * @param array $data
+    *
+    * @return static
+    */
+    public static function deserialize($data)
+    {
+        return new ScheduleEnrollmentPeriod(
+            DateTime::createFromFormat(self::DATE_FORMAT, $data['open']),
+            DateTime::createFromFormat(self::DATE_FORMAT, $data['close']),
+            SemesterTerm::fromNative($data['strm'])
+        );
+    }
+}
+</code></pre>
+                    <span class="fragment current-only" data-code-focus="10"></span>
+                    <span class="fragment current-only" data-code-focus="36"></span>
                     <aside class="notes">
+                        <p>This is our command</p>
+                        <p>(*) It's called Schedule Enrollment Period</p>
+                        <p>(*) We generally construct it from the Request object.  You can see the constructor above, and we are building it with attributes from the Request object we're getting from the form</p>
+                        <li>These are the attributes we need when we are scheduling an enrollment period</li>
                     </aside>
                 </section>
                 <section>
-                    <myColBox>
-                        <article>
-                           <p>Handlers</p>
-                        </article>
-                    </myColBox>
+                    <myTitleBox>
+                       <h2>Handler</h2>
+                    </myTitleBox>
+<pre><code>&lt;?php
+
+namespace app\Enrollment\Commands;
+
+use App\Enrollment\Domain\EnrollmentPeriod;
+use App\Enrollment\IdentityProvider;
+use App\Support\CommandHandling\CommandHandler;
+use App\Support\Repository\EventSourcingRepository;
+use Illuminate\Auth\Access\AuthorizationException;
+
+class EnrollmentPeriodHandler extends CommandHandler
+{
+    /**
+     * @var IdentityProvider
+     */
+    private $auth;
+
+    /**
+     * @var EventSourcingRepository
+     */
+    private $repository;
+
+    public function __construct(IdentityProvider $auth, EventSourcingRepository $repository)
+    {
+        $this->auth = $auth;
+        $this->repository = $repository;
+    }
+
+    /**
+    * @param ScheduleEnrollmentPeriod $command
+    * @throws AuthorizationException
+    */
+    public function handleScheduleEnrollmentPeriod(ScheduleEnrollmentPeriod $command)
+    {
+        $this->auth->getEOLCoordinatorId();
+
+        $request = EnrollmentPeriod::schedule($command->open, $command->close, $command->strm);
+
+        $this->repository->persist($request);
+    }
+}
+</code></pre>
+                    <span class="fragment current-only" data-code-focus="11"></span>
+                    <span class="fragment current-only" data-code-focus="33"></span>
+                    <span class="fragment current-only" data-code-focus="35-39"></span>
+                    <span class="fragment current-only" data-code-focus="30,33"></span>
                     <aside class="notes">
+                        <li>This is our command handler</li>
+                        <li>(*) It's called the Enrollment Period Handler</li>
+                        <li>(*) Inside we call our method to handle the Schedule Enrollment Command</li>
+                        <li>(*) The body of this method actually schedules the enrollment period Based on attributes we pass with the command.  We pass the command as a parameter of this method above</li>
+                        <li>(*) Right here</li>
                     </aside>
                 </section>
                 <section>
