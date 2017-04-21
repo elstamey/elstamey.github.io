@@ -64,7 +64,7 @@
                     <myColBox>
                         <article>
                             <h2>Hi, I'm Emily!</h2>
-                            <p>I work at NC State</p>
+                            <p>I workED at NC State</p>
                             <p>Our applications support the College of Engineering, mostly outside of the classroom</p>
                             <p>We maintain 70 legacy applications</p>
                         </article>
@@ -112,10 +112,11 @@
                     <myTitleBox>
                         <h2>Sign the waiver</h2>
                     </myTitleBox>
-                    <myColBox>
-                        <article>I, __(state your name)__, will not blame Emily if Event Sourcing makes my head explode. I promise I will not leave a bad review. And I promise to be kind to myself as I learn new things. </article>
+                    <myRowBox>
+                        <article>I, __(state your name)__, will not blame Emily if Event Sourcing makes my head explode.
+                            I promise I will not leave a bad review, but will ask questions instead. And I promise to be kind to myself as I learn new things. </article>
                         <article><img src="img/status_change/head_explode.gif" class="fragment"></article>
-                    </myColBox>
+                    </myRowBox>
                     <footer>
                         <p><i class="fragment">Emily will not be held responsible if your head explodes</i></p>
                     </footer>
@@ -172,7 +173,7 @@
                         <li>What I see a lot at the University is that many of our applications began with a need to
                             collect data from paper forms that students were filling out.</li>
                         <li>As the administration became comfortable with computers, more of the process went into our applications</li>
-                        <li>Often this meant increased complexity in the tools</li>
+                        <li>Often this increased the complexity in the tools</li>
                     </aside>
                 </section>
                 <section>
@@ -271,7 +272,7 @@
                     </myTitleBox>
                     <myColBox>
                         <article>
-                            <select name="newStatus">
+                            <select name="newStatus" size="47">
                                 <option value="RECEIVED">RECEIVED</option>
                                 <option value="CANCELLED">CANCELLED</option>
                                 <option value="COURSE CANCELLED">COURSE CANCELLED</option>
@@ -361,7 +362,7 @@
                     <aside class="notes">
                         <p>In a workflow, usually something happens and THEN your object&#39;s status is
                             updated to reflect that something happened.</p>
-                        <p>There aren&#39;t 9 PENDING states.  There is ONE PENDING and 9 reasons for it to be PENDING </p>
+                        <p>There aren&#39;t 9 PENDING states.  There is ONE PENDING and 10 reasons for it to be PENDING </p>
                         <p>Events can record what ACTUALLY happened and the important details of that event.  It is actually your history!</p>
                         <p>Our code can then be written to describe what that event means with context.</p>
                     </aside>
