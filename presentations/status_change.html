@@ -946,6 +946,18 @@ class DomainMessage
                 </section>
                 <section>
                     <myTitleBox>
+                        <h2>Simple event listener</h2>
+                    </myTitleBox>
+                    <myColBox>
+                        <article>
+                            <p>Handles Event Listening</p>
+                            <p>&nbsp;</p>
+                            <p><b>getHandleMethod()</b> - <br>uses the Event name to identify the handle method</p>
+                        </article>
+                    </myColBox>
+                </section>
+                <section>
+                    <myTitleBox>
                         <h2>Simple Event Listener </h2>
                     </myTitleBox>
 <pre><code>&lt;?php
@@ -1002,7 +1014,7 @@ abstract class SimpleEventListener implements EventListener
                         </article>
                     </myColBox>
                     <aside class="notes">
-                        <li>The Event Store, in our cases is a database table.  We aren't each event in its own table, so</li>
+                        <li>The Event Store, in our case is a database table.  We aren't storing each event in its own table, so</li>
                         <li>We build the table to generically describe ALL of our events.</li>
                         <li>The classes that listen to those events subscribe only to the events that matter in that context</li>
                     </aside>
