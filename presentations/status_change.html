@@ -463,9 +463,9 @@
                     <myColBox>
                         <article>
                             <ol>
-                                <li>Every change is captured in an event object</li>
+                                <li>Every happening is captured in an event object</li>
                                 <li>Event objects are stored in the sequence they happened</li>
-                                <li>That sequence determines the order they will be applied in our code</li>
+                                <li>That sequence determines the order they will be applied in your code</li>
                             </ol>
                         </article>
                     </myColBox>
@@ -474,7 +474,7 @@
                 </section>
                 <section>
                     <myTitleBox>
-                        <h3>Events</h3>
+                        <h3>Rules for Events</h3>
                     </myTitleBox>
                     <myColBox>
                         <article>
@@ -490,10 +490,10 @@
                         </article>
                     </myColBox>
                     <aside class="notes">
-                        <p>You will see event names like Enrolllment Request Was Approved because validation was done prior to recording the event,
+                        <p>You will see event names like Enrollment Request Was Approved because validation was done prior to recording the event,
                         and these are KNOWN happenings in our system</p>
                         <p>This Event will have attributes, like the student id, the course id, who the approver was
-                            because this is important information</p>
+                            because this is the important information</p>
                         <p>We wouldn't store the Enrollment Request Object because if we ever changed that object, we'd
                             have difficulty applying the event or reconstructing that object</p>
                         <p>Storing the VALUES on our Event gives us the flexibility for the system to change later
@@ -513,9 +513,15 @@
                     </aside>
                 </section>
                 <section>
+                    <myTitleBox>
+                        <h2>Why Events?</h2>
+                    </myTitleBox>
                     <myColBox>
                         <article>
-                           <p><img src="img/status_change/why_events.jpg" alt="why_events.jpg"></p>
+                            <p><u>state transistions</u> are <u>important</u></p>
+                            <p>We need an <u>audit log</u> and <u>proof</u> of state</p>
+                            <p>This <u>history</u> is more important than the current state</p>
+                            <p><u>Able to replay these events to rebuild state</u></p>
                         </article>
                     </myColBox>
                     <aside class="notes">
@@ -528,12 +534,26 @@
                         <li>And when they completely changed the format of budgets they wanted to review, we could easily rebuild that without affecting the amounts.</li>
                     </aside>
                 </section>
+                <!--<section>-->
+                    <!--<myColBox>-->
+                        <!--<article>-->
+                           <!--<p><img src="img/status_change/why_events.jpg" alt="why_events.jpg"></p>-->
+                        <!--</article>-->
+                    <!--</myColBox>-->
+                    <!--<aside class="notes">-->
+                        <!--<li>The events that got us to this state are more important than the current status</li>-->
+                        <!--<li>We now have an audit log, and proof of how we got to this state</li>-->
+                        <!--<li>That history is more important that the current state BECAUSE</li>-->
+                        <!--<li>We are able to replay those events to prove the state</li>-->
+                        <!--<li>With our Scholarships Application, we collected the attributes that helped a student match for the scholarship to keep a record of why they were chosen </li>-->
+                        <!--<li>If we needed to see the budgets on any given day in the past, we could produce that information</li>-->
+                        <!--<li>And when they completely changed the format of budgets they wanted to review, we could easily rebuild that without affecting the amounts.</li>-->
+                    <!--</aside>-->
+                <!--</section>-->
                 <section>
-                    <myColBox>
-                        <article>
-                            <img src="img/status_change/dont_delete_events.jpg" alt="event_rules.jpg">
-                        </article>
-                    </myColBox>
+                    <footer>
+                        <img src="img/status_change/dont_delete_events.jpg" alt="event_rules.jpg">
+                    </footer>
                     <aside class="notes">
                         <p>Greg Young in a talk makes a point of how difficult it was to find a picture of an accountant erasing
                             because that's not something they do.  They make a correction undoing a mistake and then make the intended adjustment</p>
@@ -542,30 +562,38 @@
                     </aside>
                 </section>
                 <section>
-                    <myColBox>
-                        <article>
-                           <p><img src="img/status_change/event_rules.jpg" alt="event_rules.jpg"></p>
-                        </article>
-                    </myColBox>
+                    <footer>
+                       <p><img src="img/status_change/events-treated-differently.jpg"></p>
+                    </footer>
                     <aside class="notes">
-                        <p>notes for the picture:  not event2</p>
                         <p>In our system, we have an event with some meaning, and a listener that sees that event when it happens
                         <li>the apply method tells our system what should happen in this context and it produces this result</li>
-                        <li>but what if our understanding of the event changes.  We might rewrite that apply event method, which produces a different result</li>
                         <li>Maybe these are two different views in our system, that handle different behavior, those would coexist; like reports for two different types of users</li>
+                    </aside>
+                </section>
+                <section>
+                    <footer>
+                        <p><img src="img/status_change/events-replaced.jpg"></p>
+                    </footer>
+                    <aside class="notes">
+                        <li>but what if our understanding of the event changes.  We might rewrite that apply event method, which produces a different result</li>
                         <li>But it could also be that we rewrite what it means to apply that event and the new apply method stays, with the new report, and the old is deleted</li></p>
                     </aside>
                 </section>
                 <section>
                     <myColBox>
                         <article>
-                            <p>The event is less likely to change.  Things like Approve and Reject a
-                                Request may later require additional attributes, but the part of the
-                                process that will change is most likely the result that follows that event.</p>
+                            <p>Events don't change</p>
+                            <p>The part of the
+                                code that will change is most likely the result that follows that event.</p>
                             <p> The structure of the resulting data is more likely to change than the behavior</p>
                         </article>
                     </myColBox>
                     <aside class="notes">
+                        <p>The event is less likely to change.  Things like Approve and Reject a
+                            Request may later require additional attributes, but the part of the
+                            process that will change is most likely the result that follows that event.</p>
+                        <p> The structure of the resulting data is more likely to change than the behavior</p>
                     </aside>
                 </section>
                 <section>
@@ -1232,6 +1260,22 @@ class DatabaseEventStore implements EventStore
                 </section>
                 <section>
                     <myTitleBox>
+                        <h2>Listeners (Class)</h2>
+                    </myTitleBox>
+                    <myColBox>
+                        <article>
+                            <ul>
+                                <li>create listeners that listen to certain events and determine what they mean</li>
+                                <li>StudentProfileProjector</li>
+                                <li>EnrollmentRequests Read Model</li>
+                            </ul>
+                        </article>
+                    </myColBox>
+                    <aside class="notes">
+                    </aside>
+                </section>
+                <section>
+                    <myTitleBox>
                         <h2>Projector </h2>
                     </myTitleBox>
 <pre><code>&lt;?php
@@ -1320,7 +1364,6 @@ class EnrollmentRequestProjector extends SimpleProjector implements Replayable
     }
 
 }
-
 </code></pre>
                     <span class="fragment current-only" data-code-focus="13"></span>
                     <span class="fragment current-only" data-code-focus="24"></span>
@@ -1344,36 +1387,36 @@ class EnrollmentRequestProjector extends SimpleProjector implements Replayable
                     </myTitleBox>
 <pre><code>&lt;?php
 
-    namespace App\Enrollment\ReadModel;
+namespace App\Enrollment\ReadModel;
 
 
-    use Carbon\Carbon;
-    use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 
-    /**
-    * @codeCoverageIgnore
-    */
-    class EnrollmentRequest extends Model
-    {
+/**
+* @codeCoverageIgnore
+*/
+class EnrollmentRequest extends Model
+{
     protected  $table = 'proj_enrollment_requests';
     public $incrementing = false;
     public $timestamps = false;
 
     public static function current()
     {
-    return static::where('student_id', auth()->user()->name)->get();
+        return static::where('student_id', auth()->user()->name)->get();
     }
 
     public static function lookupRequestsFor($username)
     {
-    return static::where('student_id', $username)->get();
+        return static::where('student_id', $username)->get();
     }
 
     public function offering()
     {
-    return $this->hasOne(CourseOffering::class, 'id', 'course_offering_id');
+        return $this->hasOne(CourseOffering::class, 'id', 'course_offering_id');
     }
-    }
+}
 </code></pre>
                     <span class="fragment current-only" data-code-focus="10"></span>
                     <aside class="notes">
@@ -1382,45 +1425,8 @@ class EnrollmentRequestProjector extends SimpleProjector implements Replayable
                 </section>
                 <section>
                     <myTitleBox>
-                        <h2>Listeners (Class)</h2>
+                       <h2>Commands</h2>
                     </myTitleBox>
-                    <myColBox>
-                        <article>
-                            <ul>
-                                <li>create listeners that listen to certain events and determine what they mean</li>
-                                <li>StudentProfileProjector</li>
-                                <li>EnrollmentRequests Read Model</li>
-                            </ul>
-                        </article>
-                    </myColBox>
-                    <aside class="notes">
-                    </aside>
-                </section>
-
-                <section>
-                    <myColBox>
-                        <article>
-                           <p>code for projections</p>
-                        </article>
-                    </myColBox>
-                    <aside class="notes">
-                    </aside>
-                </section>
-                <section>
-                    <myColBox>
-                        <article>
-                           <p>code for read model</p>
-                        </article>
-                    </myColBox>
-                    <aside class="notes">
-                    </aside>
-                </section>
-                <section>
-                    <myColBox>
-                        <article>
-                           <p>Commands</p>
-                        </article>
-                    </myColBox>
 <pre><code>&lt;?php
 
 namespace App\Enrollment\Commands;
@@ -1596,14 +1602,6 @@ class EnrollmentPeriodHandler extends CommandHandler
                     </aside>
                 </section>
                 <section>
-                    <myColBox>
-                        <article>
-                        </article>
-                    </myColBox>
-                    <aside class="notes">
-                    </aside>
-                </section>
-                <section>
                     <myTitleBox>
                         <h2>Pros</h2>
                     </myTitleBox>
@@ -1636,6 +1634,11 @@ class EnrollmentPeriodHandler extends CommandHandler
                     </aside>
                 </section>
                 <section>
+                    <footer>
+                        <img src="img/status_change/we-did-it.jpg">
+                    </footer>
+                </section>
+                <section>
                     <myTitleBox>
                         <h3>Links for further reading</h3>
                     </myTitleBox>
@@ -1654,15 +1657,11 @@ class EnrollmentPeriodHandler extends CommandHandler
                     </aside>
                 </section>
                 <section>
-                    <myColBox>
-                        <article>
-                            <img src="img/midwest_logo.svg">
-                            <h1>Thank You!</h1>
-                            <p>Emily Stamey</p>
-                            <p>Twitter: <a href="https://twitter.com/elstamey">@elstamey</a></p>
-                            <p>Joind.in: <a href="https://joind.in/talk/280df">https://joind.in/talk/280df</a></p>
-                        </article>
-                    </myColBox>
+                    <img src="img/midwest_logo.svg">
+                    <h1>Thank You!</h1>
+                    <p>Emily Stamey</p>
+                    <p>Twitter: <a href="https://twitter.com/elstamey">@elstamey</a></p>
+                    <p>Joind.in: <a href="https://joind.in/talk/280df">https://joind.in/talk/280df</a></p>
                 </section>
             </div>
         </div>
