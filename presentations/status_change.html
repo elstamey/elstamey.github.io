@@ -43,7 +43,7 @@
 	<body>
 		<div class="reveal">
             <div class='footer'>
-                @elstamey      <a href="https://joind.in/talk/280df">https://joind.in/talk/280df</a>
+                @elstamey      <a href="https://joind.in/talk/c8690">https://joind.in/talk/c8690</a>
             </div>
 			<div class="slides">
                 <section>
@@ -51,7 +51,7 @@
                         <article>
                             <h3>Status Change: Now Using Event Sourcing</h3>
                             <p>by Emily Stamey</p>
-                            <p><a href="https://joind.in/talk/280df">https://joind.in/talk/280df</a></p>
+                            <p><a href="https://joind.in/talk/c8690">https://joind.in/talk/c8690</a></p>
                         </article>
                         <article>
                             <img src="img/status_change/events.jpg"
@@ -64,7 +64,7 @@
                     <myColBox>
                         <article>
                             <h2>Hi, I'm Emily!</h2>
-                            <p>I work at NC State</p>
+                            <p>I workED at NC State</p>
                             <p>Our applications support the College of Engineering, mostly outside of the classroom</p>
                             <p>We maintain 70 legacy applications</p>
                         </article>
@@ -112,10 +112,10 @@
                     <myTitleBox>
                         <h2>Sign the waiver</h2>
                     </myTitleBox>
-                    <myColBox>
-                        <article>I, __(state your name)__, will not blame or sue Emily if Event Sourcing makes my head explode. I promise I will not leave a bad review. And I promise to be kind to myself as I learn new things.</article>
+                    <myRowBox>
+                        <article>I, __(state your name)__, will not blame Emily if Event Sourcing makes my head explode. I promise I will not leave a bad review. And I promise to be kind to myself as I learn new things. </article>
                         <article><img src="img/status_change/head_explode.gif" class="fragment"></article>
-                    </myColBox>
+                    </myRowBox>
                     <footer>
                         <p><i class="fragment">Emily will not be held responsible if your head explodes</i></p>
                     </footer>
@@ -153,21 +153,6 @@
                     </aside>
                 </section>
                 <section>
-                    <myRowBox>
-                        <article>
-                            <img src="img/status_change/exercising_brain.jpg">
-                        </article>
-                    </myRowBox>
-                    <aside class="notes">
-                        <li>It's completely normal to feel like this when you're learning about Event Sourcing</li>
-                        <li>It's a REAL mental shift coming from an older application to ES, so try to relax your brains a little</li>
-                        <li>Try to follow the way I'm describing how it can be used moreso than the code examples.  Those will be available for you to look at.</li>
-                        <li>And unfortunately I don't have all of this tied together yet, as with MANY of the online Event Sourcing examples</li>
-                        <li>But you will gain a better understanding of how this can be useful, and some resources to get you started</li>
-                        <li>Be patient with yourself and know that you may do more reading before this clicks</li>
-                    </aside>
-                </section>
-                <section>
                     <myTitleBox>
                         <h2>Forms</h2>
                     </myTitleBox>
@@ -187,7 +172,7 @@
                         <li>What I see a lot at the University is that many of our applications began with a need to
                             collect data from paper forms that students were filling out.</li>
                         <li>As the administration became comfortable with computers, more of the process went into our applications</li>
-                        <li>Often this meant increased complexity in the tools</li>
+                        <li>Often this increased the complexity in the tools</li>
                     </aside>
                 </section>
                 <section>
@@ -282,11 +267,69 @@
                 </section>
                 <section>
                     <myTitleBox>
-                        <h2>This is what you may end up with</h2>
+                        <h2>A simple status drop-down</h2>
                     </myTitleBox>
                     <myColBox>
                         <article>
                             <select name="newStatus">
+                                <option value="RECEIVED">RECEIVED</option>
+                                <option value="CANCELLED">CANCELLED</option>
+                                <option value="COURSE CANCELLED">COURSE CANCELLED</option>
+                                <option value="COURSE NOT APPROVED">COURSE NOT APPROVED</option>
+                                <option value="CPC DENIED">CPC DENIED</option>
+                                <option value="CPC NOT APPROVED">CPC NOT APPROVED</option>
+                                <option value="CPC PENDING TRANSCRIPT">CPC PENDING TRANSCRIPT</option>
+                                <option value="CPC PROCESSING">CPC PROCESSING<em></option>
+                                <option value="DENIED">DENIED</option>
+                                <option value="DROPPED AFTER CENSUS">DROPPED AFTER CENSUS</em></option>
+                                <option value="DROPPED BEFORE CLASSES BEGUN">DROPPED BEFORE CLASSES BEGUN<em></option>
+                                <option value="DROPPED BETWEEN BEGINNING OF CLASS AND CENSUS DATE">DROPPED BETWEEN BEGINNING OF CLASS AND CENSUS DATE</em></option>
+                                <option value="DROPS/WITHDRAWALS AT SITES">DROPS/WITHDRAWALS AT SITES<em></option>
+                                <option value="ECE ON CAMPUS STUDENTS">ECE ON CAMPUS STUDENTS</option>
+                                <option value="ENROLLMENT CANCELLED">ENROLLMENT CANCELLED</option>
+                                <option value="EOL APPROVED">EOL APPROVED</em></option>
+                                <option value="EOL MISC">EOL MISC<em></option>
+                                <option value="NEW STUDENT REGISTRATION">NEW STUDENT REGISTRATION</option>
+                                <option value="PENDING ON CAMPUS REQUEST">PENDING ON CAMPUS REQUEST</option>
+                                <option value="ON CAMPUS STUDENT NOT APPROVED">ON CAMPUS STUDENT NOT APPROVED</option>
+                                <option value="PENDING CASHIER HOLD">PENDING CASHIER HOLD</option>
+                                <option value="PENDING EOL APPROVAL">PENDING EOL APPROVAL</em></option>
+                                <option value="PENDING INSTRUCTOR APPROVAL">PENDING INSTRUCTOR APPROVAL</option>
+                                <option value="PENDING INTERNATIONAL STUDENT">PENDING INTERNATIONAL STUDENT</option>
+                                <option value="PENDING NDS OPEN ENROLLMENT">PENDING NDS OPEN ENROLLMENT</option>
+                                <option value="PENDING OIS VISA STUDENT">PENDING OIS VISA STUDENT</option>
+                                <option value="PENDING PERMANENT RESIDENT">PENDING PERMANENT RESIDENT</option>
+                                <option value="PENDING TERM ADVISEMENT HOLD">PENDING TERM ADVISEMENT HOLD</option>
+                                <option value="PENDING TRANSCRIPT">PENDING TRANSCRIPT</option>
+                                <option value="PENDING TUITION PREPAYMENT">PENDING TUITION PREPAYMENT</option>
+                                <option value="PREAPPROVED RETURNING">PREAPPROVED RETURNING</option>
+                                <option value="PROCESSING NDS">PROCESSING NDS<em></option>
+                                <option value="PROCESSING SITE">PROCESSING SITE</em></option>
+                                <option value="PROCESSING Z">PROCESSING Z<em></option>
+                                <option value="PROJECT MESSAGE - MAE 586">PROJECT MESSAGE - MAE 586</option>
+                                <option value="PROJECT MESSAGE - NE 693">PROJECT MESSAGE - NE 693</option>
+                                <option value="REGISTERED">REGISTERED</option>
+                                <option value="REGISTERED ASHEVILLE">REGISTERED ASHEVILLE</option>
+                                <option value="REGISTERED HAVELOCK">REGISTERED HAVELOCK</option>
+                                <option value="REGISTERED WILMINGTON">REGISTERED WILMINGTON</option>
+                                <option value="SITE APPROVAL: ASHEVILLE">SITE APPROVAL: ASHEVILLE</em></option>
+                                <option value="SITE APPROVAL: HAVELOCK">SITE APPROVAL: HAVELOCK<em></option>
+                                <option value="SITE APPROVAL: WILMINGTON">SITE APPROVAL: WILMINGTON</em></option>
+                                <option value="SITE NOT APPROVED">SITE NOT APPROVED</option>
+                                <option value="SWAPPED OUT">SWAPPED OUT</option>
+                                <option value="TRANSCRIPT APPROVED">TRANSCRIPT APPROVED<em></option>
+                                <option value="WITHDRAWN">WITHDRAWN</em></option>
+                            </select>
+                        </article>
+                    </myColBox>
+                </section>
+                <section>
+                    <myTitleBox>
+                        <h2>A "simple" status drop-down</h2>
+                    </myTitleBox>
+                    <myColBox>
+                        <article>
+                            <select name="newStatus" size="47">
                                 <option value="RECEIVED">RECEIVED</option>
                                 <option value="CANCELLED">CANCELLED</option>
                                 <option value="COURSE CANCELLED">COURSE CANCELLED</option>
@@ -376,7 +419,7 @@
                     <aside class="notes">
                         <p>In a workflow, usually something happens and THEN your object&#39;s status is
                             updated to reflect that something happened.</p>
-                        <p>There aren&#39;t 9 PENDING states.  There is ONE PENDING and 9 reasons for it to be PENDING </p>
+                        <p>There aren&#39;t 9 PENDING states.  There is ONE PENDING and 10 reasons for it to be PENDING </p>
                         <p>Events can record what ACTUALLY happened and the important details of that event.  It is actually your history!</p>
                         <p>Our code can then be written to describe what that event means with context.</p>
                     </aside>
@@ -501,6 +544,42 @@
                     </aside>
                 </section>
                 <section>
+                    <myTitleBox>
+                        <h3>The Object can change</h3>
+                    </myTitleBox>
+                    <myColBox>
+                        <article>
+                            <img src="img/status_change/Objects.png">
+                        </article>
+                    </myColBox>
+                </section>
+                <section>
+                    <myTitleBox>
+                        <h3>Our Object definition changed</h3>
+                    </myTitleBox>
+                    <myColBox>
+                        <article><img src="img/status_change/EventWithObject.png"></article>
+                    </myColBox>
+                    <aside class="notes">
+                        <p>If we had stored the older version of the Object, we would have problems accessing it in this case</p>
+                        <p>We could make the third attribute optional or write something to upgrade all the Objects stored in events...</p>
+                    </aside>
+                </section>
+                <section>
+                    <myTitleBox>
+                        <h3>Events are not Bionic</h3>
+                    </myTitleBox>
+                    <myColBox>
+                        <article>
+                            <img src="img/status_change/we_can_rebuild_him.jpg">
+                        </article>
+                    </myColBox>
+                    <aside class="notes">
+                        <li>But just because we CAN do it doesn't mean we should do it.</li>
+                        <li>If we store the relevant attributes of an Event, in their data types, we don't have to spend $6 million dollars to rebuild a cat</li>
+                    </aside>
+                </section>
+                <section>
                     <myColBox>
                         <article>
                             <h2>The fact that an event happened <u>doesn&#39;t ever
@@ -556,7 +635,7 @@
                     </footer>
                     <aside class="notes">
                         <p>Greg Young in a talk makes a point of how difficult it was to find a picture of an accountant erasing
-                            because that's not something they do.  They make a correction undoing a mistake and then make the intended adjustment</p>
+                            because that's not something they do.  They make a correction to undo a mistake and then make the intended adjustment</p>
                         <p>So to fix one event, you may have two other events, but that event will (almost) never be deleted</p>
                         <p>You want to adjust your thinking in this way</p>
                     </aside>
@@ -620,6 +699,21 @@
                         together, but there are support classes that I won't be  able to go into in the time.  You can peruse the
                         code more closely on your own, but there is flexibility to how you built this in your application, so
                         take this approach with a grain of salt
+                    </aside>
+                </section>
+                <section>
+                    <myRowBox>
+                        <article>
+                            <img src="img/status_change/exercising_brain.jpg">
+                        </article>
+                    </myRowBox>
+                    <aside class="notes">
+                        <li>It's completely normal to feel like this when you're learning about Event Sourcing</li>
+                        <li>It's a REAL mental shift coming from an older application to ES, so try to relax your brains a little</li>
+                        <li>Try to follow the way I'm describing how it can be used moreso than the code examples.  Those will be available for you to look at.</li>
+                        <li>And unfortunately I don't have all of this tied together yet, as with MANY of the online Event Sourcing examples</li>
+                        <li>But you will gain a better understanding of how this can be useful, and some resources to get you started</li>
+                        <li>Be patient with yourself and know that you may do more reading before this clicks</li>
                     </aside>
                 </section>
                 <section>
@@ -852,6 +946,18 @@ class DomainMessage
                 </section>
                 <section>
                     <myTitleBox>
+                        <h2>Simple event listener</h2>
+                    </myTitleBox>
+                    <myColBox>
+                        <article>
+                            <p>Handles Event Listening</p>
+                            <p>&nbsp;</p>
+                            <p><b>getHandleMethod()</b> - <br>uses the Event name to identify the handle method</p>
+                        </article>
+                    </myColBox>
+                </section>
+                <section>
+                    <myTitleBox>
                         <h2>Simple Event Listener </h2>
                     </myTitleBox>
 <pre><code>&lt;?php
@@ -908,7 +1014,7 @@ abstract class SimpleEventListener implements EventListener
                         </article>
                     </myColBox>
                     <aside class="notes">
-                        <li>The Event Store, in our cases is a database table.  We aren't each event in its own table, so</li>
+                        <li>The Event Store, in our case is a database table.  We aren't storing each event in its own table, so</li>
                         <li>We build the table to generically describe ALL of our events.</li>
                         <li>The classes that listen to those events subscribe only to the events that matter in that context</li>
                     </aside>
@@ -1657,11 +1763,11 @@ class EnrollmentPeriodHandler extends CommandHandler
                     </aside>
                 </section>
                 <section>
-                    <img src="img/midwest_logo.svg">
+                    <img src="img/lonestarphp-logo.png">
                     <h1>Thank You!</h1>
                     <p>Emily Stamey</p>
                     <p>Twitter: <a href="https://twitter.com/elstamey">@elstamey</a></p>
-                    <p>Joind.in: <a href="https://joind.in/talk/280df">https://joind.in/talk/280df</a></p>
+                    <p>Joind.in: <a href="https://joind.in/talk/c8690">https://joind.in/talk/c8690</a></p>
                 </section>
             </div>
         </div>
