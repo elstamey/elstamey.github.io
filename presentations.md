@@ -3,7 +3,7 @@ author:
     name: Emily Stamey
     twitter: elstamey
     url: http://elstamey.com
-output: index.html
+output: presentations.html
 theme: jdan/cleaver-retro
 style: my-style.css
 -------------------
