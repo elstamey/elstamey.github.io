@@ -1,0 +1,733 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta name="description"
+			  content="User Story Mapping is a valuable tool that gives you strategies to view features alongside the problems they solve. It is a powerful approach that allows many people to prioritize features, regardless of technical expertise. Instead of planning our project as a building that we must build with a strong foundation, we begin to plan as a vehicle. This focus delivers the Most Valuable Features to the customer by answering the question, “What’s Your Skateboard?”">
+		<meta name="author" content="Emily Stamey">
+
+		<title>What's Your Skateboard?</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="./node_modules/highlight.js/styles/zenburn.css">
+
+		<link rel="stylesheet" href="plugin/accessibility/helper.css">
+        <link rel="stylesheet" href="css/my-style.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+            <div class='footer'>
+                @elstamey
+            </div>
+			<div class="slides">
+				<section data-background-image="img/skateboard/skateboard_cover.jpg" class="titleblock" style="top: -200px;">
+					<h3 class="title" id="whats-your-skateboard-">What's Your Skateboard?</h3>
+					<h5 class="attrib">&copy; photo by <a
+							href="https://www.flickr.com/photos/kwl/">Kenny Louie</a></h5>
+				</section>
+				<section>
+                    <footer>
+                        <h3>Inspired By</h3>
+                    </footer>
+                    <footer>
+                        <img src="img/skateboard/book.jpg">
+                    </footer>
+				</section>
+                <section>
+                    <myColBox>
+                        <article>
+							<myRowBox>
+								<article>
+									<h3>Emily</h3>
+									<img src="img/me/developer.png" alt="developer">
+								</article>
+								<article>
+									<img src="img/inquest.svg">
+								</article>
+							</myRowBox>
+                        </article>
+                        <article>
+                            <myrowBox>
+                                <article>
+                                    <p>I workED at NC State</p>
+                                </article>
+                                <article>
+                                    <img src="img/me/ncsu_block_s.png" alt="NC State University logo">
+                                </article>
+                            </myrowBox>
+                        </article>
+                    </myColBox>
+                    <aside class="notes">
+                    </aside>
+                </section>
+				<section>
+					<myTitleBox>
+						<h3>A Problematic Project Workflow</h3>
+					</myTitleBox>
+					<myColBox>
+						<article>
+							<ol>
+								<li>Research</li>
+								<!--<li>Build a prototype or wireframes</li>-->
+								<!--<li>Break the project into components or parts for implementation </li>-->
+								<li>Develop over several months</li>
+								<li>Deliver something</li>
+								<li>Learn if the big guess was correct</li>
+							</ol>
+						</article>
+					</myColBox>
+					<aside class="notes">
+						<li>Historically, we would have a brief meeting with the customer where we discussed client needs.</li>
+						<li>Then, we developed for a few months and delivered something that solved a problem, but didn't always solve THEIR problems or fulfill a need.</li>
+						<li>As we noticed this, we were looking for techniques to improve our communication and effectiveness.</li>
+						<li>User Story Mapping taught us a lot of things.</li>
+					</aside>
+				</section>
+				<section>
+					<myTitleBox>
+						<h3>Learning Objectives</h3>
+					</myTitleBox>
+					<myColBox>
+						<article>
+							<ol>
+								<li>What is a story map</li>
+								<li>Why would you want to use it?</li>
+								<li>Sketch a simple narrative flow</li>
+								<li>Critique the example story map</li>
+							</ol>
+						</article>
+					</myColBox>
+					<aside class="notes">
+						<p>Today we're going to cover the broad strokes of how user story maps work and the bigger ideas that can help you transform the way your team works.  </p>
+						<p>We're going to use a simple example to learn about building the story of your application.  And I will show you a simple map that illustrates a project I'm working on.</p>
+					</aside>
+				</section>
+				<section>
+					<myTitleBox>
+						<h3>What is a Story Map?</h3>
+					</myTitleBox>
+					<myColBox>
+						<article>
+							<p>A diagram of a project that tells the story of the people and systems involved in a process.</p>
+							<p class="fragment">Detail is added as we learn more about the project</p>
+							<p class="fragment">The map can be built for an existing application or a new application.</p>
+						</article>
+					</myColBox>
+					<aside class="notes">
+						<li>A visual representation of the narrative flow of the application and processes that happen inside and outside.</li>
+						<li>(*) We can discover many details about the project </li>
+						<li>It highlights areas where you need to know more, and allows you to investigate that before you begin writing any code.</li>
+						<li>(*)This technique works for new and existing projects of any size.</li>
+					</aside>
+				</section>
+				<section>
+					<myTitleBox>
+						<h3>The Story Map</h3>
+					</myTitleBox>
+					<myColBox>
+						<article>
+							<img src="img/skateboard/UserStoryMap.png" alt="Diagram of a User Story Map">
+						</article>
+					</myColBox>
+					<aside class="notes">
+						<li>Structurally, your map will look a bit like this.</li>
+						<li>The story flows from left to right</li>
+						<li>Details and steps are built from the top down.</li>
+						<li>You can show users of the application, participants in the process, or even a background system process</li>
+						<li>When we get the full story described, we will begin to slice it.  But we'll talk about that soon.</li>
+					</aside>
+				</section>
+				<section>
+					<myTitleBox>
+						<h3>Who should Story Map?</h3>
+					</myTitleBox>
+					<myColBox>
+						<article>
+							<p>Anyone who knows the process ... <span class="fragment">Not Just Developers</span> </p>
+							<p>At least one knowledgeable person from each group of stakeholders</p>
+						</article>
+						<article>
+							<img src="img/skateboard/who.png">
+						</article>
+					</myColBox>
+					<aside class="notes">
+						<li>Our apps often automated processes.</li>
+						<li>You want to bring to your story mapping discussion anyone who knows the processes you're automating.</li>
+						<li>(*)The room should actually have fewer programmers in the beginning unless they can be mostly silent.  </li>
+						<li>Developers shouldn't fill in the story, but ask questions.  </li>
+						<li>You cannot learn what your application is doing or supposed to be doing from people who don't use it to solve a problem they have.</li>
+						<li>This doesn't mean to keep them out of the loop of discovery, but their role is quieter here</li>
+					</aside>
+				</section>
+				<section>
+					<myTitleBox>
+						<h3>When to Story Map?</h3>
+					</myTitleBox>
+					<myColBox>
+						<article>
+							<img src="img/skateboard/when.png">
+						</article>
+						<article>
+							<p>&nbsp;</p>
+							<ul>
+								<li>When you have questions</li>
+								<li>Before You begin development</li>
+							</ul>
+						</article>
+					</myColBox>
+					<aside class="notes">
+						<li>Any time you are doing work and don't know the business process behind it.  </li>
+						<li>The application can already exist, and you can use this to discover how new features or fixes should be implemented.</li>
+					</aside>
+				</section>
+				<section>
+					<myTitleBox>
+						<h3>Why Story Map?</h3>
+					</myTitleBox>
+					<myColBox>
+						<article>
+							<ul>
+								<li><em>Build shared understanding</em></li>
+								<li>Encourage full discovery before prototyping</li>
+								<li>Prioritize work to be done as a group</li>
+							</ul>
+							<p class="fragment"><strong>*Lowers problems with estimates and feature creep</strong></p>
+						</article>
+					</myColBox>
+					<aside class="notes">
+						<li>Story mapping lets you discover the full project</li>
+						<li>It highlights question areas, so you can answer them before development begins</li>
+						<li>enables the whole group to prioritize work and removes technical details from that discussion</li>
+						<li>(*)Discovery up front is less expensive than discovery in the middle of coding</li>
+					</aside>
+				</section>
+				<section>
+					<myTitleBox>
+						<h3>The big picture</h3>
+					</myTitleBox>
+					<myColBox>
+						<article>
+							<img src="img/skateboard/panorama.jpg" alt="Panorama of mountains, a town, and fields far into the distance">
+						</article>
+					</myColBox>
+					<footer>
+						<h5 class="attrib">&copy; photo by <a
+								href="https://www.flickr.com/photos/75487768@N04/8852553227/in/photolist-h8HTU3-JSeov4-h8HPQd-h8HWim-e5dUvX-5fR919-aB8Zp5-sbN2aF-n43Zp-nAUXRk-pw3kjL-qrSmhY-jSiBep-pYPm8B-eugDE4-4Tx3Rt-gUegPw-2Ri5uw-s8m2Qd-7j49P5-reXhVH-dCFW2M-eeoR86-8h1TkG-gsrTKm-4Nxays-dpe7UV-eDky7z-5j5d7W-oXXQy1-nY2L7h-mCqdmy-8RGz3D-nfTd25-6syxwQ-8zLvWC-4y5R9z-8gXBot-aATCWo-NvqGx-67vcv1-nxc6qH-bKhCEr-8w9uH9-65wnjj-5UX21y-3eov4o-BBsrb-668yVg-5W63ti">Barnyz</a></h5>
+					</footer>
+					<aside class="notes">
+						<li>Discovery is like a large panorama.  Many details are in the foreground, but if you look closely
+							at the countryside here, you can see even more in the landscape</li>
+						<li>way out there are mountains, and maybe your project is working towards them</li>
+						<li>You are figuring out which details are important to your application</li>
+					</aside>
+				</section>
+				<section>
+					<h4 id="focus-during-development">Focus during development</h4>
+					<p><img src="img/narrow_focus.jpg" alt="Focus"></p>
+					<p><a href="https://www.flickr.com/photos/theilr/6991409092/in/photolist-bDNNm5-dei4BD-hPt5SL-rhRZNN-8a7A6N-c8F4a1-4hHTYQ-bULsP8-nFZm8R-npMA17-a7MRtV-aksL6R-ojpRNK-JtLhP-d1uCHu-6akRDL-nAPrzR-9LPpCP-dMHo1G-4Tb69M-3fK6eh-kEZkGe-5X9ePa-4UNFbB-TFs2-pg3VkM-qmgY5N-8BEgCx-dkYvQv-oVWE1S-dcfhQG-8Zre24-cNJ6sW-eksvWx-e2Woij-6ARqEj-7NcVUv-oiqrhR-9rfVkW-5W1swG-pzBSHK-EZB1y-6bays9-fyamKk-rhgNfR-bvcx6h-4Gaj4U-6vy3ei-kUcpkp-dCVdy">Photo by Theilr</a></p>
+
+				</section>
+				<section>
+					<h3 id="where-">Where?</h3>
+					<p>A large, clear wall or whiteboard.</p>
+					<p>A place central to the team, at least in the beginning.</p>
+
+				</section>
+				<section>
+					<h3 id="you-ll-need">You&#39;ll need</h3>
+					<ul>
+						<li>painter&#39;s tape</li>
+						<li>markers</li>
+						<li>post-its (many colors)</li>
+					</ul>
+
+				</section>
+				<section>
+					<h3 id="your-morning">Your Morning</h3>
+					<p>List the first five tasks or activities you did this morning after getting out of bed.</p>
+					<p>Put each one on a post-it provided</p>
+
+				</section>
+				<section>
+					<h3 id="your-typical-morning">Your Typical Morning</h3>
+					<p>Pick 3 things you normally do in the morning that you didn&#39;t do today</p>
+
+				</section>
+				<section>
+					<h3 id="my-morning-first-draft">My morning - first draft</h3>
+					<p><a href="img/morning1.png"><img src="img/morning1.png" alt="My morning - first pass"></a></p>
+
+				</section>
+				<section>
+					<h3 id="my-morning-revised">My morning - revised</h3>
+					<p><img src="img/morning2.png" alt="My morning - revised"></p>
+
+				</section>
+				<section>
+					<h3 id="users">Users</h3>
+					<p>Who are the Actors/Users in your morning routine?</p>
+
+				</section>
+				<section>
+					<h3 id="build-activity-groups">Build Activity Groups</h3>
+					<p>Sometimes several tasks can be grouped together.</p>
+
+				</section>
+				<section>
+					<h3 id="my-morning-with-activity-groups">My morning - with activity groups</h3>
+					<p><img src="img/morning3.png" alt="My morning - with activity groups"></p>
+
+				</section>
+				<section>
+					<h3 id="my-morning-alternate-path">My morning - alternate path</h3>
+					<p><img src="img/morning4.png" alt="My morning - first pass"></p>
+
+				</section>
+				<section>
+					<h3 id="building-the-narrative">Building the narrative</h3>
+					<p>Let&#39;s put them together to build a story of your morning!</p>
+					<ul>
+						<li><p>There are variations between people, days of week, local and out-of-towners</p>
+						</li>
+						<li><p>If we were automating or tracking some of these morning tasks, we might identify activity groups and prioritize those groups for our application.</p>
+						</li>
+					</ul>
+
+				</section>
+				<section>
+					<h3 id="where-to-learn-more">Where to Learn More</h3>
+					<ul>
+						<li>Risk</li>
+						<li>Assumptions</li>
+						<li>Uncertainty</li>
+					</ul>
+					<p>If you cannot elaborate, mark it and revisit</p>
+
+				</section>
+				<section>
+					<h3 id="clarifying-questions">Clarifying Questions</h3>
+					<ul>
+						<li>What could we learn to replace <strong>risk</strong> with <strong>REAL</strong> information?</li>
+						<li>Do we <u>really</u> know what has been mapped, or did we fill in <strong>assumptions</strong>?</li>
+						<li>Are you sure about the story you're telling?</li>
+					</ul>
+
+				</section>
+				<section>
+					<h3 id="thorough-discovery">Thorough Discovery</h3>
+					<ul>
+						<li>Understand the full process<ul>
+							<li>Understand &quot;why&quot; steps are needed in the process</li>
+							<li>Talk about things inside and outside of the app</li>
+						</ul>
+						</li>
+						<li>Simplify and lower risk at implementation<ul>
+							<li>Lowers the questions at the phase of implementation</li>
+							<li>Limits Feature Creep (beginning implementation w/o understanding, new features come in)</li>
+						</ul>
+						</li>
+						<li>Better estimates </li>
+					</ul>
+					<p>Discovery is cheaper at the beginning of a project, than during implementation</p>
+
+				</section>
+				<section>
+					<p><img src="img/user-story-mapping-6-638.jpg" alt="Anatomy of a User Story Map"></p>
+					<aside class="notes">
+						<p>Anatomy of a Story Map</p>
+						<ul>
+							<li><p>Users =&gt; actors in the story</p>
+							</li>
+							<li><p>Backbone =&gt; user activities</p>
+							</li>
+							<li><p>Walking Skeleton(blue) =&gt; major user tasks</p>
+							</li>
+							<li><p>User Stories =&gt; add detail to the story</p>
+							</li>
+							<li><p>Releases =&gt; organize and prioritize stories</p>
+							</li>
+							<li><p>Priorities =&gt; Lower Priority stories sink to the bottom</p>
+							</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<h3 id="building-the-map">Priorities</h3>
+					<p>Loosely prioritize stories based on everyone&#39;s needs; lower priorities sink</p>
+					<aside class="notes">
+						But we have seen that this gets swayed heavily by the person who wants the feature.  Politics are heavy at a university.
+					</aside>
+				</section>
+				<section>
+					<h2 id="prioritizing-features">Prioritizing Features</h2>
+					<ul>
+						<li><strong>Differentiator</strong> - feature sets you apart from competition</li>
+						<li><strong>Spoiler</strong> - moves in on someone else’s differentiator</li>
+						<li><strong>Cost reducer</strong> - reduces organizational costs</li>
+						<li><strong>Table stakes</strong> - feature necessary to compete</li>
+					</ul>
+
+				</section>
+				<section>
+					<h2 id="prioritization-tools">Prioritizing the Project</h2>
+					<ul>
+						<li>Who will use this product?</li>
+						<li>What steps must they accomplish for success?</li>
+						<li>Remove/postpone the rest</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3 id="focus-on-outcomes">Focus on Outcomes</h3>
+					<ul>
+						<li>What are you hoping to do with your application?</li>
+						<li>Prioritize features based on the problem they solve </li>
+						<li>Implement only what solves the problem or meets the objective</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3 id="prototyping">Prototyping for Discovery</h3>
+					<ul>
+						<li>What is the smallest thing you could build to prove/disprove an assumption?</li>
+						<li>Sketch &amp; prototype to test viability of the solution</li>
+						<li>Aim for less than minimum, get feedback, and iterate often</li>
+						<li>When you give prototype to <strong>development partners</strong> you can include metrics to see what they actually do</li>
+					</ul>
+					<aside class="notes">
+						When you begin developing for the project, a prototype is a lightweight way to prove you are moving in the risk direction.  You may plan to implement a feature with a little extra time for exploration.
+						<br>{read the questions}
+						<br>And this leads me to one of my favorite concepts from this book...
+					</aside>
+				</section>
+				<section>
+					<h3 id="mvp-vs-most-valuable-features">MVP vs. Most Valuable Features</h3>
+					<p>Let&#39;s talk more about releasing valuable features every time.</p>
+					<p>Sometimes we look plan features in a chronological order</p>
+					<p>Or we divide the project into components</p>
+				</section>
+
+				<section>
+					<h3 id="when-we-build-in-parts">When we build in parts</h3>
+					<p><img src="img/car_in_parts.jpg" alt="Building a car in parts"></p>
+
+				</section>
+				<section>
+					<!--<h3 id="when-we-build-in-parts">When we build in parts</h3>-->
+					<p><img src="img/painting_in_parts.jpg" alt="Painting in parts"></p>
+
+				</section>
+				<section>
+					<h1>Instead we want to iterate</h1>
+				</section>
+				<section>
+					<!--<h3 id="iterate-on-the-design">Iterate on the design</h3>-->
+					<p><img src="img/iterative_mona_lisa.jpg" alt="Painting in layers as the image becomes cleared"></p>
+
+				</section>
+				<section>
+					<!--<h3 id="most-valuable-features-">Most Valuable Features!!!</h3>-->
+					<p><img src="img/mvp.png" alt="Building a car in parts"></p>
+
+				</section>
+				<section>
+					<h3 id="strategies">Prioritization Strategies Change Over Time</h3>
+					<h4><b>opening game strategy</b></h4>
+					<ul>
+						<li>When the number of features is too large, you can cut a slice across that gives you the minimum end-to-end functionality;</li>
+						<li>It doesn’t solve all user’s stories, but it affects the largest number of stories.</li>
+						<li>With this product, they can have test data, begin testing it for load, and see how it will work</li>
+					</ul>
+				</section>
+				<section>
+					<h3 id="strategies">Prioritization Strategies Change Over Time</h3>
+					<h4><strong>midgame strategy</strong></h4>
+					<ul>
+						<li>fill in and round out features</li>
+						<li>support optional steps</li>
+						<li>implement tough business rules</li>
+						<li>continue testing the product usability</li>
+
+					</ul>
+
+				</section>
+				<section>
+					<h3 id="strategies">Prioritization Strategies Change Over Time</h3>
+					<h4><strong>endgame strategy</strong></h4>
+					<ul>
+						<li>refine: make it look more polished and efficient </li>
+						<li>it’s here that you’ll have feedback from users that can be applied.</li>
+					</ul>
+
+				</section>
+				<section>
+					<h3 id="strategies">Strategies</h3>
+					<p><img src="img/opening_mid_end_game.jpg" alt="Opening Mid and Eng-game Strategies stacked on top of each other"></p>
+
+				</section>
+				<section>
+					<h1>My project</h1>
+				</section>
+				<section>
+					<h3 id="scholarships">Scholarships</h3>
+					<p><a href="img/scholarships_overview.jpg"><img src="img/scholarships_overview.jpg" alt="Engineering Foundation allocates funds to the Scholarships, the Selection Committee chooses the best candidates and the Financial Aid Office disburses the money to students each semester"></a><</p>
+
+				</section>
+				<section data-background="img/story_map_overview.jpg">
+
+				</section>
+				<section data-background="img/story_map_overview2.jpg">
+				</section>
+				<section data-background="img/story_map1.jpg">
+
+				</section>
+				<section data-background="img/story_map2.jpg">
+
+				</section>
+				<section data-background="img/story_map3.jpg">
+
+				</section>
+				<section>
+					<h3 id="summary">Summary</h3>
+					<ul>
+						<li>A tool you can use with non-technical subject matter experts, customers, etc</li>
+						<li>A visual guide for managing your workload</li>
+						<li>Focus on objectives when you prioritize</li>
+						<li>Plan to deliver a usable product at each deliverable</li>
+					</ul>
+
+				</section>
+				<!--<section>-->
+				<!--<h1 id="questions-">Questions?</h1>-->
+
+				<!--</section>-->
+				<!--<section>-->
+				<!--<h1 id="maybe-slides">maybe slides</h1>-->
+
+				<!--</section>-->
+				<!--<section>-->
+				<!--<h3 id="user-story">User Story</h3>-->
+				<!--<p>&quot;A user story is a tool used in Agile software development to capture a-->
+				<!--description of a software feature from an end-user perspective. The user-->
+				<!--story describes the type of user, what they want and why. A user story-->
+				<!--helps to create a simplified description of a requirement.&quot;</p>-->
+				<!--<p>~Wikipedia</p>-->
+
+				<!--</section>-->
+				<!--<section>-->
+				<!--<h3 id="user-story-structure">User Story Structure</h3>-->
+				<!--<p>As a {role}, I want {feature} so that {reason}.</p>-->
+
+				<!--</section>-->
+				<!--<section>-->
+				<!--<h3 id="the-story-map">The Story Map</h3>-->
+				<!--<p>Composed of many user stories.</p>-->
+				<!--<p>Tells the story of your application.  </p>-->
+				<!--<p>It can include parts of the story that happen outside of the application.</p>-->
+
+				<!--</section>-->
+				<!--<section>-->
+				<!--<h3 id="what-you-get-from-this">What you get from this</h3>-->
+
+				<!--</section>-->
+				<section>
+					<h1>Sooo...</h1>
+				</section>
+				<section data-background="img/cover_picture.jpg" class="titleblock">
+					<h3 class="title" id="whats-your-skateboard-">What's Your Skateboard?</h3>
+				</section>
+				<section data-background="img/cover_picture.jpg" class="titleblock">
+					<h3 class="title" id="questions">Questions?</h3>
+				</section>
+				<section>
+					<div class="author">
+						<h1 class="name">Emily Stamey</h1>
+						<h3 class="twitter">
+							<a href="http://twitter.com/@elstamey">@elstamey</a>
+						</h3>
+						<h3 class="url">
+							<a href="http://elstamey.com">http://elstamey.com</a>
+						</h3>
+						<h3 class="url"><a href="https://elstamey.github.io/skateboard/#/">https://elstamey.github.io/skateboard/#/</a> </h3>
+						<h3 class="url"><a href="https://joind.in/talk/176b2">https://joind.in/talk/176b2</a></h3>
+					</div>
+
+				</section>
+			</div>
+		</div>
+
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.js"></script>
+
+        <script>
+            // More info https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                history: true,
+
+                // More info https://github.com/hakimel/reveal.js#dependencies
+                dependencies: [
+                    { src: 'plugin/markdown/marked.js' },
+                    { src: 'plugin/markdown/markdown.js' },
+                    { src: 'plugin/notes/notes.js', async: true },
+                    { src: 'node_modules/highlight.js/lib/highlight.js' },
+                    { src: 'plugin/accessibility/helper.js', async: true, condition: function() {
+                        return !!document.body.classList;
+                    }},
+                    {
+                        src: 'node_modules/reveal-code-focus/reveal-code-focus.js',
+                        async: true,
+                        callback: function() {
+                            RevealCodeFocus();
+                        }
+                    },
+                    { src: 'plugin/elapsed-time-bar/elapsed-time-bar.js'}
+                ],
+
+                // The "normal" size of the presentation, aspect ratio will be preserved
+                // when the presentation is scaled to fit different resolutions. Can be
+                // specified using percentage units.
+                width: 1280,
+                height: 720,
+
+                // Factor of the display size that should remain empty around the content
+                margin: 0.1,
+
+                // Bounds for smallest/largest possible scale to apply to content
+                minScale: 0.2,
+                maxScale: 1.5,
+
+
+                // your allotted time for presentation
+                allottedTime: 40 * 60 * 1000, // 50 minutes
+
+                // - (optional) height of page/time progress bar
+                progressBarHeight: 3,
+
+                // - (optional) bar color
+                barColor: 'rgb(200,0,0)',
+
+                // - (optional) bar color when timer is paused
+                pausedBarColor: 'rgba(200,0,0,.6)',
+
+                // Display controls in the bottom right corner
+                controls: true,
+
+                // Display a presentation progress bar
+                progress: true,
+
+                // Display the page number of the current slide
+                slideNumber: true,
+
+                // Push each slide change to the browser history
+                history: true,
+
+                // Enable keyboard shortcuts for navigation
+                keyboard: true,
+
+                // Enable the slide overview mode
+                overview: true,
+
+                // Vertical centering of slides
+                center: false,
+
+                // Enables touch navigation on devices with touch input
+                touch: true,
+
+                // Loop the presentation
+                loop: false,
+
+                // Change the presentation direction to be RTL
+                rtl: false,
+
+                // Randomizes the order of slides each time the presentation loads
+                shuffle: false,
+
+                // Turns fragments on and off globally
+                fragments: true,
+
+                // Flags if the presentation is running in an embedded mode,
+                // i.e. contained within a limited portion of the screen
+                embedded: false,
+
+                // Flags if we should show a help overlay when the questionmark
+                // key is pressed
+                help: true,
+
+                // Flags if speaker notes should be visible to all viewers
+                showNotes: false,
+
+                // Number of milliseconds between automatically proceeding to the
+                // next slide, disabled when set to 0, this value can be overwritten
+                // by using a data-autoslide attribute on your slides
+                autoSlide: 0,
+
+                // Stop auto-sliding after user input
+                autoSlideStoppable: true,
+
+                // Use this method for navigation when auto-sliding
+                autoSlideMethod: Reveal.navigateNext,
+
+                // Enable slide navigation via mouse wheel
+                mouseWheel: false,
+
+                // Hides the address bar on mobile devices
+                hideAddressBar: true,
+
+                // Opens links in an iframe preview overlay
+                previewLinks: false,
+
+                // Transition style
+                transition: 'none', // none/fade/slide/convex/concave/zoom
+
+                // Transition speed
+                transitionSpeed: 'default', // default/fast/slow
+
+                // Transition style for full page slide backgrounds
+                backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+
+                // Number of slides away from the current that are visible
+                viewDistance: 3,
+
+                // Parallax background image
+                parallaxBackgroundImage: '', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+
+                // Parallax background size
+                parallaxBackgroundSize: '', // CSS syntax, e.g. "2100px 900px"
+
+                // Number of pixels to move the parallax background per slide
+                // - Calculated automatically unless specified
+                // - Set to 0 to disable movement along an axis
+                parallaxBackgroundHorizontal: null,
+                parallaxBackgroundVertical: null,
+
+                // Value of the display CSS property applied to current slide to make it visible
+                display: 'flex',
+
+                keyboard: {
+                    // pause/resume time when Enter is pressed
+                    13: () => {
+                    ElapsedTimeBar.isPaused ? ElapsedTimeBar.resume() : ElapsedTimeBar.pause();
+            },
+
+            // reset timer when 'r' is pressed
+            82: () => {
+                ElapsedTimeBar.reset();
+            }
+            }
+            });
+        </script>
+	</body>
+</html>

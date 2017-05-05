@@ -25,6 +25,20 @@ html.dimbg .slide-background {
 
 }
 
+/* Full bleed image */
+section.titleblock {
+    margin-left: -200px;
+    margin-right: -200px;
+    margin-top: -250px;
+    background: rgba(255,255,2555,0.8);
+}
+
+h3.title {
+    /*color: #f05b62;*/
+    font-weight: bolder;
+}
+
+
 /* Flexbox section*/
 
 myTitleBox {
