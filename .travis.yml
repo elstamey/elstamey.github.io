@@ -1,3 +1,5 @@
-language: generic
+language: node_js
+node_js:
+  - 6.10.2
 before_script:
-  - cd presentations
+  - npm install -g grunt-cli
