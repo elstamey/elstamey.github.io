@@ -3,5 +3,3 @@ node_js:
   - 6.10.2
 before_script:
   - npm install -g grunt-cli
-  - npm test
-  - npm install
