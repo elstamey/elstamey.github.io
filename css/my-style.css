@@ -27,14 +27,12 @@ html.dimbg .slide-background {
 
 /* Full bleed image */
 section.titleblock {
-    margin-left: -200px;
-    margin-right: -200px;
-    margin-top: -250px;
+    margin-left: -100px;
+    margin-top: 1em;
     background: rgba(255,255,2555,0.8);
 }
 
 h3.title {
-    /*color: #f05b62;*/
     font-weight: bolder;
 }
 
