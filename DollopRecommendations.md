@@ -2,7 +2,7 @@ These are some ofthe most notable episodes I've listened to so far.  I started w
 
 - [ ] [15 - Ten Cent Beer Night](http://thedollop.libsyn.com/ten-cent-beer-night)
 
-###women
+### women
 - [ ] [213 - Mashers and Hatpins](http://thedollop.libsyn.com/213-mashers-and-hatpins)
 - [ ] [194 - The Girl Watchers](http://thedollop.libsyn.com/194-the-girl-watchers)
 - [ ] [192 - Jackie Mitchell and Babe Ruth](http://thedollop.libsyn.com/192-jackie-mitchell-and-babe-ruth)
@@ -10,7 +10,7 @@ These are some ofthe most notable episodes I've listened to so far.  I started w
 - [ ] [53 - The Battle of the Pants](http://thedollop.libsyn.com/53-battle-of-the-pants)
 - [ ] [2 - Purity Balls](http://thedollop.libsyn.com/dollop-vii-purity-balls)
 
-###race
+### race
 - [ ] [195 - An American Pugilist in London](http://thedollop.libsyn.com/195-an-american-pugilist-in-london)
 - [ ] [189 - The Wilmington Coup](http://thedollop.libsyn.com/189-the-wilmington-coup)
 - [ ] [181 - Martin Tabert and Convict Leasing](http://thedollop.libsyn.com/181-martin-tabert-and-convict-leasing)
