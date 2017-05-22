@@ -9,12 +9,12 @@ style: my-style.css
 -------------------
 
 ### Emily Stamey
-Application Developer @ NC State University
+Software Engineer @ [InQuest](http://inquest.net)
 
 [Twitter: @elstamey](https://twitter.com/elstamey)
 
 [Blog: elstamey.com](http://www.elstamey.com/)
 
-[Presentations](./presentations/)
+[Presentations](./presentations.html)
 
-[The Dollop episode recommendations](./DollopRecomendations.md)
+[The Dollop episode recommendations](https://github.com/elstamey/elstamey.github.io/blob/master/DollopRecommendations.md)
