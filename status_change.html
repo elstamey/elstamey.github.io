@@ -13,9 +13,6 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/white.css">
         <link rel="stylesheet" href="css/my-style.css">
@@ -328,6 +325,10 @@
                             </select>
                         </article>
                     </myColBox>
+                    <aside class="notes">
+                        <li>Remember I told you we had an admin tool for the people to move requests through the process?  This is that simple drop-down after about ten years of this app being used.</li>
+                        <li>It looks fairly innocuous, right?</li>
+                    </aside>
                 </section>
                 <section>
                     <myTitleBox>
@@ -436,7 +437,7 @@
                     </myTitleBox>
                     <myColBox>
                         <article>
-                            <img src="img/status_change/speech-bubbles.png">
+                            <img src="img/status_change/eventsOverTime.png">
                         </article>
                         <!--<article>-->
                             <!--<p>The request doesn't get stuck.  One event can happen, and then another event can occur after it.</p>-->
@@ -507,27 +508,13 @@
                 </section>
                 <section>
                     <myTitleBox>
-                        <h3>Event Sourcing</h3>
-                    </myTitleBox>
-                    <myColBox>
-                        <article>
-                            <ol>
-                                <li>Every happening is captured in an event object</li>
-                                <li>Event objects are stored in the sequence they happened</li>
-                                <li>That sequence determines the order they will be applied in your code</li>
-                            </ol>
-                        </article>
-                    </myColBox>
-                    <aside class="notes">
-                    </aside>
-                </section>
-                <section>
-                    <myTitleBox>
                         <h3>Rules for Events</h3>
                     </myTitleBox>
                     <myColBox>
                         <article>
                             <ul>
+                                <li>RARELY changed</li>
+                                <li>Never deleted</li>
                                 <li>Events are usually named as past-tense verbs</li>
                                 <li>Have attributes that are values
                                     <ul>
@@ -539,9 +526,12 @@
                         </article>
                     </myColBox>
                     <aside class="notes">
-                        <p>You will see event names like Enrollment Request Was Approved because validation was done prior to recording the event,
+                        <p>We should <b>try hard</b> not to alter a recorded event</p>
+                        <p>We try to never delete events.  This is a historic record within our system.  We may stop handling an event if it loses significance in our system.  </p>
+                        <p>Event Names use Past-tense verbs like Enrollment Request Was Approved </p>
+                        <p>validation was done prior to recording the event,
                         and these are KNOWN happenings in our system</p>
-                        <p>This Event will have attributes, like the student id, the course id, who the approver was
+                        <p>This Event will have attributes, like the student id, the course id, and who the approver was
                             because this is the important information</p>
                         <p>We wouldn't store the Enrollment Request Object because if we ever changed that object, we'd
                             have difficulty applying the event or reconstructing that object</p>
