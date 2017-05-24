@@ -38,9 +38,9 @@
 	</head>
 	<body>
 		<div class="reveal">
-            <div class='footer'>
-                @elstamey
-            </div>
+			<div class='footer'>
+				@elstamey      <a href="https://joind.in/talk/53a7f">https://joind.in/talk/53a7f</a>
+			</div>
 			<div class="slides">
                 <section data-background-image="img/skateboard/skateboard_cover.jpg" class="titleblock">
                     <h3 class="title">What's Your Skateboard?</h3>
@@ -80,6 +80,19 @@
 					</aside>
 				</section>
 				<section>
+					<footer>
+						<h3>Inspired By</h3>
+					</footer>
+					<footer>
+						<img src="img/skateboard/book.jpg">
+					</footer>
+					<aside class="notes">
+						<li>this book helped me a lot!  It's a great read.  It tells stories of his projects and gives a lot of helpful information</li>
+						<li>The illustrations are fantastic and really stick with you and help you change bad habits</li>
+						<li>Today we're going to cover the broad strokes of how user story maps work and the bigger ideas that can help you transform the way your team works.  </li>
+					</aside>
+				</section>
+				<section>
 					<myTitleBox>
 						<h3>A Problematic Project Workflow</h3>
 					</myTitleBox>
@@ -103,16 +116,14 @@
 					</aside>
 				</section>
 				<section>
-					<footer>
-						<h3>Inspired By</h3>
-					</footer>
-					<footer>
-						<img src="img/skateboard/book.jpg">
-					</footer>
+					<myTitleBox>
+						<h3>The Client-Vendor Anti-Pattern</h3>
+					</myTitleBox>
+					<myColBox>
+						<img src="img/skateboard/client-vendor-anti-pattern.png">
+					</myColBox>
 					<aside class="notes">
-						<li>this book helped me a lot!  It's a great read.  It tells stories of his projects and gives a lot of helpful information</li>
-						<li>The illustrations are fantastic and really stick with you and help you change bad habits</li>
-						<li>Today we're going to cover the broad strokes of how user story maps work and the bigger ideas that can help you transform the way your team works.  </li>
+
 					</aside>
 				</section>
 				<!--<section>-->
@@ -488,7 +499,7 @@
                     <myTitleBOx>
                         <h3>Thorough Discovery</h3>
                     </myTitleBOx>
-					<myColBox>
+					<myRowBox>
                         <article>
                             <ul>
                                 <li>Understand the full process
@@ -499,7 +510,7 @@
                                 </li>
                             </ul>
                         </article>
-                    </myColBox>
+                    </myRowBox>
 					<aside class="notes">
 						<li>This whole process is investigation, and it should include your customers and users.  Remember this isn't implementation</li>
 					</aside>
@@ -508,7 +519,7 @@
                     <myTitleBOx>
                         <h3>Thorough Discovery</h3>
                     </myTitleBOx>
-                    <myColBox>
+                    <myRowBox>
                         <article>
                             <ul>
                                 <li>Simplify and lower risk at implementation
@@ -520,7 +531,7 @@
                                 </li>
                             </ul>
                         </article>
-                    </myColBox>
+                    </myRowBox>
 					<aside class="notes">
 						<li>That understanding and investigation reduces the number of questions when you're implementing the code</li>
 						<li>It should limit feature creep because when you're writing that code, you can focus only on the section in the current slice.</li>
@@ -539,6 +550,70 @@
 						<li>In order to pull these stories down into slices, we need to prioritize them</li>
 						<li>The book gives many different ways to help you with this.</li>
 					</aside>
+				</section>
+				<section>
+					<myTitleBox>
+						<h3>More than just adding stories</h3>
+					</myTitleBox>
+					<myRowBox>
+						<article>
+							<blockquote class="style4">
+								If the only thing you create while making sense of a big opportunity is more, small stories, <b>you're doing it wrong</b>.
+								<br>- Jeff Patton
+							</blockquote>
+						</article>
+					</myRowBox>
+					<aside class="notes">
+						<li>Jeff Patton makes a really good point later in the book.  He's characterizing these details you're fleshing out as opportunities to deliver value on your project</li>
+						<li>While early exploration may be adding stories, this isn't all that is involved.  You aren't just breaking the stories into smaller pieces.</li>
+					</aside>
+				</section>
+				<section>
+					<myTitleBox>
+						<h3>Four Steps to Discovery</h3>
+					</myTitleBox>
+					<myColBox>
+						<article>
+							<ol>
+								<li>Frame the idea</li>
+								<li class="fragment">Understand Customers and Users</li>
+							</ol>
+							<aside class="notes">
+								<li>Frame the discussion to set the boundaries of your exploration, keeps you from going off in the weeds.  Your team will be better able to stop discussions that don't solve the problem you're focusing on.</li>
+								<li>(*)Sketch simple personas to build an understanding of your users.  Helpful for looking at the application through the eyes of your users when you are not a user of the product</li>
+							</aside>
+						</article>
+					</myColBox>
+				</section>
+				<section>
+					<myTitleBox><h3>Simple Persona</h3></myTitleBox>
+					<myColBox>
+						<article>
+							<img src="img/skateboard/SimplePersona.png">
+						</article>
+					</myColBox>
+				</section>
+				<section>
+					<myTitleBox>
+						<h3>Four Steps to Discovery</h3>
+					</myTitleBox>
+					<myColBox>
+						<article>
+							<ol>
+								<li>Frame the idea</li>
+								<li>Understand Customers and Users</li>
+								<li>Envision your solution</li>
+								<li class="fragment">Minimize the plan</li>
+							</ol>
+							<aside class="notes">
+								<li>Visualize your user interface to build shared understanding.</li>
+								<li>Avoid product arrogance -> the difference between what you THINK the customer needs and what they actually need</li>
+								<li>(*)Be picky.  You aren't helping anyone if you are agreeing to do everything</li>
+								<li>Trash aggressively the ideas that don't achieve the outcomes you most want.</li>
+								<li>You and this discovery team have to be specific about what is valuable</li>
+							</aside>
+						</article>
+					</myColBox>
 				</section>
 				<section>
                     <myTitleBox>
@@ -861,26 +936,27 @@
 					<h3 class="title" id="whats-your-skateboard-">What's Your Skateboard?</h3>
 				</section>
 				<section>
-					<myTitleBox>
-						<h3>Thank You!</h3>
-					</myTitleBox>
-					<myRowBox>
-						<article style="background-color: black;">
-							<img src="img/oscon2015_logo_rev.svg">
-						</article>
-						<article>
-							<h1 class="name">Emily Stamey</h1>
-							<h3 class="twitter">
-								<a href="http://twitter.com/@elstamey">@elstamey</a>
-							</h3>
-							<h3 class="url">
-								<a href="http://elstamey.com">http://elstamey.com</a>
-							</h3>
-							<h4 class="url"><a href="https://elstamey.github.io/skateboard.html/#/">https://elstamey.github.io/skateboard.html/#/</a> </h4>
-						</article>
-					</myRowBox>
-					<div class="author">
+					<h1>Let's take a break!</h1>
+					<img src="img/phptek-training.png">
+					<p>Emily Stamey  <a href="https://twitter.com/elstamey">@elstamey</a></p>
+					<!--<p>Joind.in: <a href="https://joind.in/talk/00faa">https://joind.in/talk/00faa</a></p>-->
 				</section>
+				<!--<section>-->
+					<!--<myTitleBox>-->
+						<!--<h3>Thank You!</h3>-->
+					<!--</myTitleBox>-->
+					<!--<myRowBox>-->
+						<!--<article style="background-color: black;">-->
+							<!--<img src="img/oscon2015_logo_rev.svg">-->
+						<!--</article>-->
+						<!--<article>-->
+							<!--<h1 class="name">Emily Stamey</h1>-->
+							<!--<h3 class="twitter">-->
+								<!--<a href="http://twitter.com/@elstamey">@elstamey</a>                                                       </h3>                                                       <h3 class="url">                                                               <a href="http://elstamey.com">http://elstamey.com</a>                                                       </h3>                                                       <h3 class="url"><a href="https://elstamey.github.io/skateboard.html/#/">https://elstamey.github.io/skateboard.html/#/</a>-->
+							<!--</h3>-->
+						<!--</article>-->
+					<!--</myRowBox>-->
+				<!--</section>-->
 			</div>
 		</div>
 
