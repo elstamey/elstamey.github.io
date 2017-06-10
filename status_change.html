@@ -122,18 +122,6 @@
                 </section>
                 <section>
                     <myTitleBox>
-                        <h2>Sign the waiver</h2>
-                    </myTitleBox>
-                    <myRowBox>
-                        <article>I, __(state your name)__, will not blame Emily if Event Sourcing makes my head explode. I promise I will not leave a bad review. And I promise to be kind to myself as I learn new things. </article>
-                        <article><img src="img/status_change/head_explode.gif" class="fragment"></article>
-                    </myRowBox>
-                    <footer>
-                        <p><i class="fragment">Emily will not be held responsible if your head explodes</i></p>
-                    </footer>
-                </section>
-                <section>
-                    <myTitleBox>
                         <h1>Brace Yourself!</h1>
                     </myTitleBox>
                     <myRowBox>
@@ -163,6 +151,18 @@
                         <li>If you try to change direction, you often tip over like this.</li>
                         <li>This is my way of asking that you try to follow along with me.</li>
                     </aside>
+                </section>
+                <section>
+                    <myTitleBox>
+                        <h2>Sign the waiver</h2>
+                    </myTitleBox>
+                    <myRowBox>
+                        <article>I, __(state your name)__, will not blame Emily if Event Sourcing makes my head explode. I promise I will not leave a bad review. And I promise to be kind to myself as I learn new things. </article>
+                        <article><img src="img/status_change/head_explode.gif" class="fragment"></article>
+                    </myRowBox>
+                    <footer>
+                        <p><i class="fragment">Emily will not be held responsible if your head explodes</i></p>
+                    </footer>
                 </section>
                 <section>
                     <myTitleBox>
@@ -262,7 +262,7 @@
                         <p>Compensating measures this app made to attempt to preserve history</p>
                         <li>add columns to the table with form data</li>
                         <li>add a related table for notes</li>
-                        <li>more statuses to include the many forks in the process (like what type of hold)</li>
+                        <!--<li>more statuses to include the many forks in the process (like what type of hold)</li>-->
                     </aside>
                 </section>
                 <section>
@@ -722,26 +722,25 @@
                     </aside>
                 </section>
                 <section>
-                    <myTitleBox>
-                        <h2>Enrollment Request Rejected (Event)</h2>
-                    </myTitleBox>
-                    <myColBox>
-                        <article>
-                            <ul>
-                                <li>request id</li>
-                                <li>student id</li>
-                                <li>course offering id</li>
-                            </ul>
-                        </article>
-                    </myColBox>
-                    <aside class="notes">
-                        <li>We will look at the Enrollment Request Rejected event for parts of this process</li>
-                        <li>We have a couple of other sections we may jump to to explain the parts, so this won't all
-                            connect together</li>
-                        <li>The event has a few values we care about </li>
-                    </aside>
-                </section>
-                <section>
+                    <section>
+                        <myColBox>
+                            <article>
+                                <!--<ul>-->
+                                <!--<li>request id</li>-->
+                                <!--<li>student id</li>-->
+                                <!--<li>course offering id</li>-->
+                                <!--</ul>-->
+                                <img src="img/status_change/EnrollmentRequestRejected.png">
+                            </article>
+                        </myColBox>
+                        <aside class="notes">
+                            <li>We will look at the Enrollment Request Rejected event for parts of this process</li>
+                            <li>We have a couple of other sections we may jump to to explain the parts, so this won't all
+                                connect together</li>
+                            <li>The event has a few values we care about </li>
+                        </aside>
+                    </section>
+                    <section>
 <pre><code>&lt;?php
 
 namespace App\Enrollment\Domain\Events;
@@ -804,39 +803,42 @@ class EnrollmentRequestRejected implements Event
     }
 }
 </code></pre>
-                    <span class="fragment current-only" data-code-focus="10"></span>
-                    <span class="fragment current-only" data-code-focus="28"></span>
-                    <aside class="notes">
-                        <li>(*) The Enrollment Request Rejected Event inherits from an Event class that outlines a bit of behavior.  </li>
-                        <li>(*) The constructor sets the values we care about with the event object</li>
-                        <li>And below we serialize and deserialize these attributes.  </li>
-                    </aside>
+                        <span class="fragment current-only" data-code-focus="10"></span>
+                        <span class="fragment current-only" data-code-focus="28"></span>
+                        <aside class="notes">
+                            <li>(*) The Enrollment Request Rejected Event inherits from an Event class that outlines a bit of behavior.  </li>
+                            <li>(*) The constructor sets the values we care about with the event object</li>
+                            <li>And below we serialize and deserialize these attributes.  </li>
+                        </aside>
+                    </section>
                 </section>
                 <section>
-                    <myTitleBox>
-                        <h2>Domain Message Wrapper (Class)</h2>
-                    </myTitleBox>
-                    <myColBox>
-                        <article>
-                            <p>Event can be wrapped by Domain message</p>
-                            <p>This contains a version, timestamp, id, and the event itself</p>
-                            <ul>
-                                <li>stream id</li>
-                                <li>version</li>
-                                <li>payload (The Event)</li>
-                                <li>recorded on</li>
-                            </ul>
-                        </article>
-                    </myColBox>
-                    <aside class="notes">
-                        <li>In the first app we used Event Sourcing, scholarships, we included timestamp data on the
-                            event, but for this application, my teammate had seen more consensus that the Event and
-                            Message should be separated</li>
-                        <li>We are able to keep the sequence and timestamp on the message, which holds the event as its payload</li>
-                        <li>The version is useful ina  workflow project, where we want to upgrade these to use a new workflow.  We can keep track of which process was used to build something. </li>
-                    </aside>
-                </section>
-                <section>
+                    <section>
+                        <!--<myTitleBox>-->
+                            <!--<h2>Domain Message Wrapper (Class)</h2>-->
+                        <!--</myTitleBox>-->
+                        <myColBox>
+                            <article>
+                                <!--<p>Event can be wrapped by Domain message</p>-->
+                                <!--<p>This contains a version, timestamp, id, and the event itself</p>-->
+                                <!--<ul>-->
+                                    <!--<li>stream id</li>-->
+                                    <!--<li>version</li>-->
+                                    <!--<li>payload (The Event)</li>-->
+                                    <!--<li>recorded on</li>-->
+                                <!--</ul>-->
+                                <img src="img/status_change/DomainMessage.png">
+                            </article>
+                        </myColBox>
+                        <aside class="notes">
+                            <li>In the first app we used Event Sourcing, scholarships, we included timestamp data on the
+                                event, but for this application, my teammate had seen more consensus that the Event and
+                                Message should be separated</li>
+                            <li>We are able to keep the sequence and timestamp on the message, which holds the event as its payload</li>
+                            <li>The version is useful ina  workflow project, where we want to upgrade these to use a new workflow.  We can keep track of which process was used to build something. </li>
+                        </aside>
+                    </section>
+                    <section>
 <pre><code>&lt;?php
 
 namespace App\Support\Domain;
@@ -938,76 +940,80 @@ class DomainMessage
 }
 
 </code></pre>
-                    <span class="fragment current-only" data-code-focus="39"></span>
-                    <span class="fragment current-only" data-code-focus="55"></span>
-                    <span class="fragment current-only" data-code-focus="63"></span>
-                    <aside class="notes">
-                        <li>This is our Domain Message class  </li>
-                        <li>(*) The constructor sets the values for our stream id, version, payload, and timestamp</li>
-                        <li>(*) We use the Record Now method to record that the event happened, returning the new Domain message</li>
-                        <li>This at first seemed like extra work, but I've grown to like it a little more</li>
-                        <li>Below we have getters to get attributes of the Domain Message </li>
-                    </aside>
+                        <span class="fragment current-only" data-code-focus="39"></span>
+                        <span class="fragment current-only" data-code-focus="55"></span>
+                        <span class="fragment current-only" data-code-focus="63"></span>
+                        <aside class="notes">
+                            <li>This is our Domain Message class  </li>
+                            <li>(*) The constructor sets the values for our stream id, version, payload, and timestamp</li>
+                            <li>(*) We use the Record Now method to record that the event happened, returning the new Domain message</li>
+                            <li>This at first seemed like extra work, but I've grown to like it a little more</li>
+                            <li>Below we have getters to get attributes of the Domain Message </li>
+                        </aside>
+                    </section>
                 </section>
-                <section>
-                    <myTitleBox>
-                        <h2>Simple event listener</h2>
-                    </myTitleBox>
-                    <myColBox>
-                        <article>
-                            <p>Handles Event Listening</p>
-                            <p>&nbsp;</p>
-                            <p><b>getHandleMethod()</b> - <br>uses the Event name to identify the handle method</p>
-                        </article>
-                    </myColBox>
-                </section>
-                <section>
-                    <myTitleBox>
-                        <h2>Simple Event Listener </h2>
-                    </myTitleBox>
-<pre><code>&lt;?php
+                <!--<section>-->
+                    <!--<section>-->
+                        <!--&lt;!&ndash;<myTitleBox>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<h2>Simple event listener</h2>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</myTitleBox>&ndash;&gt;-->
+                        <!--<myColBox>-->
+                            <!--<article>-->
+                                <!--&lt;!&ndash;<p>Handles Event Listening</p>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<p>&nbsp;</p>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<p><b>getHandleMethod()</b> - <br>uses the Event name to identify the handle method</p>&ndash;&gt;-->
+                                <!--<img src="img/status_change/Listeners.png">-->
+                            <!--</article>-->
+                        <!--</myColBox>-->
+                    <!--</section>-->
+                    <!--<section>-->
+                        <!--<myTitleBox>-->
+                            <!--<h2>Simple Event Listener </h2>-->
+                        <!--</myTitleBox>-->
+<!--<pre><code>&lt;?php-->
 
-namespace App\Support\EventHandling;
+<!--namespace App\Support\EventHandling;-->
 
-use App\Support\Domain\DomainMessage;
+<!--use App\Support\Domain\DomainMessage;-->
 
-abstract class SimpleEventListener implements EventListener
-{
-    /**
-    * @param DomainMessage $message
-    */
-    public function handle(DomainMessage $message)
-    {
-        $event = $message->getPayload();
-        $method = $this->getHandleMethod($event);
+<!--abstract class SimpleEventListener implements EventListener-->
+<!--{-->
+    <!--/**-->
+    <!--* @param DomainMessage $message-->
+    <!--*/-->
+    <!--public function handle(DomainMessage $message)-->
+    <!--{-->
+        <!--$event = $message->getPayload();-->
+        <!--$method = $this->getHandleMethod($event);-->
 
-        if (! method_exists($this, $method)) {
-            return;
-        }
+        <!--if (! method_exists($this, $method)) {-->
+            <!--return;-->
+        <!--}-->
 
-        $this->$method($event, $message);
-    }
+        <!--$this->$method($event, $message);-->
+    <!--}-->
 
-    private function getHandleMethod(Event $event)
-    {
-        return 'handle' . class_basename($event);
-    }
-}
-</code></pre>
-                    <span class="fragment current-only" data-code-focus="7"></span>
-                    <span class="fragment current-only" data-code-focus="12"></span>
-                    <span class="fragment current-only" data-code-focus="15"></span>
-                    <span class="fragment current-only" data-code-focus="24"></span>
-                    <aside class="notes">
-                        <li>The Simple Event Listener Is one of our Support classes that does Event Handling</li>
-                        <li>(*) there is a handle method that takes the Domain Message</li>
-                        <li>It separates the Event from the message</li>
-                        <li>(*) It calls a getHandle Method on the event.
-                            (*) which uses the name of the event to construct its handle method</li>
-                        <li>In addition to our Event classes, we have written methods that handle those events named
-                            handleEventName, so this format allows us to handle the events in this way</li>
-                    </aside>
-                </section>
+    <!--private function getHandleMethod(Event $event)-->
+    <!--{-->
+        <!--return 'handle' . class_basename($event);-->
+    <!--}-->
+<!--}-->
+<!--</code></pre>-->
+                        <!--<span class="fragment current-only" data-code-focus="7"></span>-->
+                        <!--<span class="fragment current-only" data-code-focus="12"></span>-->
+                        <!--<span class="fragment current-only" data-code-focus="15"></span>-->
+                        <!--<span class="fragment current-only" data-code-focus="24"></span>-->
+                        <!--<aside class="notes">-->
+                            <!--<li>The Simple Event Listener Is one of our Support classes that does Event Handling</li>-->
+                            <!--<li>(*) there is a handle method that takes the Domain Message</li>-->
+                            <!--<li>It separates the Event from the message</li>-->
+                            <!--<li>(*) It calls a getHandle Method on the event.-->
+                                <!--(*) which uses the name of the event to construct its handle method</li>-->
+                            <!--<li>In addition to our Event classes, we have written methods that handle those events named-->
+                                <!--handleEventName, so this format allows us to handle the events in this way</li>-->
+                        <!--</aside>-->
+                    <!--</section>  -->
+                <!--</section>-->
                 <section>
                     <myTitleBox>
                         <h2>Event Store</h2>
@@ -1016,6 +1022,7 @@ abstract class SimpleEventListener implements EventListener
                         <article>
                             <p>A domain specific database </p>
                             <p>A functional database based on a publish-subscribe messages pattern</p>
+                            <img src="img/status_change/EventStore.png">
                         </article>
                     </myColBox>
                     <aside class="notes">
@@ -1025,33 +1032,37 @@ abstract class SimpleEventListener implements EventListener
                     </aside>
                 </section>
                 <section>
-                    <myTitleBox>
-                        <h2>Events Table - no Wrapper</h2>
-                    </myTitleBox>
-                    <myColBox>
-                        <article>
-                            <img src="img/status_change/events_schol_struct.png">
-                        </article>
-                    </myColBox>
-                    <aside class="notes">
-                        The events in our Scholarships application did not use the Domain Message, so the timestamp was contained in the event itself.
-                    </aside>
-                </section>
-                <section>
-                    <myTitleBox>
-                        <h2>Events Table - no Wrapper</h2>
-                    </myTitleBox>
-                    <myColBox>
-                        <article>
-                            <img src="img/status_change/events_schol_content.png">
-                        </article>
-                    </myColBox>
-                    <aside class="notes">
-                        We used the fully namespaced path of the Event to reference it as an aggregate type and we used an aggregate id
-                        This is a direct contradiction to what we spoke about before with not storing an aggregate or an object as you
-                    </aside>
-                </section>
-                <section>
+                    <section>
+                        <myTitleBox>
+                            <h2>Events Table - no Wrapper</h2>
+                        </myTitleBox>
+                        <myColBox>
+                            <article>
+                                <img src="img/status_change/events_schol_struct.png">
+                            </article>
+                        </myColBox>
+                        <aside class="notes">
+                            The events in our Scholarships application did not use the Domain Message, so the timestamp was contained in the event itself.
+                        </aside>
+                    </section>
+                    <section>
+
+                    </section>
+                    <section>
+                        <myTitleBox>
+                            <h2>Events Table - no Wrapper</h2>
+                        </myTitleBox>
+                        <myColBox>
+                            <article>
+                                <img src="img/status_change/events_schol_content.png">
+                            </article>
+                        </myColBox>
+                        <aside class="notes">
+                            We used the fully namespaced path of the Event to reference it as an aggregate type and we used an aggregate id
+                            This is a direct contradiction to what we spoke about before with not storing an aggregate or an object as you
+                        </aside>
+                    </section>
+                    <section>
 <pre><code>
 O:92:"ITECS\Scholarships\Selection\Domain\Scholarship\AwardWasAssignedToCandidateByCommitteeMember":9:{
     s:6:"amount"    ;O:39:    "ITECS\Scholarships\Common\Values\Amount":1:{
@@ -1091,9 +1102,10 @@ O:92:"ITECS\Scholarships\Selection\Domain\Scholarship\AwardWasAssignedToCandidat
     }
 }
 </code></pre>
-                    <aside class="notes">
-                        This is what the payload of the event looked like in that project, and it was really unwieldy to try to read from the events because it was a serialized object
-                    </aside>
+                        <aside class="notes">
+                            This is what the payload of the event looked like in that project, and it was really unwieldy to try to read from the events because it was a serialized object
+                        </aside>
+                    </section>
                 </section>
                 <section>
                     <myTitleBox>
@@ -1173,222 +1185,237 @@ O:92:"ITECS\Scholarships\Selection\Domain\Scholarship\AwardWasAssignedToCandidat
                         <li>We learned from that pain and stored the payload as a json object this time</li>
                     </aside>
                 </section>
+                <!--<section>-->
+                    <!--<myTitleBox>-->
+                        <!--<h2>Event Store</h2>-->
+                    <!--</myTitleBox>-->
+<!--<pre><code>&lt;?php-->
+
+<!--namespace App\Support\EventStore;-->
+
+<!--use App\Support\Domain\DomainMessage;-->
+<!--use Illuminate\Database\Connection;-->
+<!--use Illuminate\Database\QueryException;-->
+<!--use Illuminate\Database\Schema\Blueprint;-->
+
+<!--class DatabaseEventStore implements EventStore-->
+<!--{-->
+    <!--/**-->
+     <!--* @var string-->
+     <!--*/-->
+    <!--protected $tableClass;-->
+
+    <!--/**-->
+     <!--* @var Connection-->
+     <!--*/-->
+    <!--private $connection;-->
+
+    <!--const MAX_EVENT_PAYLOAD_LENGTH = 65535;-->
+
+    <!--public function __construct($tableClass, Connection $connection)-->
+    <!--{-->
+        <!--$this->tableClass = $tableClass;-->
+    <!--$this->connection = $connection;-->
+    <!--}-->
+
+    <!--/**-->
+    <!--* @param $streamId-->
+    <!--*-->
+    <!--* @return DomainMessage[]-->
+    <!--*/-->
+    <!--public function load($streamId)-->
+    <!--{-->
+        <!--$streamId = (string) $streamId;-->
+
+        <!--$rows = $this->connection->table($this->tableClass)-->
+        <!-- ->where('stream_id', $streamId)-->
+        <!-- ->orderBy('version', 'asc')-->
+        <!-- ->get();-->
+
+        <!--if (! count($rows)) {-->
+            <!--throw EventStoreException::streamNotFound($streamId);-->
+        <!--}-->
+
+        <!--return $rows->map(function ($row) {-->
+            <!--return $this->deserializeEvent($row);-->
+        <!--})->all();-->
+    <!--}-->
+
+    <!--private function deserializeEvent($row)-->
+    <!--{-->
+        <!--$eventName = $row->type;-->
+        <!--$recordedOn = new \DateTime();-->
+        <!--$recordedOn->setTimestamp($row->recorded_on);-->
+
+        <!--return new DomainMessage(-->
+            <!--$row->stream_id,-->
+            <!--$row->version,-->
+            <!--$eventName::deserialize(json_decode($row->payload, true)),-->
+            <!--$recordedOn-->
+        <!--);-->
+    <!--}-->
+
+    <!--/**-->
+    <!--* @param                 $streamId-->
+    <!--* @param DomainMessage[] $messages-->
+    <!--*/-->
+    <!--public function append($streamId, $messages)-->
+    <!--{-->
+        <!--$streamId = (string) $streamId;-->
+
+        <!--if (! is_array($messages)) {-->
+            <!--$messages = [$messages];-->
+        <!--}-->
+
+        <!--$this->connection->beginTransaction();-->
+
+        <!--try {-->
+
+            <!--foreach ($messages as $message) {-->
+                <!--$payloadData = $message->getPayload()->serialize();-->
+
+                <!--if (! is_array($payloadData)) {-->
+                    <!--throw EventStoreException::eventNotSerializable();-->
+                <!--}-->
+
+                <!--$encodedPayload = json_encode($payloadData);-->
+
+                <!--if (strlen($encodedPayload) >= self::MAX_EVENT_PAYLOAD_LENGTH) {-->
+                    <!--throw EventStoreException::encodedPayloadTooLarge($message->getType());-->
+                <!--}-->
+
+                <!--$this->connection->table($this->tableClass)->insert([-->
+                        <!--'stream_id' => $streamId,-->
+                        <!--'version' => $message->getVersion(),-->
+                        <!--'payload' => $encodedPayload,-->
+                        <!--'recorded_on' => $message->getRecordedOn()->getTimestamp(),-->
+                        <!--'type' => $message->getType(),-->
+                    <!--]);-->
+            <!--}-->
+
+                <!--$this->connection->commit();-->
+
+        <!--} catch (QueryException $e) {-->
+            <!--$this->connection->rollBack();-->
+
+            <!--throw EventStoreException::optimisticLockingConflict($message->getStreamId(), $message->getVersion());-->
+        <!--}-->
+    <!--}-->
+
+    <!--public function configureSchema()-->
+    <!--{-->
+        <!--$schema = $this->connection->getSchemaBuilder();-->
+        <!--$schema->create($this->tableClass, function (Blueprint $table) {-->
+            <!--$table->increments('id');-->
+            <!--$table->string('stream_id', 255);-->
+            <!--$table->integer('version')->unsigned();-->
+            <!--$table->text('payload');-->
+            <!--$table->integer('recorded_on')->unsigned();-->
+            <!--$table->string('type');-->
+
+            <!--$table->index('stream_id');-->
+            <!--$table->index('type');-->
+            <!--$table->unique(['stream_id', 'version']);-->
+        <!--});-->
+    <!--}-->
+
+    <!--/**-->
+    <!--* @param $streamId-->
+    <!--*-->
+    <!--* @return int current version of the stream-->
+    <!--*/-->
+    <!--public function version($streamId)-->
+    <!--{-->
+        <!--$streamId = (string) $streamId;-->
+
+        <!--$lastEvent = $this->connection->table($this->tableClass)-->
+        <!-- ->where('stream_id', $streamId)-->
+        <!-- ->orderBy('version', 'desc')-->
+        <!-- ->first(['version']);-->
+
+        <!--if (! $lastEvent) {-->
+            <!--throw EventStoreException::streamNotFound($streamId);-->
+        <!--}-->
+
+        <!--return $lastEvent->version;-->
+    <!--}-->
+
+    <!--/**-->
+    <!--* @param Criteria $criteria-->
+    <!--* @param callable $handle-->
+    <!--*-->
+    <!--* @return DomainMessage[] $messages-->
+    <!--*/-->
+    <!--public function visit(Criteria $criteria, callable $handle)-->
+    <!--{-->
+        <!--$this->connection->table($this->tableClass)->chunk(100, function ($events) use ($criteria, $handle) {-->
+
+            <!--foreach ($events as $event) {-->
+                <!--$message = $this->deserializeEvent($event);-->
+
+                <!--if ($criteria->isSatisfiedBy($message)) {-->
+                    <!--$handle($message);-->
+                <!--}-->
+            <!--}-->
+        <!--});-->
+    <!--}-->
+
+    <!--/**-->
+    <!--* @param string|null $streamId-->
+    <!--*-->
+    <!--* @return int the number of events in the store-->
+    <!--*/-->
+    <!--public function count($streamId = null)-->
+    <!--{-->
+        <!--$events = $this->connection->table($this->tableClass);-->
+
+        <!--if ($streamId) {-->
+            <!--$events->where('stream_id', $streamId);-->
+        <!--}-->
+
+        <!--return $events->count();-->
+    <!--}-->
+<!--}-->
+<!--</code></pre>-->
+                    <!--<aside class="notes">-->
+                        <!--<p>code for the eventstore</p>-->
+                    <!--</aside>-->
+                <!--</section>-->
                 <section>
-                    <myTitleBox>
-                        <h2>Event Store</h2>
-                    </myTitleBox>
-<pre><code>&lt;?php
-
-namespace App\Support\EventStore;
-
-use App\Support\Domain\DomainMessage;
-use Illuminate\Database\Connection;
-use Illuminate\Database\QueryException;
-use Illuminate\Database\Schema\Blueprint;
-
-class DatabaseEventStore implements EventStore
-{
-    /**
-     * @var string
-     */
-    protected $tableClass;
-
-    /**
-     * @var Connection
-     */
-    private $connection;
-
-    const MAX_EVENT_PAYLOAD_LENGTH = 65535;
-
-    public function __construct($tableClass, Connection $connection)
-    {
-        $this->tableClass = $tableClass;
-    $this->connection = $connection;
-    }
-
-    /**
-    * @param $streamId
-    *
-    * @return DomainMessage[]
-    */
-    public function load($streamId)
-    {
-        $streamId = (string) $streamId;
-
-        $rows = $this->connection->table($this->tableClass)
-        ->where('stream_id', $streamId)
-        ->orderBy('version', 'asc')
-        ->get();
-
-        if (! count($rows)) {
-            throw EventStoreException::streamNotFound($streamId);
-        }
-
-        return $rows->map(function ($row) {
-            return $this->deserializeEvent($row);
-        })->all();
-    }
-
-    private function deserializeEvent($row)
-    {
-        $eventName = $row->type;
-        $recordedOn = new \DateTime();
-        $recordedOn->setTimestamp($row->recorded_on);
-
-        return new DomainMessage(
-            $row->stream_id,
-            $row->version,
-            $eventName::deserialize(json_decode($row->payload, true)),
-            $recordedOn
-        );
-    }
-
-    /**
-    * @param                 $streamId
-    * @param DomainMessage[] $messages
-    */
-    public function append($streamId, $messages)
-    {
-        $streamId = (string) $streamId;
-
-        if (! is_array($messages)) {
-            $messages = [$messages];
-        }
-
-        $this->connection->beginTransaction();
-
-        try {
-
-            foreach ($messages as $message) {
-                $payloadData = $message->getPayload()->serialize();
-
-                if (! is_array($payloadData)) {
-                    throw EventStoreException::eventNotSerializable();
-                }
-
-                $encodedPayload = json_encode($payloadData);
-
-                if (strlen($encodedPayload) >= self::MAX_EVENT_PAYLOAD_LENGTH) {
-                    throw EventStoreException::encodedPayloadTooLarge($message->getType());
-                }
-
-                $this->connection->table($this->tableClass)->insert([
-                        'stream_id' => $streamId,
-                        'version' => $message->getVersion(),
-                        'payload' => $encodedPayload,
-                        'recorded_on' => $message->getRecordedOn()->getTimestamp(),
-                        'type' => $message->getType(),
-                    ]);
-            }
-
-                $this->connection->commit();
-
-        } catch (QueryException $e) {
-            $this->connection->rollBack();
-
-            throw EventStoreException::optimisticLockingConflict($message->getStreamId(), $message->getVersion());
-        }
-    }
-
-    public function configureSchema()
-    {
-        $schema = $this->connection->getSchemaBuilder();
-        $schema->create($this->tableClass, function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('stream_id', 255);
-            $table->integer('version')->unsigned();
-            $table->text('payload');
-            $table->integer('recorded_on')->unsigned();
-            $table->string('type');
-
-            $table->index('stream_id');
-            $table->index('type');
-            $table->unique(['stream_id', 'version']);
-        });
-    }
-
-    /**
-    * @param $streamId
-    *
-    * @return int current version of the stream
-    */
-    public function version($streamId)
-    {
-        $streamId = (string) $streamId;
-
-        $lastEvent = $this->connection->table($this->tableClass)
-        ->where('stream_id', $streamId)
-        ->orderBy('version', 'desc')
-        ->first(['version']);
-
-        if (! $lastEvent) {
-            throw EventStoreException::streamNotFound($streamId);
-        }
-
-        return $lastEvent->version;
-    }
-
-    /**
-    * @param Criteria $criteria
-    * @param callable $handle
-    *
-    * @return DomainMessage[] $messages
-    */
-    public function visit(Criteria $criteria, callable $handle)
-    {
-        $this->connection->table($this->tableClass)->chunk(100, function ($events) use ($criteria, $handle) {
-
-            foreach ($events as $event) {
-                $message = $this->deserializeEvent($event);
-
-                if ($criteria->isSatisfiedBy($message)) {
-                    $handle($message);
-                }
-            }
-        });
-    }
-
-    /**
-    * @param string|null $streamId
-    *
-    * @return int the number of events in the store
-    */
-    public function count($streamId = null)
-    {
-        $events = $this->connection->table($this->tableClass);
-
-        if ($streamId) {
-            $events->where('stream_id', $streamId);
-        }
-
-        return $events->count();
-    }
-}
-</code></pre>
-                    <aside class="notes">
-                        <p>code for the eventstore</p>
-                    </aside>
-                </section>
-                <section>
-                    <myTitleBox>
-                        <h2>Listeners (Class)</h2>
-                    </myTitleBox>
+                    <!--<myTitleBox>-->
+                        <!--<h2>Listeners (Class)</h2>-->
+                    <!--</myTitleBox>-->
                     <myColBox>
                         <article>
-                            <ul>
-                                <li>create listeners that listen to certain events and determine what they mean</li>
-                                <li>StudentProfileProjector</li>
-                                <li>EnrollmentRequests Read Model</li>
-                            </ul>
+                            <!--<ul>-->
+                                <!--<li>create listeners that listen to certain events and determine what they mean</li>-->
+                                <!--<li>StudentProfileProjector</li>-->
+                                <!--<li>EnrollmentRequests Read Model</li>-->
+                            <!--</ul>-->
+                            <img src="img/status_change/Listeners.png">
                         </article>
                     </myColBox>
                     <aside class="notes">
                     </aside>
                 </section>
                 <section>
-                    <myTitleBox>
-                        <h2>Projector </h2>
-                    </myTitleBox>
+                    <section>
+                        <myColBox>
+                            <article>
+                                <img src="img/status_change/Projector.png">
+                            </article>
+                        </myColBox>
+                        <aside class="notes">
+                            <li>The Projector Builds a report based on the events; populates a table based on what those events mean to us</li>
+                            <li>(*) This method applies a Student Requested Enrollment event; taking attributes from the event; We decided that for this projector, we want to add a row to the table when a new request comes in, and we set the status to "requested"</li>
+                            <li>(*) Apply the Enrollment Request Rejected events</li>
+                            <li>(*) Apply the Enrollment Request Approved events</li>
+                        </aside>
+                    </section>
+                    <section>
+                        <myTitleBox>
+                            <h2>Projector </h2>
+                        </myTitleBox>
 <pre><code>&lt;?php
 
 namespace App\Enrollment\ReadModel;
@@ -1476,26 +1503,38 @@ class EnrollmentRequestProjector extends SimpleProjector implements Replayable
 
 }
 </code></pre>
-                    <span class="fragment current-only" data-code-focus="13"></span>
-                    <span class="fragment current-only" data-code-focus="24"></span>
-                    <span class="fragment current-only" data-code-focus="31"></span>
-                    <span class="fragment current-only" data-code-focus="48"></span>
-                    <span class="fragment current-only" data-code-focus="61"></span>
-                    <span class="fragment current-only" data-code-focus="77"></span>
-                    <aside class="notes">
-                        <li>The Projector Builds a report based on the events; populates a table based on what those events mean to us</li>
-                        <li>(*) This is our Enrollment Request Project, based on the Simple Projector</li>
-                        <li>(*) It establishes a database connection,a nd we name the table</li>
-                        <li>(*) BeforeReplay sets a temp table to replay events to, and as long as we don't have an error</li>
-                        <li>(*) After Replay will move the temp table to a primary one</li>
-                        <li>(*) This method applies a Student Requested Enrollment event; taking attributes from the event; We decided that for this projector, we want to add a row to the table when a new request comes in, and we set the status to "requested"</li>
-                        <li>(*) Apply the Enrollment Request Rejected events</li>
-                    </aside>
+                        <span class="fragment current-only" data-code-focus="13"></span>
+                        <span class="fragment current-only" data-code-focus="24"></span>
+                        <span class="fragment current-only" data-code-focus="31"></span>
+                        <span class="fragment current-only" data-code-focus="48"></span>
+                        <span class="fragment current-only" data-code-focus="61"></span>
+                        <span class="fragment current-only" data-code-focus="77"></span>
+                        <aside class="notes">
+                            <li>The Projector Builds a report based on the events; populates a table based on what those events mean to us</li>
+                            <li>(*) This is our Enrollment Request Project, based on the Simple Projector</li>
+                            <li>(*) It establishes a database connection,a nd we name the table</li>
+                            <li>(*) BeforeReplay sets a temp table to replay events to, and as long as we don't have an error</li>
+                            <li>(*) After Replay will move the temp table to a primary one</li>
+                            <li>(*) This method applies a Student Requested Enrollment event; taking attributes from the event; We decided that for this projector, we want to add a row to the table when a new request comes in, and we set the status to "requested"</li>
+                            <li>(*) Apply the Enrollment Request Rejected events</li>
+                        </aside>
+                    </section>
                 </section>
                 <section>
-                    <myTitleBox>
-                        <h2>Read Model </h2>
-                    </myTitleBox>
+                    <section>
+                        <myTitleBox>
+                            <h2>Read Model </h2>
+                        </myTitleBox>
+                        <myColBox>
+                            <article>
+                                <img src="img/status_change/ReadModel.png">
+                            </article>
+                        </myColBox>
+                    </section>
+                    <section>
+                        <myTitleBox>
+                            <h2>Read Model </h2>
+                        </myTitleBox>
 <pre><code>&lt;?php
 
 namespace App\Enrollment\ReadModel;
@@ -1529,15 +1568,30 @@ class EnrollmentRequest extends Model
     }
 }
 </code></pre>
-                    <span class="fragment current-only" data-code-focus="10"></span>
-                    <aside class="notes">
-                        <li>The Read Model looks at that projection, the source of truth, and allows us to request data from the projection</li>
-                    </aside>
+                        <span class="fragment current-only" data-code-focus="10"></span>
+                        <aside class="notes">
+                            <li>The Read Model looks at that projection, the source of truth, and allows us to request data from the projection</li>
+                        </aside>
+                    </section>
                 </section>
                 <section>
-                    <myTitleBox>
-                       <h2>Commands</h2>
-                    </myTitleBox>
+                    <section>
+                        <myColBox>
+                            <article>
+                                <img src="img/status_change/formtocontroller.png">
+                            </article>
+                        </myColBox>
+                    </section>
+                    <section>
+                        <myColBox>
+                            <article>
+                                <img src="img/status_change/formtocontroller2.png">
+                            </article>
+                        </myColBox>
+                    </section>                    <section>
+                        <myTitleBox>
+                           <h2>Commands</h2>
+                        </myTitleBox>
 <pre><code>&lt;?php
 
 namespace App\Enrollment\Commands;
@@ -1637,19 +1691,20 @@ class ScheduleEnrollmentPeriod implements Command
     }
 }
 </code></pre>
-                    <span class="fragment current-only" data-code-focus="10"></span>
-                    <span class="fragment current-only" data-code-focus="36"></span>
-                    <aside class="notes">
-                        <p>This is our command</p>
-                        <p>(*) It's called Schedule Enrollment Period</p>
-                        <p>(*) We generally construct it from the Request object.  You can see the constructor above, and we are building it with attributes from the Request object we're getting from the form</p>
-                        <li>These are the attributes we need when we are scheduling an enrollment period</li>
-                    </aside>
-                </section>
-                <section>
-                    <myTitleBox>
-                       <h2>Handler</h2>
-                    </myTitleBox>
+                            <span class="fragment current-only" data-code-focus="10"></span>
+                            <span class="fragment current-only" data-code-focus="36"></span>
+                            <aside class="notes">
+                                <p>This is our command</p>
+                                <p>(*) It's called Schedule Enrollment Period</p>
+                                <p>(*) We generally construct it from the Request object.  You can see the constructor above, and we are building it with attributes from the Request object we're getting from the form</p>
+                                <li>These are the attributes we need when we are scheduling an enrollment period</li>
+                            </aside>
+                        </section>
+                    </section>
+                    <section>
+                        <myTitleBox>
+                           <h2>Handler</h2>
+                        </myTitleBox>
 <pre><code>&lt;?php
 
 namespace app\Enrollment\Commands;
@@ -1692,17 +1747,18 @@ class EnrollmentPeriodHandler extends CommandHandler
     }
 }
 </code></pre>
-                    <span class="fragment current-only" data-code-focus="11"></span>
-                    <span class="fragment current-only" data-code-focus="33"></span>
-                    <span class="fragment current-only" data-code-focus="35-39"></span>
-                    <span class="fragment current-only" data-code-focus="30,33"></span>
-                    <aside class="notes">
-                        <li>This is our command handler</li>
-                        <li>(*) It's called the Enrollment Period Handler</li>
-                        <li>(*) Inside we call our method to handle the Schedule Enrollment Command</li>
-                        <li>(*) The body of this method actually schedules the enrollment period Based on attributes we pass with the command.  We pass the command as a parameter of this method above</li>
-                        <li>(*) Right here</li>
-                    </aside>
+                        <span class="fragment current-only" data-code-focus="11"></span>
+                        <span class="fragment current-only" data-code-focus="33"></span>
+                        <span class="fragment current-only" data-code-focus="35-39"></span>
+                        <!--<span class="fragment current-only" data-code-focus="30,33"></span>-->
+                        <aside class="notes">
+                            <li>This is our command handler</li>
+                            <li>(*) It's called the Enrollment Period Handler</li>
+                            <li>(*) Inside we call our method to handle the Schedule Enrollment Command</li>
+                            <li>(*) The body of this method actually schedules the enrollment period Based on attributes we pass with the command.  We pass the command as a parameter of this method above</li>
+                            <li>(*) Right here</li>
+                        </aside>
+                    </section>
                 </section>
 
                 <section>
@@ -1761,10 +1817,16 @@ class EnrollmentPeriodHandler extends CommandHandler
                     </aside>
                 </section>
                 <section>
-                    <h1>Thank You!</h1>
-                    <img src="img/phptek-sponsors.png">
-                    <p>Emily Stamey  <a href="https://twitter.com/elstamey">@elstamey</a></p>
-                    <!--<p>Joind.in: <a href="https://joind.in/talk/eac30">https://joind.in/talk/eac30</a></p>-->
+                    <myTitleBox>
+                        <h1>Thank You!</h1>
+                    </myTitleBox>
+                    <myRowBox>
+                        <article>
+                            <img src="img/phpsouthcoast.png">
+                            <p>Emily Stamey  <a href="https://twitter.com/elstamey">@elstamey</a></p>
+                            <p>Joind.in: <a href="https://joind.in/talk/eac30">https://joind.in/talk/eac30</a></p>
+                        </article>
+                    </myRowBox>
                 </section>
             </div>
         </div>
