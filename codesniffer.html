@@ -1801,6 +1801,11 @@ based on dark.css by Ivan Sagalaev
 
   </section>
   <section>
+    <h1 id="installing-via-composer">Installing via composer</h1>
+<pre><code>$ composer require --dev squizlabs/php_codesniffer</code></pre>
+
+  </section>
+  <section>
     <h1 id="scan-a-single-file">Scan a single file</h1>
 <pre><code>$ phpcs /path/to/myfile.php</code></pre>
 
@@ -1844,6 +1849,99 @@ A TOTAL OF 6 ERROR(S) AND 3 WARNING(S) WERE FOUND IN 3 FILE(S)
   </section>
   <section>
     <p><img src="./diff-blacklist.png" alt="blacklist"></p>
+
+  </section>
+  <section>
+    <h1 id="test-for-a-specific-sniff">Test for a specific Sniff</h1>
+<pre><code>$ phpcs --standard=PEAR --sniffs=Generic.PHP.LowerCaseConstant,PEAR.WhiteSpace.ScopeIndent /path/to/code</code></pre>
+
+  </section>
+  <section>
+    <h1 id="exclude-specific-sniffs">Exclude specific sniffs</h1>
+<pre><code>$ phpcs --standard=PEAR --exclude=Generic.PHP.LowerCaseConstant,PEAR.WhiteSpace.ScopeIndent /path/to/code</code></pre>
+
+  </section>
+  <section>
+    <h1 id="search-by-severity">Search by severity</h1>
+<pre><code>$ phpcs --severity=3 /path/to/code</code></pre>
+
+  </section>
+  <section>
+    <h1 id="tabs-to-spaces">Tabs to spaces</h1>
+<pre><code>$ phpcs --tab-width=4 /path/to/code</code></pre>
+
+  </section>
+  <section>
+    <h1 id="specify-php-ini-settings">Specify php.ini settings</h1>
+<pre><code>$ phpcs -d memory_limit=32M /path/to/code</code></pre>
+
+  </section>
+  <section>
+    <h1 id="phpcs-looks-for-a-default-config-file">PHPCS looks for a default config file</h1>
+<pre><code>Default file is called `phpcs.xml`</code></pre>
+
+  </section>
+  <section>
+    <h1 id="config-vs-commandline">Config vs Commandline</h1>
+<p><img src="./commandline_vs_config.png" alt="Config and Commandline comparison"></p>
+
+  </section>
+  <section>
+    <h1 id="sample-config">Sample Config</h1>
+<p><a href="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xml.dist">phpcs.xml.dist</a></p>
+
+  </section>
+  <section>
+    <h1 id="php-cs-config-examples">PHP CS Config examples</h1>
+<p><a href="https://github.com/jrfnl/make-phpcs-work-for-you">Examples from Make PHP CS Work for You</a></p>
+
+  </section>
+  <section>
+    <h1 id="sniffs-and-customizable-properties">Sniffs and Customizable Properties</h1>
+<p><a href="https://github.com/squizlabs/PHP_CodeSniffer/wiki/Customisable-Sniff-Properties">properties</a>
+<a href="https://github.com/squizlabs/PHP_CodeSniffer/wiki/Customisable-Sniff-Properties#psr2-sniffs">PSR2 sniffs</a></p>
+
+  </section>
+  <section>
+    <h1 id="php-cs-can-fix-it-for-you">PHP CS can fix it for you</h1>
+<pre><code>$ phpcs --report=diff /path/to/code</code></pre>
+
+  </section>
+  <section>
+    <h1 id="diy-sniffs">DIY Sniffs</h1>
+<p><a href="https://github.com/squizlabs/PHP_CodeSniffer/wiki/Coding-Standard-Tutorial">How To</a></p>
+
+  </section>
+  <section>
+    <h1 id="php-compatibility">PHP Compatibility</h1>
+<p><img src="./test_for_php7.png" alt="Commandline Compatibility check for PHP 7.0"></p>
+
+  </section>
+  <section>
+    <h1 id="a-few-simple-rules">a few simple rules</h1>
+<pre><code> * always pass it a `testVersion` to get the best results
+ * pass minor version numbers, not patch
+ * can pass a range of versions `5.6-7.2`
+ * `5.6-` means 5.6 and any PHP versions from thereon up, i.e. `5.6-99.0`</code></pre>
+
+  </section>
+  <section>
+    <h1 id="contribute-to-sniffs">Contribute to Sniffs</h1>
+<p><a href="https://github.com/squizlabs/PHP_CodeSniffer/blob/master/CONTRIBUTING.md">PHP Codesniffer github</a></p>
+
+  </section>
+  <section>
+    <h1 id="contribute-to-php-compatibility">Contribute to PHP Compatibility</h1>
+<p><a href="https://github.com/wimg/PHPCompatibility/">PHP Compatibility github</a></p>
+
+  </section>
+  <section>
+    <h1 id="continuous-integration">Continuous Integration</h1>
+<p>  <a href="https://github.com/jrfnl/make-phpcs-work-for-you/tree/master/travis-examples">running PHP CS on your Travis Builds</a></p>
+
+  </section>
+  <section>
+    <p><img src="./phpcs_with_travis.png" alt="PHP CS and Travis"></p>
 
   </section>
   <section>
