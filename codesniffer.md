@@ -178,3 +178,4 @@ style: my-style.css
 --
 
 ![PHP CS and Travis](./phpcs_with_travis.png)
+
