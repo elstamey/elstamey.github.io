@@ -1792,8 +1792,8 @@ based on dark.css by Ivan Sagalaev
 <div class="reveal">
     <div class="slides">
         <section>
-    <h1 id="codesniffer">Codesniffer</h1>
-<h2 id="https-github-com-squizlabs-php_codesniffer"><a href="https://github.com/squizlabs/PHP_CodeSniffer">https://github.com/squizlabs/PHP_CodeSniffer</a></h2>
+    <h3 id="codesniffer">Codesniffer</h3>
+<h4 id="https-github-com-squizlabs-php_codesniffer"><a href="https://github.com/squizlabs/PHP_CodeSniffer">https://github.com/squizlabs/PHP_CodeSniffer</a></h4>
 <ul>
 <li>detects violations of a defined set of coding standards</li>
 <li>PHP, JavaScript and CSS files</li>
@@ -1801,23 +1801,25 @@ based on dark.css by Ivan Sagalaev
 
   </section>
   <section>
-    <h1 id="installing-via-composer">Installing via composer</h1>
+    <h3 id="installing-via-composer">Installing via composer</h3>
 <pre><code>$ composer require --dev squizlabs/php_codesniffer</code></pre>
 
   </section>
   <section>
-    <h1 id="scan-a-single-file">Scan a single file</h1>
+    <h3 id="scan-a-single-file">Scan a single file</h3>
 <pre><code>$ phpcs /path/to/myfile.php</code></pre>
 
   </section>
   <section>
-    <h1 id="scan-a-directory-or-project">Scan a directory or project</h1>
+    <h3 id="scan-a-directory-or-project">Scan a directory or project</h3>
 <pre><code>$ phpcs /path/to/project/</code></pre>
 
   </section>
   <section>
-    <p>$ phpcs --report=summary /path/to/code  </p>
-<pre><code>PHP CODE SNIFFER REPORT SUMMARY 
+    <h3 id="report">REPORT</h3>
+<pre><code>$ phpcs --report=summary /path/to/code
+
+PHP CODE SNIFFER REPORT SUMMARY
 --------------------------------------------------------------------------------
 FILE                                                            ERRORS  WARNINGS 
 -------------------------------------------------------------------------------- 
@@ -1830,118 +1832,127 @@ A TOTAL OF 6 ERROR(S) AND 3 WARNING(S) WERE FOUND IN 3 FILE(S)
 
   </section>
   <section>
-    <p>$ phpcs -i
-    The installed coding standards are MySource, PEAR, PHPCS, PSR1, PSR2, Squiz and Zend</p>
+    <h3 id="installed-standards">Installed Standards</h3>
+<pre><code>$ phpcs -i
+The installed coding standards are MySource, PEAR, PHPCS, PSR1, PSR2, Squiz and Zend</code></pre>
 
   </section>
   <section>
-    <h1 id="view-the-report-in-docker">View the report in Docker</h1>
-<p>  $ ./vendor/bin/phpcs --report=summary  ./source/</p>
+    <h3 id="view-the-report-in-docker">View the report in Docker</h3>
+<pre><code>$ ./vendor/bin/phpcs --report=summary  ./source/</code></pre>
 
   </section>
   <section>
-    <p><img src="./phpcs-report-blacklistservice.png" alt="blacklist"></p>
+    <h3 id="run-against-a-single-file">Run against a single file</h3>
+<p><img src="./img/phpcs/phpcs-report-blacklistservice.png" alt="blacklist"></p>
 
   </section>
   <section>
-    <p><img src="./phpcbf-blacklist.png" alt="blacklist"></p>
+    <h3 id="fix-the-2-marked-errors">Fix the 2 Marked errors</h3>
+<p><img src="./img/phpcs/phpcbf-blacklist.png" alt="blacklist"></p>
 
   </section>
   <section>
-    <p><img src="./diff-blacklist.png" alt="blacklist"></p>
+    <h3 id="inspect-changes-with-git-diff">Inspect Changes with git diff</h3>
+<p><img src="./img/phpcs/diff-blacklist.png" alt="blacklist"></p>
 
   </section>
   <section>
-    <h1 id="test-for-a-specific-sniff">Test for a specific Sniff</h1>
+    <h3 id="test-for-a-specific-sniff">Test for a specific Sniff</h3>
 <pre><code>$ phpcs --standard=PEAR --sniffs=Generic.PHP.LowerCaseConstant,PEAR.WhiteSpace.ScopeIndent /path/to/code</code></pre>
 
   </section>
   <section>
-    <h1 id="exclude-specific-sniffs">Exclude specific sniffs</h1>
+    <h3 id="exclude-specific-sniffs">Exclude specific sniffs</h3>
 <pre><code>$ phpcs --standard=PEAR --exclude=Generic.PHP.LowerCaseConstant,PEAR.WhiteSpace.ScopeIndent /path/to/code</code></pre>
 
   </section>
   <section>
-    <h1 id="search-by-severity">Search by severity</h1>
+    <h3 id="search-by-severity">Search by severity</h3>
 <pre><code>$ phpcs --severity=3 /path/to/code</code></pre>
 
   </section>
   <section>
-    <h1 id="tabs-to-spaces">Tabs to spaces</h1>
+    <h3 id="tabs-to-spaces">Tabs to spaces</h3>
 <pre><code>$ phpcs --tab-width=4 /path/to/code</code></pre>
 
   </section>
   <section>
-    <h1 id="specify-php-ini-settings">Specify php.ini settings</h1>
+    <h3 id="specify-php-ini-settings">Specify php.ini settings</h3>
 <pre><code>$ phpcs -d memory_limit=32M /path/to/code</code></pre>
 
   </section>
   <section>
-    <h1 id="phpcs-looks-for-a-default-config-file">PHPCS looks for a default config file</h1>
-<pre><code>Default file is called `phpcs.xml`</code></pre>
+    <h3 id="phpcs-looks-for-a-default-config-file">PHPCS looks for a default config file</h3>
+<p>Default config file is called &#39;phpcs.xml&#39;</p>
 
   </section>
   <section>
-    <h1 id="config-vs-commandline">Config vs Commandline</h1>
-<p><img src="./commandline_vs_config.png" alt="Config and Commandline comparison"></p>
+    <h3 id="commandline-vs-config-file">Commandline vs Config file</h3>
+<p><img src="./img/phpcs/commandline_vs_config.png" alt="Config and Commandline comparison"></p>
+<ul>
+<li>source of image: <a href="https://speakerdeck.com/jrf/dont-work-for-phpcs-make-phpcs-work-for-you-1">&quot;Making PHP CS Work For You&quot;</a> by <a href="http://twitter.com/jrf_nl">@jrf_nl</a></li>
+</ul>
 
   </section>
   <section>
-    <h1 id="sample-config">Sample Config</h1>
+    <h3 id="sample-config">Sample Config</h3>
 <p><a href="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xml.dist">phpcs.xml.dist</a></p>
 
   </section>
   <section>
-    <h1 id="php-cs-config-examples">PHP CS Config examples</h1>
-<p><a href="https://github.com/jrfnl/make-phpcs-work-for-you">Examples from Make PHP CS Work for You</a></p>
+    <h3 id="more-example-config-files">More Example Config Files</h3>
+<p><a href="https://github.com/jrfnl/make-phpcs-work-for-you">Example &#39;phpcs.xml&#39; from &quot;Make PHP CS Work for You&quot;</a> by <a href="http://twitter.com/jrf_nl">@jrf_nl</a></p>
 
   </section>
   <section>
-    <h1 id="sniffs-and-customizable-properties">Sniffs and Customizable Properties</h1>
+    <h3 id="sniffs-and-customizable-properties">Sniffs and Customizable Properties</h3>
 <p><a href="https://github.com/squizlabs/PHP_CodeSniffer/wiki/Customisable-Sniff-Properties">properties</a>
 <a href="https://github.com/squizlabs/PHP_CodeSniffer/wiki/Customisable-Sniff-Properties#psr2-sniffs">PSR2 sniffs</a></p>
 
   </section>
   <section>
-    <h1 id="php-cs-can-fix-it-for-you">PHP CS can fix it for you</h1>
+    <h3 id="phpcbf-can-fix-it-for-you">PHPCBF can fix it for you</h3>
+<p>You can view proposed changes before you do it</p>
 <pre><code>$ phpcs --report=diff /path/to/code</code></pre>
 
   </section>
   <section>
-    <h1 id="diy-sniffs">DIY Sniffs</h1>
+    <h3 id="php-compatibility">PHP Compatibility</h3>
+<p><img src="./img/phpcs/test_for_php7.png" alt="Commandline Compatibility check for PHP 7.0"></p>
+
+  </section>
+  <section>
+    <h3 id="a-few-simple-rules">a few simple rules</h3>
+<ul>
+<li>always pass it a &#39;testVersion&#39; to get the best results</li>
+<li>pass minor version numbers, not patch</li>
+<li>can pass a range of versions &#39;5.6-7.2&#39;</li>
+<li>&#39;5.6-&#39; means 5.6 and any PHP versions from thereon up, i.e. &#39;5.6-99.0&#39;</li>
+</ul>
+
+  </section>
+  <section>
+    <h3 id="diy-sniffs">DIY Sniffs</h3>
 <p><a href="https://github.com/squizlabs/PHP_CodeSniffer/wiki/Coding-Standard-Tutorial">How To</a></p>
+<p><a href="https://github.com/squizlabs/PHP_CodeSniffer/blob/master/CONTRIBUTING.md">Contribute your Sniffs on github</a></p>
 
   </section>
   <section>
-    <h1 id="php-compatibility">PHP Compatibility</h1>
-<p><img src="./test_for_php7.png" alt="Commandline Compatibility check for PHP 7.0"></p>
-
-  </section>
-  <section>
-    <h1 id="a-few-simple-rules">a few simple rules</h1>
-<pre><code> * always pass it a `testVersion` to get the best results
- * pass minor version numbers, not patch
- * can pass a range of versions `5.6-7.2`
- * `5.6-` means 5.6 and any PHP versions from thereon up, i.e. `5.6-99.0`</code></pre>
-
-  </section>
-  <section>
-    <h1 id="contribute-to-sniffs">Contribute to Sniffs</h1>
-<p><a href="https://github.com/squizlabs/PHP_CodeSniffer/blob/master/CONTRIBUTING.md">PHP Codesniffer github</a></p>
-
-  </section>
-  <section>
-    <h1 id="contribute-to-php-compatibility">Contribute to PHP Compatibility</h1>
+    <h3 id="contribute-to-php-compatibility">Contribute to PHP Compatibility</h3>
 <p><a href="https://github.com/wimg/PHPCompatibility/">PHP Compatibility github</a></p>
 
   </section>
   <section>
-    <h1 id="continuous-integration">Continuous Integration</h1>
-<p>  <a href="https://github.com/jrfnl/make-phpcs-work-for-you/tree/master/travis-examples">running PHP CS on your Travis Builds</a></p>
+    <h3 id="continuous-integration">Continuous Integration</h3>
+<p><img src="./img/phpcs/phpcs_with_travis.png" alt="PHP CS and Travis"></p>
 
   </section>
   <section>
-    <p><img src="./phpcs_with_travis.png" alt="PHP CS and Travis"></p>
+    <p><a href="https://github.com/jrfnl/make-phpcs-work-for-you/tree/master/travis-examples">Examples of PHPCS and Travis</a></p>
+<ul>
+<li>source of previous image and this repo: <a href="https://speakerdeck.com/jrf/dont-work-for-phpcs-make-phpcs-work-for-you-1">&quot;Making PHP CS Work For You&quot;</a> by <a href="http://twitter.com/jrf_nl">@jrf_nl</a></li>
+</ul>
 
   </section>
   <section>
