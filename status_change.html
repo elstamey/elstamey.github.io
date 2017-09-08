@@ -225,11 +225,11 @@
                     </aside>
                 </section>
                 <section>
-                    <footer>
+                    <myColBox>
                         <article>
                             <img src="img/status_change/CompensatingMeasures.png" alt="Compensating Measures: diagram of a table with a status column added and a drawing of a table with a related status table">
                         </article>
-                    </footer>
+                    </myColBox>
                     <aside class="notes">
                         <li>We wanted to capture these status changes, so we added a column to the table with our form data</li>
                         <p>Or we added a related table to attempt to preserve history</p>
@@ -258,9 +258,11 @@
                     <myTitleBox>
                         <h2>How workflows become complex</h2>
                     </myTitleBox>
-                    <footer>
-                       <img src="img/status_change/requestPath.png" alt="a diagram of a request coming in to be reviewed and the admin sending it either to approved, rejected, or hold piles; but hold has another fork for reasons and hold can be for academic or financial reasons">
-                    </footer>
+                    <myColBox>
+                        <article>
+                            <img src="img/status_change/requestPathComplex.png" alt="a diagram of a request coming in to be reviewed and the admin sending it either to approved, rejected, or hold piles; but hold has another fork for reasons and hold can be for academic or financial reasons">
+                        </article>
+                   </myColBox>
                     <aside class="notes">
                         <li>Over time we add more states to the process to solve confusion, or to distribute load, lots of reasons!</li>
                         <li>Processes that handled lots of paper could become much more complex, even in trying to organize them</li>
@@ -619,7 +621,7 @@
                         <li>We now have an audit log, and proof of how we got to this state</li>
                         <li>That history is more important that the current state BECAUSE</li>
                         <li>We are able to replay those events to prove the state</li>
-                        <li>With our Scholarships Application, we collected the attributes that helped a student match for the scholarship to keep a record of why they were chosen </li>
+                        <li>With our Scholarships Application, we helped a student match for the scholarship.  We kept track of the current budgets so different users of the system could see what money was left to be awarded</li>
                         <li>If we needed to see the budgets on any given day in the past, we could produce that information</li>
                         <li>And when they completely changed the format of budgets they wanted to review, we could easily rebuild that without affecting the amounts.</li>
                     </aside>
@@ -1755,8 +1757,8 @@ class EnrollmentPeriodHandler extends CommandHandler
                         <aside class="notes">
                             <li>This is our command handler for Enrollment Period.  It has handle methods for the Commands it's likely to receive</li>
                             <li>(*) It's called the Enrollment Period Handler</li>
-                            <li>(*) Inside we call our method to handle the Schedule Enrollment Command</li>
-                            <li>(*) The body of this method actually schedules the enrollment period Based on attributes we pass from the Form to the command.  We pass the command as a parameter of this method above</li>
+                            <li>(*) Inside we call our method to handle the Schedule Enrollment Command.   We pass the command as a parameter of this method above</li>
+                            <li>(*) The body of this method actually schedules the enrollment period Based on attributes we pass from the Form to the command. </li>
                             <li>(*) Right here</li>
                         </aside>
                     </section>
