@@ -8,7 +8,7 @@ theme: jdan/cleaver-retro
 style: my-style.css
 -------------------
 
-### Presentations
+### Conference Presentations
 
 - [Pulling up your Legacy by its Bootstraps](./bootstrapping_legacy.html)
 - [Status Change: Now Using Event Sourcing](./status_change.html)
