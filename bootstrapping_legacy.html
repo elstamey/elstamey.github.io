@@ -43,7 +43,7 @@
 	<body>
 		<div class="reveal">
             <div class='footer'>
-                @elstamey      <a href="https://joind.in/talk/30b5f">https://joind.in/talk/30b5f</a>
+                @elstamey      <a href="https://joind.in/talk/d4081">https://joind.in/talk/d4081</a>
             </div>
 			<div class="slides">
                 <section>
@@ -51,7 +51,7 @@
                         <article>
                             <h3>Pulling Up Your Legacy App by Its Bootstraps</h3>
                             <p>by Emily Stamey</p>
-                            <p><a href="https://joind.in/talk/30b5f">https://joind.in/talk/30b5f </a></p>
+                            <p><a href="https://joind.in/talk/d4081">https://joind.in/talk/d4081 </a></p>
                         </article>
                         <article>
                             <img src="img/boots/boots_in_the_woods.jpg">
@@ -72,6 +72,46 @@
                     </aside>
                 </section>
                 <section>
+                    <myRowBox>
+                        <article>
+                            <myColBox>
+                                <article>
+                                    <!--<h3>Emily</h3>-->
+                                    <img src="img/me/developer.png" alt="developer">
+                                </article>
+                                <article>
+                                    <p>I'm a PHP developer</p>
+                                    <p>Organizer of Triangle PHP and Director of WWCode Raleigh/Durham</p>
+                                    <p>I work at a company that builds tools for network security threat assessment</p>
+                                    <!--<p>I work<u>ED</u> at a University</p>-->
+                                </article>
+                            </myColBox>
+                        </article>
+                        <article>
+                            <myColBox>
+                                <article>
+                                    <img src="img/inquest.svg">
+                                </article>
+                                <article>
+                                    <img src="img/trianglePHP_sm.jpg">
+                                </article>
+                                <article>
+                                    <img src="img/wwcode.png">
+                                </article>
+                            </myColBox>
+                        </article>
+                    </myRowBox>
+                    <aside class="notes">
+                        <li>I am Emily.  I'm a php developer</li>
+                        <li>I love community, so I help to build them at home.</li>
+                        <li>I work at Inquest, a network security company based in Washington, DC.  </li>
+                        <p>We are going to talk about Event Sourcing, but we will begin in a sort of roundabout way because
+                            at State we have been adding Event Sourcing to many of our legacy projects.  We have one project
+                            that we are rewriting, and it's a good case study for an older approach with status flags and we are rewriting it to use
+                            event sourcing.</p>
+                    </aside>
+                </section>
+                <section>
                     <myColBox>
                         <article>
                             <p>
@@ -82,9 +122,8 @@
                                     <li>1 UX professional</li>
                                 </ul>
                             </p>
-                            <p>Our applications support the College of Engineering, mostly outside of the classroom</p>
-                            <p class="fragment"> We maintain 70 legacy applications</p>
-
+                            <p>Our applications supported the College of Engineering, mostly outside of the classroom</p>
+                            <p class="fragment"> We maintained at least 70 legacy applications</p>
                         </article>
                         <article>
                             <myrowBox>
@@ -101,7 +140,7 @@
                         <li>My group in the College of Engineering: includes 3 developers, a UX person, a project manager, who we've lost.<br>
                             We have about 5 part-time student developers
                             and 3 managers</li>
-                        <li>We support a pile of PHP applications.</li>
+                        <li>We supported a pile of PHP applications.</li>
                         <li>Many of these were student-built a while ago... useful to the person or people they were built for,</li>
                         <li>They only get attention when they have a problem or a new need.</li>
                     </aside>
@@ -123,30 +162,32 @@
                         <li>Our tendency, as developers, is to replace it with more familiar code, our own.</li>
                         <li>But these legacy applications have grown beyond simple CRUD applications and now have a lot of
                             business logic baked in.</li>
-                                          </aside>
+                    </aside>
                 </section>
                 <section>
                     <blockquote class="style4">
-			Everybody likes to write reusable code, and no one wants to reuse anybody else's code.
-			<p>- Kurt Koppelman (@moonhead)
+                        Everybody likes to write reusable code, and no one wants to reuse anybody else's code.
+                        <p>- Kurt Koppelman (@moonhead)
                     </blockquote>
                     <aside class="notes">
                         <li>It is important that we develop the skills to read other code and fix only what is needed.</li>
-
                     </aside>
                 </section>
                 <section>
                     <h3>Bootstrapping is important</h3>
                     <ul>
-                        <li><p>We support <strong>legacy</strong> applications, some very old</p></li>
-                        <li><p>Updating <b>spaghetti</b> codebases is RISKY</p></li>
-                        <li><p>Rewriting large legacy applications is TIME CONSUMING</p></li>
-                        <li><p><strong>Bootstrapping</strong> meets you in the middle</p></li>
+                        <li>We support <strong>legacy</strong> applications, some very old</li>
+                        <li>Updating <b>spaghetti</b> codebases is RISKY</li>
+                        <li>Rewriting large legacy applications is TIME CONSUMING</li>
+                        <li><strong>Bootstrapping</strong> meets you in the middle</li>
                     </ul>
                     <aside class="notes">
                         <ul>
                             <li>There are a lot of considerations working on a legacy project</li>
                             <li>We'll talk about a few of them</li>
+                            <li>We rarely get to build an app from scratch, especially in PHP we're working with legacy apps of varied age and quality</li>
+                            <li>Updating a codebase we don't know well is risky.  Updating a spaghetti codebase is risky.</li>
+                            <li>Rewriting an entire app takes a really long time!</li>
                             <li>click</li>
                         </ul>
                     </aside>
@@ -163,7 +204,6 @@
                             <ul>
                                 <li>Software developed using older technologies and practices</li>
                                 <li>It can be difficult to replace because of its wide use.</li>
-
                             </ul>
                         </article>
                         <article>
@@ -200,9 +240,8 @@
                         <li>It's tough to change without causing ripples throughout your app</li>
                         <li>In PHP:
                             <ul>
-                                <li>spaghetti code that uses includes ...</li>
                                 <li>older PHP with includes is spaghetti because the html, style, php, and DB queries are mixed </li>
-                                <li>older frameworks/cms ...</li>
+                                <li>older frameworks/cms ... with no clean upgrade path</li>
                             </ul>
                         </li>
                     </aside>
@@ -253,14 +292,16 @@
                         </article>
                     </myColBox>
                     <aside class="notes">
-                        <li>Code that was left alone. We touch it as little as possible; treat it as fragile </li>
+                        <li>picture</li>
+                        <li>lots of recipes that end in technical debt</li>
                         <li>...developing an application without a clear picture of the problem or under a tight deadline</li>
-                        <li>At State, our students develop many simple apps. They are great for learning/teaching.</li>
-                        <li>Our dept can't get enough of the instant gratification of building a tool that helps someone do their job.</li>
-                        <li>But there are consequences for our organization</li>
+                        <li>Leave the code alone b/c we don't know exactly what it does. We touch it as little as possible; treat it as fragile </li>
+                        <li>At the Univ, our students develop many simple apps. They are great for learning/teaching.</li>
+                        <li>Our dept couldn't get enough of the instant gratification of building a tool that helps someone do their job.</li>
+                        <li>But there were consequences for our organization</li>
                         <li>Prof developers know it will eventually bite us. That simple app that one person uses will
-                            break and need an urgent fix, when we're working on something else.</li>
-                        <li>The student/developer who built it won't be here anymore. </li>
+                            break and need an urgent fix, when we're in the middle of something else.</li>
+                        <li>The student/developer who built it won't be there anymore. </li>
                         <li>Sometimes apps that began in this way GROW </li>
                         <li>many developers have touched the code => archaeology</li>
                         <li>Many of these apps have grown too big to be maintained by students. The
@@ -312,7 +353,7 @@
                     <section data-background-image="img/boots/jan_foundation.png" data-background-size="60%" data-background-position="center">
                         <aside class="notes">
                             <li>The Engineering Foundation maintains relationships with donors and manages the money</li>
-                            <li>Donors specify the type of student they want to receive the money, based on majors, gpa, and sometimes clubs</li>
+                            <li>Donors specify the type of student portfolio they want to give the money, based on majors, gpa, and sometimes clubs</li>
                             <li>We call this Scholarship criteria. Some is required and some is optional</li>
                             <li>Spring, Foundation figures out the money that is available for each Scholarship</li>
                             <li>They let the Selection Committee know how much money is available to be awarded</li>
@@ -342,6 +383,7 @@
                             <li>Although this cycle revolved around Scholarships, the scholarship meant different things to different people.</li>
                             <li>There was a separation of concerns: ethical and fairness perspective.</li>
                             <li>While the foundation cared about the criteria being met for a scholarship, they didn't want to be involved in choosing recipients.</li>
+                            <li>We wanted to create a separation of concerns for these areas and share only some of the information between groups</li>
                         </ul>
                     </aside>
                 </section>
@@ -356,9 +398,9 @@
                     <section>
                         <h3>Survey Your Application</h3>
                         <ol>
-                            <li><p>Talk to users of the application</p></li>
-                            <li><p>Study the codebase</p></li>
-                            <li><p>Examine the new feature requests</p></li>
+                            <li>Talk to users of the application</li>
+                            <li>Study the codebase</li>
+                            <li>Examine the new feature requests</li>
                         </ol>
                         <aside class="notes">
                             For your survey,
@@ -370,9 +412,9 @@
                     <section>
                         <h3>Survey Your Application</h3>
                         <ol>
-                            <li><p><mark>Talk to users of the application</mark></p></li>
-                            <li><p>Study the codebase</p></li>
-                            <li><p>Examine the new feature requests</p></li>
+                            <li><mark>Talk to users of the application</mark></li>
+                            <li>Study the codebase</li>
+                            <li>Examine the new feature requests</li>
                         </ol>
                         <aside class="notes">
                         </aside>
@@ -381,9 +423,9 @@
                 <section>
                     <h3>Talk to Users</h3>
                     <ol>
-                        <li><p>Is their process consistent with the application? </p></li>
-                        <li><p>What are the pain points?</p></li>
-                        <li><p>Do they have concerns with the application?</p></li>
+                        <li>Is their process consistent with the application? </li>
+                        <li>What are the pain points?</li>
+                        <li>Do they have concerns with the application?</li>
                     </ol>
                     <span class="fragment ">
 						<p><strong><mark>Don’t rely on developer feedback</mark></strong></p>
@@ -395,6 +437,7 @@
                         <li>Finally, do they have concerns? Do they trust the app? Hate it?</li>
                         <li>This is all necessary feedback.</li>
                         <li>This is your chance to deliver REAL value, so pay attention!</li>
+                        <li>Create a safe space for them to criticize the application</li>
                         <li>(click)Talking to the previous developer does NOT count as talking to your users.</li>
                     </aside>
                 </section>
@@ -412,7 +455,7 @@
                         <li>It was forcing some terminology and behavior on them that didn't exist in the College</li>
                         <li>(*) The Selection Committee received a spreadsheet of scholarships and available money.</li>
                         <li>They used our tool to review the applicants and make selections but reported those selections in another spreadsheet </li>
-                        <li>(*) Each row was the scholarship account number, student id number, dollar amount, and when they should
+                        <li>(*) Each row in that spreadsheet was the scholarship account number, student id number, dollar amount, and when they should
                             receive the money.  All numbers!</li>
                     </aside>
                 </section>
@@ -431,12 +474,12 @@
                 <section data-background-image="img/boots/notebook-page3.jpg" data-background-size="100%" data-background-position="left" data-state="dimbg">
                     <h3>User Feedback: Concerns</h3>
                     <ul>
-                        <li class="fragment"><p>Many awards were rejected by Financial Aid</p></li>
-                        <li class="fragment"><p>Didn’t trust that the best candidates were being chosen</p></li>
-                        <li class="fragment"><p>Scoring algorithm was not clear/effective</p></li>
-                        <li class="fragment"><p>Multiple majors weren&#39;t allowed</p></li>
-                        <li class="fragment"><p><strong>NOT ALL MONEY WAS BEING AWARDED</strong></p></li>
-                        <li class="fragment"><p><strong>MONEY LEFT UN-GIVEN ⇒ ANGRY DONORS</strong></p></li>
+                        <li class="fragment"><p>Many awards were rejected by Financial Aid</li>
+                        <li class="fragment"><p>Didn’t trust that the best candidates were being chosen</li>
+                        <li class="fragment"><p>Scoring algorithm was not clear/effective</li>
+                        <li class="fragment"><p>Multiple majors weren&#39;t allowed</li>
+                        <li class="fragment"><p><strong>NOT ALL MONEY WAS BEING AWARDED</strong></li>
+                        <li class="fragment"><p><strong>MONEY LEFT UN-GIVEN ⇒ ANGRY DONORS</strong></li>
                     </ul>
                     <aside class="notes">
                         <li>We also learned they didn't trust the application or that selection committee was choosing valid
@@ -458,9 +501,9 @@
                 <section>
                     <h3>Survey Your Application</h3>
                     <ol>
-                        <li><p>Talk to users of the application </p></li>
-                        <li><p><mark>Study the codebase</mark></p></li>
-                        <li><p>Examine the new feature requests</p></li>
+                        <li>Talk to users of the application </li>
+                        <li><mark>Study the codebase</mark></li>
+                        <li>Examine the new feature requests</li>
                     </ol>
                     <aside class="notes">
                         After you have spoken to your users, it's a great time to review the actual code
@@ -469,24 +512,29 @@
                 <section>
                     <h3>Study the codebase</h3>
                     <ul>
-                        <li><p>Talk to past/current developers</p></li>
-                        <li><p>Verify functionality does what everyone thinks it does</p></li>
-                        <li><p>Look for entanglements</p></li>
+                        <li>Talk to past/current developers</li>
+                        <li>Verify functionality does what everyone thinks it does</li>
+                        <li>Look for entanglements</li>
                     </ul>
                     <aside class="notes">
                         <li>This is where it makes sense to talk to other developers</li>
-                        <li>Be sure it does what everyone think it does. A lot of times it isn't</li>
-                        <li>Identify entanglements whether they are places to avoid changing or have for improvement.</li>
+                        <li>But always check the code that it does what everyone thinks it does. A lot of times it isn't</li>
+                        <li>Looking for entanglements and decide whether they are
+                            <ul>
+                                <li>places to avoid changing </li>
+                                <li>places that need to be fixed</li>
+                            </ul>
+                        </li>
                     </aside>
                 </section>
                 <section data-background-image="img/boots/notebook-page3.jpg" data-background-size="100%" data-background-position="left" data-state="dimbg">
                     <h3>Codebase of Scholarships</h3>
                     <ul>
-                        <li><p>Large App model</p>
+                        <li>Large App model</p>
                             <ul>
-                                <li><p>SQL queries, only slightly dynamic</p></li>
-                                <li><p>Functions weren’t single-purpose</p></li>
-                                <li><p>No Bounded Contexts between Students, Selection, and Foundation</p></li>
+                                <li>SQL queries, only slightly dynamic</li>
+                                <li>Functions weren’t single-purpose</li>
+                                <li>No Bounded Contexts between Students, Selection, and Foundation</li>
                             </ul></li>
                     </ul>
                     <aside class="notes">
@@ -498,10 +546,10 @@
                 <section data-background-image="img/boots/notebook-page3.jpg" data-background-size="100%" data-background-position="left" data-state="dimbg">
                     <h3>Codebase of Scholarship</h3>
                     <ul>
-                        <li><p>Student application data was a single row in table</p>
+                        <li>Student application data was a single row in table</p>
                             <ul>
-                                <li><p>Academic information wasn’t updated when it changed</p></li>
-                                <li><p>Major was a single column in that row</p></li>
+                                <li>Academic information wasn’t updated when it changed</li>
+                                <li>Major was a single column in that row</li>
                             </ul></li>
                     </ul>
                     <aside class="notes">
@@ -514,9 +562,9 @@
                 <section>
                     <h3>Survey Your Application</h3>
                     <ol>
-                        <li><p>Study the codebase</p></li>
-                        <li><p>Talk to users of the application </p></li>
-                        <li><p><mark>Examine the new feature requests</mark></p></li>
+                        <li>Study the codebase</li>
+                        <li>Talk to users of the application </li>
+                        <li><mark>Examine the new feature requests</mark></li>
                     </ol>
                     <aside class="notes">
                         <li>You will probably find a lot of work in fixing your legacy app</li>
@@ -526,8 +574,8 @@
                 <section>
                     <h3>Examine New Feature Requests</h3>
                     <ul>
-                        <li><p>What new features are needed? </p></li>
-                        <li><p>How they might be implemented?</p></li>
+                        <li>What new features are needed? </li>
+                        <li>How they might be implemented?</li>
                     </ul>
                     <aside class="notes">
                         You want to see what those features are and how they might fit into the other work to be done.
@@ -536,25 +584,25 @@
                 <section data-background-image="img/boots/notebook-page3.jpg" data-background-size="100%" data-background-position="left" data-state="dimbg">
                     <h3>New Features: Scholarships</h3>
                     <ul>
-                        <li><p>Explicit criteria matching, excluded non-matching applicants</p></li>
-                        <li><p>Current student data, query their GPA, Major, etc at time of selection</p></li>
-                        <li><p>Students have multiple majors</p></li>
+                        <li>Explicit criteria matching, excluded non-matching applicants</li>
+                        <li>Current student data, query their GPA, Major, etc at time of selection</li>
+                        <li>Students have multiple majors</li>
                     </ul>
                     <aside class="notes">
                         <li>For scholarships they agreed to exclude applicants who didn't match requirements</li>
                         <li>We could score them based on the optional criteria</li>
-                        <li>Student data like GPA and major should be correct at the time they were selected, to get a better match.  They might change after, but this would minimize the bad matches.</li>
+                        <li>Student data like GPA and major should be correct at the time they were selected, to get a better match.  They might change after, but this would reduce the bad matches.</li>
                         <li>Students with multiple majors HAD to be considered based on all of their engineering majors</li>
                     </aside>
                 </section>
                 <!--section>
                     <h3>How to Bootstrap</h3>
                     <ol>
-                        <li><p>Survey Your Application</p>
-                            <p> Legacy projects have business value baked in, that you must preserve.</p></li>
-                        <li><p>Organize the Work to be done</p>
+                        <li>Survey Your Application</p>
+                            <p> Legacy projects have business value baked in, that you must preserve.</li>
+                        <li>Organize the Work to be done</p>
                             <p> Based on the bugs, new features, etc. You have to balance needs vs. wants to deliver this
-                                product.</p></li>
+                                product.</li>
                     </ol>
                     <aside class="notes">
                         <li>We have the full survey now we have to organize the work, and organization is really important</li>
@@ -565,9 +613,9 @@
                         <article>
                             <h3>Before you start</h3>
                             <ul>
-                                <li><p>Is there another application that can do what it does? Is it better?</p></li>
-                                <li><p>Is this a worthwhile investment?</p></li>
-                                <li><p>If so, what are the Most Valuable Features?</p></li>
+                                <li>Is there another application that can do what it does? Is it better?</li>
+                                <li>Is this a worthwhile investment?</li>
+                                <li>If so, what are the Most Valuable Features?</li>
                             </ul>
                         </article>
                         <article>
@@ -576,11 +624,10 @@
                     </myColBox>
                     <aside class="notes">
                         <li>Be sure you aren't re-inventing the wheel.</li>
-                        <li>Before starting this huge project, we heard the University might be buying a tool for the University scholarships. </li>
+                        <li>Before starting this huge project, we heard the University might be buying a tool for the whole University's scholarships. </li>
                         <li>It claimed to do all the work our application did and more. </li>
-                        <li>We met with them, but they didn't have enough of the colleges' support to justify the expense.  </li>
-                        <li>So we needed to improve the accuracy of our selections and reduce the number of
-                            rejected awards.</li>
+                        <li>We met with them, but they didn't have enough of the colleges' support and weren't going to buy the application.  </li>
+                        <li>So we needed to do this work.</li>
                     </aside>
                 </section>
                 <!--<section data-background-image="img/boots/And_so_it_begins.jpg">-->
@@ -591,9 +638,9 @@
                         <article>
                             <h3>Include Users in Decisions</h3>
                             <ul>
-                                <li><p>Explain why this work is necessary</p></li>
-                                <li><p>Be open about errors in the application</p></li>
-                                <li><p>Build trust from the beginning</p></li>
+                                <li>Explain why this work is necessary</li>
+                                <li>Be open about errors in the application</li>
+                                <li>Build trust from the beginning</li>
                             </ul>
                         </article>
                         <article>
@@ -611,12 +658,12 @@
                         <article>
                             <h3>Set Expectations</h3>
                             <ul>
-                                <li><p>Customer has an open door to you </p>
+                                <li>Customer has an open door to you </p>
                                     <ul>
-                                        <li><p>add work from the side </p></li>
-                                        <li><p>change processes</p></li>
+                                        <li>add work from the side </li>
+                                        <li>change processes</li>
                                     </ul></li>
-                                <li><p>Keep the door open anyway!</p></li>
+                                <li>Keep the door open anyway!</li>
                             </ul>
                         </article>
                         <article>
@@ -637,12 +684,13 @@
                     <myColBox>
                         <article>
                             <ul>
-                                <li><p>Bootstrapping grows FAST!</p>
+                                <li>Bootstrapping grows FAST!</p>
                                     <ul>
-                                        <li><p>require more people to be engaged in the process</p></li>
-                                        <li><p>wear people down over time</p></li>
+                                        <li>require more people to be engaged in the process</li>
+                                        <li>wear people down over time</li>
                                     </ul></li>
-                                <li><p>Scope the work you are agreeing to do</p></li>
+                                <li>Scope the work you are agreeing to do</li>
+                                <li>Tie the work to the problem it is solving</li>
                             </ul>
                         </article>
                         <article>
@@ -684,9 +732,10 @@
                 <section data-background-image="img/boots/scholarships_plan.png" data-background-size="70%" data-background-position="center">
                     <aside class="notes">
                         <li>As I mentioned, the plan was to leave the existing application alone as much as possible.</li>
-                        <li>We would develop new features adjacent to the framework and use Domain-Driven Design </li>
+                        <li>We would build new code adjacent to the framework and use Domain-Driven Design </li>
                         <li>We'd connect the new code into the framework's routing layer</li>
                         <li>We wanted to replace the application in pieces, but we didn't want to get stuck rebuilding the parts that worked.</li>
+                        <li>We always wanted to be able to fall back to what we had if we couldn't meet the deadline</li>
                     </aside>
                 </section>
                 <section data-background-image="img/boots/Niamh-OReilly-Acrobat.jpg">
@@ -695,7 +744,7 @@
                             href="http://ents-rep.com/artists/niamh-hand-balance-london/">Niamh - acrobat</a></h5>
                     <aside class="notes">
                         <li>Before we could begin development there were a lot of things we needed to do to improve our development process.</li>
-                        <li>First of all, we were developing in production!</li>
+                        <li>First of all, we were developing a mission-critical application in production without source control!</li>
                     </aside>
                 </section>
                 <section>
@@ -744,12 +793,12 @@
                     <myColBox>
                         <article>
                             <ul>
-                                <li><p>Acceptance tests stabilize functionality you need to keep</p>
+                                <li>Acceptance tests stabilize functionality you need to keep</p>
                                     <ul>
-                                        <li><p>Hooked testing interfaces into framework</p></li>
-                                        <li><p>Used Codeception to view contents of the pages</p></li>
+                                        <li>Hooked testing interfaces into framework</li>
+                                        <li>Used Codeception to view contents of the pages</li>
                                     </ul></li>
-                                <li><p>Unit and Functional tests for everything you build</p></li>
+                                <li>Unit and Functional tests for everything you build</li>
                             </ul>
                         </article>
                         <article>
@@ -869,6 +918,7 @@
                             <!--<br>Package name = the vendor name and the project's name-->
                             <br>`composer install` puts all of those packages into your vendor folder, and specifies the installed version in a composer.lock file
                             <br>we checked in our composer.json and composer.lock files but .gitignored the vendor folder
+                            <br>this allowed everyone on our team to run with the same versions of the libraries we were using
                             <!--2.0.* of Codeception. This means any version in the 2.0 development branch. It is the equivalent of saying versions that match >=1.0 <1.1.-->
                         </aside>
                     </section>
@@ -924,18 +974,18 @@
                     <section>
                         <h3>Database Migrations: Phinx</h3>
                         <ul>
-                            <li><p>Allows you to change DB across environments</p></li>
-                            <li><p>Gives you power to undo the change if there is a problem</p></li>
+                            <li>Allows you to change DB across environments</li>
+                            <li>Gives you power to undo the change if there is a problem</li>
                         </ul>
                         <pre class="fragment"><code>$ vendor/bin/phinx create CreateUserLoginsTable</code></pre>
                         <aside class="notes">
-                            <li>Phinx was a criticial tool for us. It gave us the ability to alter our databases using a script.</li>
                             <li>Migrations give you the ability to do and undo these DB changes. Any change I made to my DB could
-                                also be made across all environmentss.</li>
-                            <li>If something unexpected happened at any point, it could be undone.</li>
+                                also be made for everyone on the team.</li>
+                            <li>If something unexpected happened, it could be undone.</li>
                             <li>It allowed us to version control DB changes. And although it isn't recommended, we did
                                 use it extensively for data migrations in addition to schema changes.</li>
-                            <li>In this project, we couldn't alter our schema until we had completely eliminated our dependency on the old codebase</li>
+                            <li>In this project, we couldn't make breaking changes to our schema until we had completely removed our dependency
+                                on the old codebase</li>
                             <p>(*)You start by generating the configuration file.  The file will be given a timestamp and class name. </p>
                             <li>The generator will create three methods: change(), up(), and down()</li>
                         </aside>
@@ -960,17 +1010,19 @@
     }
 </code></pre>
                         <span class="fragment current-only" data-code-focus="8-9"></span>
+                        <pre class="fragment" data-code-focus="8-9"><code>$ vendor/bin/phinx migrate</code></pre>
                         <span class="fragment current-only" data-code-focus="14-15"></span>
-                        <pre><code>$ vendor/bin/phinx migrate</code></pre>
-                        <pre><code>$ vendor/bin/phinx rollback</code></pre>
+                        <pre class="fragment"><code>$ vendor/bin/phinx rollback</code></pre>
                         <aside class="notes">
-                            <li>(*)This is the type of migration we generally write. This example renames a DB column from bio to
-                                biography.</li>
-                            <li>(*)The down() method undoes this change, renaming the column bio again. Along with this migrations, there
-                                would probably be a code change to queries of the 'bio' data.  Those commits would be in a single Pull Request
-                                with this migration.  Otherwise the change would break the code</li>
-                            <li>We run this change by calling the migrate command, and we undo the changes using rollback</li>
-                            <li>Tests run after the migration would now pass, and that code could be merged.</li>
+                            <li>This is the type of migration we generally write. It has an up and down method</li>
+                            <li>(*)For this migration, we want to rename a DB column from bio to
+                                biography. So we do this in our up() method</li>
+                            <li>(*)We make this change by calling the migrate command</li>
+                            <li>(*)The down() method undoes this change, renaming the column bio again.
+                            <li>(*) and we run the down method, using rollback</li>
+                            <li>Along with this migration, there would be code changes where we queried 'bio' data.
+                                All of these changes would be in a single Pull Request.  Otherwise the change would break the code</li>
+                            <li>We could run the migrate command and then our tests would pass, and that code could be merged.</li>
                         </aside>
                     </section>
                     <section>
@@ -1070,7 +1122,7 @@ class CreateUserLoginsTable extends AbstractMigration
                             <li>Composer allowed us to build this independent structure. </li>
                             <li>We used it to load a lot of the tooling I already mentioned</li>
                             <li>And we used it to autoload the namespaced code in our source folder.</li>
-                            <li>Here we label the /src folder as the namespace ITECS/Scholarships</li>
+                            <li>(*)Here we label the /src folder as the namespace ITECS/Scholarships</li>
                         </aside>
                     </section>
                     <section>
@@ -1121,14 +1173,13 @@ interface GpaService
                         <footer>
                             <h3>Events</h3>
                             <ul>
-                                <li><p>Student Submitted Application</p></li>
-                                <li><p>Budget Allocated To Scholarship</p></li>
-                                <li><p>Award Was Given To Student</p></li>
+                                <li>Student Submitted Application</li>
+                                <li>Budget Allocated To Scholarship</li>
+                                <li>Award Was Given To Student</li>
                             </ul>
                         </footer>
                         <aside class="notes">
-                            <li>Also Event-Sourced the state change of Scholarship Money and Awards</li>
-                            <p>Events were created when an Event happened in our system, but they were also helpful to "notify" another bounded context</p>
+                            <li>Events were created when an Event happened in our system, but they were also helpful to "notify" another bounded context</li>
                             <li>Since we were logging events for important things that happened in our system, we could react to changes down the line</li>
                         </aside>
                     </section>
@@ -1263,9 +1314,11 @@ class BaseController extends \Controller {
     }
 }
 </code></pre>
+                        <span class="fragment current-only" data-code-focus="32"></span>
                         <span class="fragment current-only" data-code-focus="27,38"></span>
                         <aside class="notes">
-                            <li>We defined our container in the BaseC Controller of the CI app </li>
+                            <li>(*)We did this in the BaseController of the CI app </li>
+                            <li>(*)Here We defined our container globally </li>
                         </aside>
                     </section>
                     <section>
@@ -1313,19 +1366,21 @@ class BaseController extends \Controller {
     };
 </code></pre>
                                 <span class="fragment current-only" data-code-focus="7"></span>
+                                <span class="fragment current-only" data-code-focus="9"></span>
                                 <span class="fragment current-only" data-code-focus="11"></span>
                                 <span class="fragment current-only" data-code-focus="12"></span>
                                 <span class="fragment current-only" data-code-focus="18-31"></span>
                                 <span class="fragment current-only" data-code-focus="36"></span>
-                                <span class="fragment current-only" data-code-focus="9"></span>
+
                             </article>
                         </myColBox>
                         <aside class="notes">
-                            <li>In out services.php file in CodeIgniter, we initialized the container</li>
-                            <li>We could then build our database connections in the container</li>
-                            <li>We made a new capsule, applied the connection parameters from our config file, and returned the capsule</li>
-                            <li>Just above this, we had included our configuration file and assigned it to a config container</li>
-                            <li></li>
+                            <li>(*)In our services.php file in CodeIgniter, we initialized the container</li>
+                            <li>(*)We included our configuration file and assigned it to a config container</li>
+                            <li>(*)We could then build our database container</li>
+                            <li>(*)We made a new capsule for our database container</li>
+                            <li>(*)We applied the connection parameters from that config container</li>
+                            <li>and after we properly set up our database configuration we returned the capsule</li>
                         </aside>
                     </section>
                     <section>
@@ -1334,11 +1389,11 @@ class BaseController extends \Controller {
                         </myTitleBox>
                         <myColBox>
                             <ul>
-                                <li><p>DB connections</p></li>
-                                <li><p>Base URL </p></li>
-                                <li><p>Set paths to twig templates</p></li>
-                                <li><p>Customize Notice messages</p></li>
-                                <li><p>Set config variables for services</p></li>
+                                <li>DB connections</li>
+                                <li>Base URL </li>
+                                <li>Set paths to twig templates</li>
+                                <li>Customize Notice messages</li>
+                                <li>Set config variables for services</li>
                             </ul>
                         </myColBox>
                         <aside class="notes">
@@ -1440,14 +1495,14 @@ class BaseController extends \Controller {
                 <section>
                     <h3>Bootstrapping:  Connecting to the Framework</h3>
                     <ul>
-                        <li><p>'/app/controllers'
+                        <li>'/app/controllers'
                             <br>new controllers for the new functionality</></li>
-                        <li><p>'/app/services.php'
+                        <li>'/app/services.php'
                             <br>defined and configured twig, database, et al
-                            <br>required in the CI index.php file</p></li>
-                        <li><p>'/app/bindings.php'
+                            <br>required in the CI index.php file</li>
+                        <li>'/app/bindings.php'
                             <br>the roadmap of our new code and dependencies
-                            <br>required in the '/app/services.php' file</p></li>
+                            <br>required in the '/app/services.php' file</li>
 
                     </ul>
                     <aside class="notes">
@@ -1474,7 +1529,8 @@ class BaseController extends \Controller {
     };
 
 </code></pre>
-                        <span class="fragment current-only" data-code-focus="6,9"></span>
+                        <span class="fragment current-only" data-code-focus="6"></span>
+                        <span class="fragment current-only" data-code-focus="9"></span>
                         <span class="fragment current-only" data-code-focus="8"></span>
                     </footer>
 
@@ -1483,7 +1539,8 @@ class BaseController extends \Controller {
                         <!--<li>In order to do this, we defined container in a file called `bindings.php`</li>-->
                         <!--<li>T</li>-->
                         <!--<li>The controller could then inject the service container and receive its dependencies.</li>-->
-                        <li>The first example is our GPA Service, (*)which only required a DB connection to query</li>
+                        <li>(*)The first example is our GPA Service</li>
+                        <li>(*)Its only dependency was a DB connection to look up the student's GPA</li>
                         <li>(*)We applied it to the container using the fully namespaced classname</li>
                     </aside>
                 </section>
@@ -1512,9 +1569,9 @@ $container['Scholarships\Selection\ApplicantQueryService'] = function($c) {
                     <aside class="notes">
                         <li>We were bringing in large chunks of code.  Some Services involved more dependencies, and
                             preserving them was critical</li>
-                        <li>(*) We included the class</li>
-                        <li>(*)In this example, the Applicant Query Service, we needed Students, Their Residency, GPAs, Unmet Financial Need, and their qualification for the scholarship.  Each of those dependencies had their own dependencies. </li>
-                        <li>And they were all included in this mapping for out DIC</li>
+                        <li>(*) We included the class, the Applicant Query Service</li>
+                        <li>(*)In this example, we needed Students, Their Residency, GPAs, Unmet Financial Need, and their qualification for the scholarship.  Each of those dependencies had their own dependencies. </li>
+                        <li>And they were all included in this mapping for our DIC</li>
                     </aside>
                 </section>
                 <!--<section data-background="#f05b62">-->
@@ -1572,6 +1629,7 @@ class Selectionnext extends BaseController
                             <li>(*)Here is our new Selection controller and (*)in its function, we could define the classes we needed in all methods </li>
                             <li>(*) here in the selection dashboard we are accessing the Applicant Query Service to show our Qualified Students</li>
                             <li>(*)This informed a presenter to display the Scholarship, its requirements, valid candidates, and any awards already given.</li>
+                            <li>(*)We returned this as Scholarship Details that would later be displayed by the template</li>
                         </aside>
                     </section>
                     <!--<section>-->
@@ -1821,9 +1879,9 @@ class Selectionnext extends BaseController
                 <!--<h3>Bootstrap the application</h3>-->
                 <!--<p>Within CodeIgniter</p>-->
                 <!--<ul>-->
-                <!--<li><p>New Controllers for new functionality</p></li>-->
-                <!--<li><p>Bindings for CodeIgniter to find the new code</p></li>-->
-                <!--<li><p>New Twig templates beside the existing Views in <code>/app</code></pre></li>-->
+                <!--<li>New Controllers for new functionality</li>-->
+                <!--<li>Bindings for CodeIgniter to find the new code</li>-->
+                <!--<li>New Twig templates beside the existing Views in <code>/app</code></pre></li>-->
                 <!--</ul>-->
                 <!--<aside class="notes">-->
                 <!---->
@@ -1876,11 +1934,11 @@ class Selectionnext extends BaseController
                                 the next academic year</p>
                         <aside class="notes">
                             <ul>
-                                <li><p>Huge time investment (approx. 9 months to complete selection) With more work over the summer to
-                                    complete</p></li>
-                                <li><p>Over time we lost team participation because we have too many other projects needing attention</p></li>
-                                <li><p>Tight deadlines with un-scoped work, we created technical debt that we would have to address in
-                                    the next academic year</p></li>
+                                <li>Huge time investment (approx. 9 months to complete selection) With more work over the summer to
+                                    complete</li>
+                                <li>Over time we lost team participation because we have too many other projects needing attention</li>
+                                <li>(*)Tight deadlines with un-scoped work, we created technical debt that we would have to address in
+                                    the next academic year</li>
                             </ul>
                         </aside>
                     </section>
@@ -1938,6 +1996,7 @@ class Selectionnext extends BaseController
                         <li class="fragment">Minor code improvements</li>
                         <li class="fragment">Just completed the second year's primary selection window</li>
                         <li class="fragment">Two years of selection until Academic Works could get up and running</li>
+                        <li class="fragment">They awarded over 2 million dollars in Scholarship money using our app</li>
                         <li class="fragment">Academic Works is online.</li>
                     </ul>
                 </section>
@@ -1950,11 +2009,11 @@ class Selectionnext extends BaseController
                     </ul>
                 </section>
                 <section>
-                    <img src="img/lonestarphp-logo.png">
+                    <img src="img/madison-php-conf-logo.png" style="background-color: black;">
                     <h1>Thank You!</h1>
                     <p>Emily Stamey</p>
                     <p>Twitter: <a href="https://twitter.com/elstamey">@elstamey</a></p>
-                    <p>Joind.in: <a href="https://joind.in/talk/30b5f">https://joind.in/talk/30b5f </a></p>
+                    <p>Joind.in: <a href="https://joind.in/talk/d4081">https://joind.in/talk/d4081 </a></p>
                 </section>
 
 
