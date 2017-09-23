@@ -105,10 +105,6 @@
                         <li>I am Emily.  I'm a php developer</li>
                         <li>I love community, so I help to build them at home.</li>
                         <li>I work at Inquest, a network security company based in Washington, DC.  </li>
-                        <p>We are going to talk about Event Sourcing, but we will begin in a sort of roundabout way because
-                            at State we have been adding Event Sourcing to many of our legacy projects.  We have one project
-                            that we are rewriting, and it's a good case study for an older approach with status flags and we are rewriting it to use
-                            event sourcing.</p>
                     </aside>
                 </section>
                 <section>
@@ -140,7 +136,7 @@
                         <li>My group in the College of Engineering: includes 3 developers, a UX person, a project manager, who we've lost.<br>
                             We have about 5 part-time student developers
                             and 3 managers</li>
-                        <li>We supported a pile of PHP applications.</li>
+                        <li>(*)We supported a pile of PHP applications.</li>
                         <li>Many of these were student-built a while ago... useful to the person or people they were built for,</li>
                         <li>They only get attention when they have a problem or a new need.</li>
                     </aside>
@@ -185,7 +181,6 @@
                         <ul>
                             <li>There are a lot of considerations working on a legacy project</li>
                             <li>We'll talk about a few of them</li>
-                            <li>We rarely get to build an app from scratch, especially in PHP we're working with legacy apps of varied age and quality</li>
                             <li>Updating a codebase we don't know well is risky.  Updating a spaghetti codebase is risky.</li>
                             <li>Rewriting an entire app takes a really long time!</li>
                             <li>click</li>
@@ -303,7 +298,6 @@
                             break and need an urgent fix, when we're in the middle of something else.</li>
                         <li>The student/developer who built it won't be there anymore. </li>
                         <li>Sometimes apps that began in this way GROW </li>
-                        <li>many developers have touched the code => archaeology</li>
                         <li>Many of these apps have grown too big to be maintained by students. The
                             users are too high on the org chart to risk failure or let the app die.</li>
                     </aside>
@@ -986,7 +980,7 @@
                                 use it extensively for data migrations in addition to schema changes.</li>
                             <li>In this project, we couldn't make breaking changes to our schema until we had completely removed our dependency
                                 on the old codebase</li>
-                            <p>(*)You start by generating the configuration file.  The file will be given a timestamp and class name. </p>
+                            <p>(*)You start by generating the migration file.  The file will be given a timestamp and class name. </p>
                             <li>The generator will create three methods: change(), up(), and down()</li>
                         </aside>
                     </section>
@@ -1994,7 +1988,7 @@ class Selectionnext extends BaseController
                     <ul>
                         <li>Backed up and removed all events from the previous year</li>
                         <li class="fragment">Minor code improvements</li>
-                        <li class="fragment">Just completed the second year's primary selection window</li>
+                        <li class="fragment">Completed the second year's first selection window</li>
                         <li class="fragment">Two years of selection until Academic Works could get up and running</li>
                         <li class="fragment">They awarded over 2 million dollars in Scholarship money using our app</li>
                         <li class="fragment">Academic Works is online.</li>
@@ -2006,6 +2000,7 @@ class Selectionnext extends BaseController
                         <li>Blog with Bootstrapping details: <a href="http://www.elstamey.com/">elstamey.com</a></li>
                         <li><a href="http://blog.intracto.com/paying-technical-debt-how-to-rescue-legacy-code-through-refactoring">Paying Technical Debt</a></li>
                         <li><a href="https://www.youtube.com/watch?v=IKD2-MAkXyQ&spfreload=5">Dependency Injection</a> - Anthony Ferrara</li>
+                        <li><a href="http://www.liquibase.org/">Liquibase</a> - a better migration tool</li>
                     </ul>
                 </section>
                 <section>
