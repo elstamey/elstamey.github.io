@@ -22,7 +22,7 @@ style: my-style.css
 - [Conference Speaking](./gdirdu-snowandtell/conference-speaking.html)
 - [Networking project](./networks.html)
 
---
+-- 
 
 #### PDF versions
 - Pulling up your Legacy by its Bootstraps
