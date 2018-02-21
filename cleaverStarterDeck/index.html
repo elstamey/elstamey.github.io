@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <title>Status Change Now Using Event Sourcing</title>
+  <title>Hey Boss, Event Sourcing Can Fix That!</title>
   <style type="text/css">
     /*!
  * reveal.js
@@ -1780,397 +1780,176 @@ based on dark.css by Ivan Sagalaev
 <div class="reveal">
     <div class="slides">
         <section>
-    <h1 id="status-change-">Status Change:</h1>
-<h2 id="now-using-event-sourcing">Now Using Event Sourcing</h2>
+    <h1 id="event-sourcing-can-fix-that-">Event Sourcing Can Fix That!</h1>
 
   </section>
   <section>
     <h2 id="what-we-ll-cover-">What we&#39;ll cover:</h2>
 <ul>
-<li>Handling <strong>process</strong> in our apps then and now</li>
-<li>What is Event Sourcing?</li>
-<li>Why would we want to use it?  </li>
-<li>Introducing what this code looks like (I hope)</li>
+<li>What does an Event look like?</li>
+<li>The Event Store</li>
+<li>How do we create events?</li>
+<li>We have events, now what?</li>
+<li>A short example of how it could work</li>
 </ul>
 
   </section>
   <section>
-    <h2 id="forms">Forms</h2>
-<p>A lot of our systems are built to facilitate or replace paper processes</p>
-<p>They often closely map to this physical form.</p>
-<p><img src="https://c1.staticflickr.com/8/7091/6988157282_e62624f274_b.jpg" alt="Paper form"></p>
-
-  </section>
-  <section>
-    <p><!-- ![Process showing approve and reject of employee request](http://ivero.net/solutions/ApprovalManager/images/WorkflowDiagram.png) -->
-<img src="FormProcess.svg" alt="FormProcess"></p>
-
-  </section>
-  <section>
-    <h2 id="status">Status</h2>
-<p>These piles were effectively our status of the form</p>
-<p>In our web forms we began using a drop-down menu to change the status.</p>
-<p>As the process matured, this increased complexity of status.</p>
-
-  </section>
-  <section>
-    <h2 id="paper-forms-handling-state">Paper Forms handling state</h2>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Copies_of_documents_at_European_Parliament_in_Strasbourg.jpg/1024px-Copies_of_documents_at_European_Parliament_in_Strasbourg.jpg" alt="Paper forms sorted for a process"></p>
-
-  </section>
-  <section>
-    <h2 id="paper-forms-handling-state">Paper Forms handling state</h2>
-<p><img src="http://previews.123rf.com/images/kabby/kabby0711/kabby071100002/2079196-A-crumpled-up-home-loan-application-stamped-with-the-word-Stock-Photo.jpg" alt="stamped application"></p>
-
-  </section>
-  <section>
-    <h2 id="but-that-stamp-doesn-t-indicate-why-or-communicate-to-the-applicant-what-happened">But that stamp doesn&#39;t indicate why or communicate to the applicant what happened</h2>
-
-  </section>
-  <section>
-    <h2 id="why-are-they-in-their-current-state-">Why are they in their current state?</h2>
-<p>These states carry assumed knowledge of the process without clearly saying what happened.</p>
-<p>Sometimes they are separated from the request&#39;s history.</p>
-<p>Status meaning or names can change over time without conveying process changes</p>
-
-  </section>
-  <section>
-    <h2 id="compensating-with-web-forms">Compensating with Web Forms</h2>
-<h3 id="preserving-some-history">Preserving some history</h3>
+    <h2 id="what-does-an-event-look-like-">What Does an Event Look Like?</h2>
 <ul>
-<li>add columns to the table with form data</li>
-<li>add a related table for notes</li>
-<li>more statuses to include the many forks in the process (like what type of hold)</li>
+<li>An Event is a Class named for the thing that happened</li>
+<li>The event contains attributes that are relevant to that event</li>
 </ul>
 
   </section>
   <section>
-    <p><img src="compensating_measures.jpg" alt="compensating_measures.jpg"></p>
-
-  </section>
-  <section>
-    <!-- ## Example: Student Enrollment Request -->
-
- <!-- The admin reviews the Request and the student: -->
- <!-- - prerequisites -->
- <!-- - academic hold -->
- <!-- - financial hold -->
- <!-- - student type -->
-
- <!-- -- -->
-
- <!-- ## Example: Student Enrollment Request -->
-
- <!-- Admin responds to the request: -->
- <!-- - enroll -->
- <!-- - reject -->
- <!-- - hold -->
- <!-- - waitlist -->
-
-
- <!-- -- -->
-
-
- <!-- ## Example: Student Enrollment Request -->
-
- <!-- - prerequisites  -->
-<!--
-         <!-- => yes enroll -->
-<!--          
-         <!-- => no reject -->
-<!-- - academic hold  -->
-<!-- 
-         <!-- => hold -->
- <!-- - financial hold -->
-<!--  
-         <!-- => hold -->
- <!-- - student type -->
-<!--
-         <!-- => waitlist -->
-<!-- -->
-
-
- <!-- -- -->
-
- <!-- ## Example: Enrollment Request States -->
-
- <!-- - Approved -->
- <!-- - **Hold** -->
- <!-- - Waitlist -->
- <!-- - Rejected -->
-  </section>
-  <section>
-    <h2 id="how-workflows-become-complex">How workflows become complex</h2>
-
-  </section>
-  <section>
-    <p><img src="more_statuses.jpg" alt="more_statuses.jpg"></p>
-
-  </section>
-  <section>
-    <p>Sometimes your workflow forks in multiple directions or involves long 
-lists to capture the complexity of the business process</p>
-<p><B>Change to Status:</B></p>
-<select name="newStatus">
-    <option value="RECEIVED">RECEIVED</option>
-    <option value="CANCELLED">CANCELLED</option>
-    <option value="COURSE CANCELLED">COURSE CANCELLED</option>
-    <option value="COURSE NOT APPROVED">COURSE NOT APPROVED</option>
-    <option value="CPC DENIED">CPC DENIED</option>
-    <option value="CPC NOT APPROVED">CPC NOT APPROVED</option>
-    <option value="CPC PENDING TRANSCRIPT">CPC PENDING TRANSCRIPT</option>
-    <option value="CPC PROCESSING">CPC PROCESSING<em></option>
-    <option value="DENIED">DENIED</option>
-    <option value="DROPPED AFTER CENSUS">DROPPED AFTER CENSUS</em></option>
-    <option value="DROPPED BEFORE CLASSES BEGUN">DROPPED BEFORE CLASSES BEGUN<em></option>
-    <option value="DROPPED BETWEEN BEGINNING OF CLASS AND CENSUS DATE">DROPPED BETWEEN BEGINNING OF CLASS AND CENSUS DATE</em></option>
-    <option value="DROPS/WITHDRAWALS AT SITES">DROPS/WITHDRAWALS AT SITES<em></option>
-    <option value="ECE ON CAMPUS STUDENTS">ECE ON CAMPUS STUDENTS</option>
-    <option value="ENROLLMENT CANCELLED">ENROLLMENT CANCELLED</option>
-    <option value="EOL APPROVED">EOL APPROVED</em></option>
-    <option value="EOL MISC">EOL MISC<em></option>
-    <option value="NEW STUDENT REGISTRATION">NEW STUDENT REGISTRATION</option>
-    <option value="PENDING ON CAMPUS REQUEST">PENDING ON CAMPUS REQUEST</option>
-    <option value="ON CAMPUS STUDENT NOT APPROVED">ON CAMPUS STUDENT NOT APPROVED</option>
-    <option value="PENDING CASHIER HOLD">PENDING CASHIER HOLD</option>
-    <option value="PENDING EOL APPROVAL">PENDING EOL APPROVAL</em></option>
-    <option value="PENDING INSTRUCTOR APPROVAL">PENDING INSTRUCTOR APPROVAL</option>
-    <option value="PENDING INTERNATIONAL STUDENT">PENDING INTERNATIONAL STUDENT</option>
-    <option value="PENDING NDS OPEN ENROLLMENT">PENDING NDS OPEN ENROLLMENT</option>
-    <option value="PENDING OIS VISA STUDENT">PENDING OIS VISA STUDENT</option>
-    <option value="PENDING PERMANENT RESIDENT">PENDING PERMANENT RESIDENT</option>
-    <option value="PENDING TERM ADVISEMENT HOLD">PENDING TERM ADVISEMENT HOLD</option>
-    <option value="PENDING TRANSCRIPT">PENDING TRANSCRIPT</option>
-    <option value="PENDING TUITION PREPAYMENT">PENDING TUITION PREPAYMENT</option>
-    <option value="PREAPPROVED RETURNING">PREAPPROVED RETURNING</option>
-    <option value="PROCESSING NDS">PROCESSING NDS<em></option>
-    <option value="PROCESSING SITE">PROCESSING SITE</em></option>
-    <option value="PROCESSING Z">PROCESSING Z<em></option>
-    <option value="PROJECT MESSAGE - MAE 586">PROJECT MESSAGE - MAE 586</option>
-    <option value="PROJECT MESSAGE - NE 693">PROJECT MESSAGE - NE 693</option>
-    <option value="REGISTERED">REGISTERED</option>
-    <option value="REGISTERED ASHEVILLE">REGISTERED ASHEVILLE</option>
-    <option value="REGISTERED HAVELOCK">REGISTERED HAVELOCK</option>
-    <option value="REGISTERED WILMINGTON">REGISTERED WILMINGTON</option>
-    <option value="SITE APPROVAL: ASHEVILLE">SITE APPROVAL: ASHEVILLE</em></option>
-    <option value="SITE APPROVAL: HAVELOCK">SITE APPROVAL: HAVELOCK<em></option>
-    <option value="SITE APPROVAL: WILMINGTON">SITE APPROVAL: WILMINGTON</em></option>
-    <option value="SITE NOT APPROVED">SITE NOT APPROVED</option>
-    <option value="SWAPPED OUT">SWAPPED OUT</option>
-    <option value="TRANSCRIPT APPROVED">TRANSCRIPT APPROVED<em></option>
-    <option value="WITHDRAWN">WITHDRAWN</em></option>
-</select>
-  </section>
-  <section>
-    <h1 id="something-happened">Something Happened</h1>
-
-  </section>
-  <section>
-    <h3 id="something-happened">Something happened</h3>
-<p>In a workflow, usually something happens and THEN your object&#39;s status is
-updated to reflect that something happened.</p>
-<p>There aren&#39;t 9 PENDING states.  There is ONE PENDING and 9 reasons for it to be PENDING </p>
-<p>Events can record what happened</p>
-
-  </section>
-  <section>
-    <p>As our software becomes aware of these events, we can adapt, flex, or
-reorient.</p>
-
-  </section>
-  <section>
-    <p>DENIED FORM IMAGE</p>
-<p><img src="http://previews.123rf.com/images/kabby/kabby0711/kabby071100002/2079196-A-crumpled-up-home-loan-application-stamped-with-the-word-Stock-Photo.jpg" alt="stamped application"></p>
-<p>Instead of putting the form in the trash, we can reconsider it.</p>
-
-  </section>
-  <section>
-    <p>When a student hasn&#39;t paid fees, or completed their registration, their request is put on HOLD</p>
-<p>Instead of reviewing all forms in a HOLD state to see if they can proceed,
-An event can tell us the hold is lifted.</p>
-<p>That Hold Removed event can trigger the request to be reviewed 
-by an administrator.</p>
-
-  </section>
-  <section>
-    <h1 id="enter-event-sourcing">Enter Event Sourcing</h1>
-
-  </section>
-  <section>
-    <h2 id="definition-event-sourcing">Definition Event Sourcing</h2>
-<p>The fundamental idea of Event Sourcing is that of ensuring <strong>every change to the state</strong> of an application <strong>is captured in an event object</strong>, and that these event objects are themselves stored in the sequence they were applied for the same lifetime as the application state itself.</p>
+    <h2 id="event-sessiondiscovered">Event: SessionDiscovered</h2>
 <ul>
-<li>Martin Fowler</li>
+<li>after validation to determine whether we have a valid session, we log a new event</li>
+</ul>
+<h3 id="new-sessiondiscovered-attributes-we-need-to-know-">new SessionDiscovered( attributes we need to know )</h3>
+
+  </section>
+  <section>
+    <h2 id="event-sessiondiscovered">Event: SessionDiscovered</h2>
+<ul>
+<li>session id</li>
+<li>start time</li>
+<li>protocol</li>
+<li>source ip</li>
+<li>destination ip</li>
+<li>source port</li>
+<li>destination port</li>
 </ul>
 
   </section>
   <section>
-    <h2 id="what-s-important-about-events">What&#39;s important about Events</h2>
+    <h2 id="event-filescored">Event: FileScored</h2>
 <ul>
-<li>Events</li>
-<li>Details of the Event (attributes)</li>
-<li>Order/Sequence</li>
+<li>after validation that a file has matched a signature, we log a new event</li>
+</ul>
+<h3 id="new-filescored-attributes-we-need-to-know-">new FileScored( attributes we need to know )</h3>
+
+  </section>
+  <section>
+    <h2 id="event-filescored">Event: FileScored</h2>
+<ul>
+<li>file id</li>
+<li>session id</li>
+<li>integration</li>
+<li>score</li>
+<li>signature that found it</li>
 </ul>
 
   </section>
   <section>
-    <h3 id="event-sourcing">Event Sourcing</h3>
+    <h2 id="event-filerescored">Event: FileRescored</h2>
 <ul>
-<li><p>Ensures that every change in the process is captured in an event object </p>
+<li>after validation that a file has matched a signature and that it has been scored before\n- we log a new event</li>
+</ul>
+<h3 id="new-filerescored-attributes-we-need-to-know-">new FileRescored( attributes we need to know )</h3>
+
+  </section>
+  <section>
+    <h2 id="event-filerescored">Event: FileRescored</h2>
+<ul>
+<li>file id</li>
+<li>session id</li>
+<li>integration</li>
+<li>new score</li>
+<li>signature that found it</li>
+</ul>
+
+  </section>
+  <section>
+    <h2 id="event-store-holds-all-events">Event Store holds <em>all</em> events</h2>
+<ul>
+<li>a DB with each row being a Domain Message</li>
+<li>Each Event is the payload of the Domain Message</li>
+<li>The Domain Message has a uuid, timestamp, type, payload (the event itself), and version (if needed)</li>
+<li>this means we can store all events in the same place regardless of the program that logs the event or handles them</li>
+</ul>
+
+  </section>
+  <section>
+    <h2 id="listeners">Listeners</h2>
+<ul>
+<li>we write listeners for each of the events we care about in a given context</li>
+<li>the listeners view the whole event store but cull the events by their type</li>
+<li>the types of structures that have listeners are projections and aggregate roots</li>
+</ul>
+
+  </section>
+  <section>
+    <h2 id="projector">Projector</h2>
+<ul>
+<li>a class </li>
+<li>its apply methods contain the logic of what an event means</li>
+<li>writes information to the table that we will need later</li>
+</ul>
+
+  </section>
+  <section>
+    <p><img src="../img/status_change/projector.png" alt="Projecctors"></p>
+
+  </section>
+  <section>
+    <h2 id="projection-report-for-top-threats-by-hash">Projection: Report for Top Threats by Hash</h2>
+<ul>
+<li>listens for FileScored and FileRescored Events<ul>
+<li>looks up details of file by the file id</li>
+<li>adds a row to table with <ul>
+<li>file id</li>
+<li>file md5 hash</li>
+<li>the filename</li>
+<li>file type</li>
+<li>the score</li>
+<li>signature that scored it</li>
+<li>source ip</li>
+<li>destination ip</li>
+<li>protocol</li>
+</ul>
 </li>
-<li><p>Event objects are stored in the sequence they were applied</p>
+</ul>
 </li>
 </ul>
 
   </section>
   <section>
-    <h3 id="events">Events</h3>
+    <h2 id="read-model">Read Model</h2>
 <ul>
-<li><p>Events are usually named as past-tense verbs</p>
-</li>
-<li><p>Should store values, never an aggregate root or model/collection/object</p>
-</li>
+<li>a class</li>
+<li>it contains methods for looking up information from the projection</li>
+<li>ex: look up the history for a certain file, all of its scores</li>
 </ul>
 
   </section>
   <section>
-    <h3 id="events-vs-status">Events vs. Status</h3>
-<p>The fact that an event happened in your system in the past doesn&#39;t ever 
-change even though the behavior around what that event</p>
-
-  </section>
-  <section>
-    <p><img src="why_events.jpg" alt="why_events.jpg"></p>
-
-  </section>
-  <section>
-    <p><img src="event_rules.jpg" alt="event_rules.jpg"></p>
-
-  </section>
-  <section>
-    <p>The event is less likely to change.  Things like Approve and Reject a 
-Request may later require additional attributes, but the part of the 
- process that will change is most likely the result that follows that event.</p>
-<p> The structure of the resulting data is more likely to change than the behavior</p>
-
-  </section>
-  <section>
-    <h2 id="the-code">The Code</h2>
-<p> There are many classes involved:</p>
+    <h2 id="read-model-top-threats">Read Model: Top Threats</h2>
+<p>methods: </p>
 <ul>
-<li>Events</li>
-<li>Domain Message</li>
-<li>Classes with Listeners<ul>
-<li>Projections</li>
-<li>Read Models</li>
+<li><p>top 10 threats by the file hash</p>
+<ul>
+<li>this excludes hits I&#39;m not allowed to see by the signature that did the scoring</li>
+<li>gets a current hit count of only the records I can see</li>
 </ul>
 </li>
-<li>Commands &amp; Handlers (CQRS)</li>
+<li><p>top threats by file type</p>
+</li>
+<li>top threats by source/destination ip pairs</li>
+<li>top threats by protocol</li>
 </ul>
 
   </section>
   <section>
-    <h2 id="enrollmentrequestwasapproved-class-">EnrollmentRequestWasApproved (Class)</h2>
+    <h2 id="good-stuff-">Good Stuff!</h2>
 <ul>
-<li>student id</li>
-<li>course id</li>
-<li>semester</li>
-</ul>
-
-  </section>
-  <section>
-    <p>Event code</p>
-
-  </section>
-  <section>
-    <h2 id="domain-message-wrapper-class-">Domain Message Wrapper (Class)</h2>
-<p>Event can be wrapped by Domain message</p>
-<p>This contains a version, timestamp, id, and the event itself</p>
-<ul>
-<li>id</li>
-<li>Event Type</li>
-<li>version</li>
-<li>timestamp</li>
-</ul>
-
-  </section>
-  <section>
-    <p>Domain Message</p>
-
-  </section>
-  <section>
-    <h2 id="event-store">Event Store</h2>
-<p>Event Store is a domain specific database for people who use the Event 
-Sourcing pattern in their apps. It is a functional database which based 
-on a publish-subscribe messages pattern.</p>
-
-  </section>
-  <section>
-    <p>snapshot of the Events table</p>
-
-  </section>
-  <section>
-    <p>code for the eventstore
-code that tells which Events to pick from the eventstore</p>
-
-  </section>
-  <section>
-    <h2 id="listeners-class-">Listeners (Class)</h2>
-<ul>
-<li>create listeners that listen to certain events and determine what they mean</li>
-<li>StudentProfileProjector</li>
-<li>EnrollmentRequests Read Model</li>
-</ul>
-
-  </section>
-  <section>
-    <p>code for projections</p>
-
-  </section>
-  <section>
-    <p>code for read model</p>
-
-  </section>
-  <section>
-    <p>Commands</p>
-
-  </section>
-  <section>
-    <p>Handlers</p>
-
-  </section>
-  <section>
-    
-  </section>
-  <section>
-    
-  </section>
-  <section>
-    <h2 id="pros">Pros</h2>
-<ul>
-<li>maps closely to the process</li>
-<li>flexible to changes in process</li>
-<li>meaning of events can change without altering history</li>
-<li>scholarships; able to back up all events to roll over a new year.<br>Didn&#39;t need to preserve full database.</li>
-</ul>
-
-  </section>
-  <section>
-    <h2 id="cons">Cons</h2>
-<ul>
-<li>a lot of classes</li>
-<li>more design patterns to adjust to (complicated)</li>
-</ul>
-
-  </section>
-  <section>
-    <h3 id="links-for-further-reading">Links for further reading</h3>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=JHGkaShoyNs">Greg Young CQRS and Event Sourcing</a></li>
-<li><a href="https://www.youtube.com/watch?v=whCk1Q87_ZI">Greg Young - long class</a></li>
-<li><a href="https://www.youtube.com/watch?v=LDW0QWie21s">Greg Young - A Decade of DDD, CQRS, Event Sourcing</a></li>
-<li><a href="https://www.phproundtable.com/episode/event-sourcing-in-php">PHP Round Table - Event Sourcing</a></li>
-<li><a href="https://github.com/broadway/broadway">Broadway - framework for CQRS and ES</a></li>
+<li>works well in our environment where we have multiple applications doing different things</li>
+<li>full audit log of what has happened in our environment</li>
+<li>the results of those events can be optimized for read to shorten the time to retrieve data</li>
+<li>separate the logic of what an event means based on context and purpose</li>
+<li>only display results that a user is allowed to see</li>
+<li>flexible to change, our interpretation of events can change, and we can rebuild projections without losing the full history</li>
 </ul>
 
   </section>
