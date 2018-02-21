@@ -48,7 +48,7 @@ controls: true
 - source ip
 - destination ip
 - source port
-- destination port
+- destination port 
 
 --
 
@@ -84,7 +84,7 @@ controls: true
 - session id
 - integration
 - new score
-- signature that found it
+- signature that found it 
 
 --
 
@@ -101,13 +101,13 @@ controls: true
 
 - we write listeners for each of the events we care about in a given context
 - the listeners view the whole event store but cull the events by their type
-- the types of structures that have listeners are projections and aggregate roots
+- the types of structures that have listeners are projections and aggregate roots 
 
 --
 
 ## Projector
 
-- a class
+- a class 
 - its apply methods contain the logic of what an event means
 - writes information to the table that we will need later
 
@@ -115,13 +115,13 @@ controls: true
 
 ![Projecctors](../img/status_change/projector.png)
 
---
+-- 
 
 ## Projection: Report for Top Threats by Hash
 
 - listens for FileScored and FileRescored Events
   - looks up details of file by the file id
-  - adds a row to table with
+  - adds a row to table with 
     - file id
     - file md5 hash
     - the filename
@@ -144,7 +144,7 @@ controls: true
 
 ## Read Model: Top Threats
 
-methods:
+methods: 
 
 - top 10 threats by the file hash
   - this excludes hits I'm not allowed to see by the signature that did the scoring

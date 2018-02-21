@@ -1,0 +1,398 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<meta name="description"
+			  content="">
+		<meta name="author" content="Emily Stamey">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport"
+			  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css">
+		<link rel="stylesheet" href="css/my-style.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="./node_modules/highlight.js/styles/zenburn.css">
+
+		<link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+		<!--<link rel="stylesheet" href="plugin/accessibility/helper.css">-->
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<h1 id="event-sourcing-can-fix-that-">Event Sourcing Can Fix That!</h1>
+
+			</section>
+			<section>
+				<h2 id="what-we-ll-cover-">What we&#39;ll cover:</h2>
+				<ul>
+					<li>What does an Event look like?</li>
+					<li>The Event Store</li>
+					<li>How do we create events?</li>
+					<li>We have events, now what?</li>
+					<li>A short example of how it could work</li>
+				</ul>
+
+			</section>
+			<section>
+				<h2 id="what-does-an-event-look-like-">What Does an Event Look Like?</h2>
+				<ul>
+					<li>An Event is a Class named for the thing that happened</li>
+					<li>The event contains attributes that are relevant to that event</li>
+				</ul>
+
+			</section>
+			<section>
+				<h2 id="event-sessiondiscovered">Event: SessionDiscovered</h2>
+				<ul>
+					<li>after validation to determine whether we have a valid session, we log a new event</li>
+				</ul>
+				<h3 id="new-sessiondiscovered-attributes-we-need-to-know-">new SessionDiscovered( attributes we need to know )</h3>
+
+			</section>
+			<section>
+				<h2 id="event-sessiondiscovered">Event: SessionDiscovered</h2>
+				<ul>
+					<li>session id</li>
+					<li>start time</li>
+					<li>protocol</li>
+					<li>source ip</li>
+					<li>destination ip</li>
+					<li>source port</li>
+					<li>destination port</li>
+				</ul>
+
+			</section>
+			<section>
+				<h2 id="event-filescored">Event: FileScored</h2>
+				<ul>
+					<li>after validation that a file has matched a signature, we log a new event</li>
+				</ul>
+				<h3 id="new-filescored-attributes-we-need-to-know-">new FileScored( attributes we need to know )</h3>
+
+			</section>
+			<section>
+				<h2 id="event-filescored">Event: FileScored</h2>
+				<ul>
+					<li>file id</li>
+					<li>session id</li>
+					<li>integration</li>
+					<li>score</li>
+					<li>signature that found it</li>
+				</ul>
+
+			</section>
+			<section>
+				<h2 id="event-filerescored">Event: FileRescored</h2>
+				<ul>
+					<li>after validation that a file has matched a signature and that it has been scored before\n- we log a new event</li>
+				</ul>
+				<h3 id="new-filerescored-attributes-we-need-to-know-">new FileRescored( attributes we need to know )</h3>
+
+			</section>
+			<section>
+				<h2 id="event-filerescored">Event: FileRescored</h2>
+				<ul>
+					<li>file id</li>
+					<li>session id</li>
+					<li>integration</li>
+					<li>new score</li>
+					<li>signature that found it</li>
+				</ul>
+
+			</section>
+			<section>
+				<h2 id="event-store-holds-all-events">Event Store holds <em>all</em> events</h2>
+				<ul>
+					<li>a DB with each row being a Domain Message</li>
+					<li>Each Event is the payload of the Domain Message</li>
+					<li>The Domain Message has a uuid, timestamp, type, payload (the event itself), and version (if needed)</li>
+					<li>this means we can store all events in the same place regardless of the program that logs the event or handles them</li>
+				</ul>
+
+			</section>
+			<section>
+				<h2 id="listeners">Listeners</h2>
+				<ul>
+					<li>we write listeners for each of the events we care about in a given context</li>
+					<li>the listeners view the whole event store but cull the events by their type</li>
+					<li>the types of structures that have listeners are projections and aggregate roots</li>
+				</ul>
+
+			</section>
+			<section>
+				<h2 id="projector">Projector</h2>
+				<ul>
+					<li>a class </li>
+					<li>its apply methods contain the logic of what an event means</li>
+					<li>writes information to the table that we will need later</li>
+				</ul>
+
+			</section>
+			<section>
+				<p><img src="img/status_change/Projector.png" alt="Projectors"></p>
+
+			</section>
+			<section>
+				<h2 id="projection-report-for-top-threats-by-hash">Projection: Report for Top Threats by Hash</h2>
+				<ul>
+					<li>listens for FileScored and FileRescored Events<ul>
+						<li>looks up details of file by the file id</li>
+						<li>adds a row to table with <ul>
+							<li>file id</li>
+							<li>file md5 hash</li>
+							<li>the filename</li>
+							<li>file type</li>
+							<li>the score</li>
+							<li>signature that scored it</li>
+							<li>source ip</li>
+							<li>destination ip</li>
+							<li>protocol</li>
+						</ul>
+						</li>
+					</ul>
+					</li>
+				</ul>
+
+			</section>
+			<section>
+				<h2 id="read-model">Read Model</h2>
+				<ul>
+					<li>a class</li>
+					<li>it contains methods for looking up information from the projection</li>
+					<li>ex: look up the history for a certain file, all of its scores</li>
+				</ul>
+
+			</section>
+			<section>
+				<h2 id="read-model-top-threats">Read Model: Top Threats</h2>
+				<p>methods: </p>
+				<ul>
+					<li><p>top 10 threats by the file hash</p>
+						<ul>
+							<li>this excludes hits I&#39;m not allowed to see by the signature that did the scoring</li>
+							<li>gets a current hit count of only the records I can see</li>
+						</ul>
+					</li>
+					<li><p>top threats by file type</p>
+					</li>
+					<li>top threats by source/destination ip pairs</li>
+					<li>top threats by protocol</li>
+				</ul>
+
+			</section>
+			<section>
+				<h2 id="good-stuff-">Good Stuff!</h2>
+				<ul>
+					<li>works well in our environment where we have multiple applications doing different things</li>
+					<li>full audit log of what has happened in our environment</li>
+					<li>the results of those events can be optimized for read to shorten the time to retrieve data</li>
+					<li>separate the logic of what an event means based on context and purpose</li>
+					<li>only display results that a user is allowed to see</li>
+					<li>flexible to change, our interpretation of events can change, and we can rebuild projections without losing the full history</li>
+				</ul>
+
+			</section>
+			<!--<section>-->
+				<!--<div class="author">-->
+					<!--<h1 class="name">Emily Stamey</h1>-->
+					<!--<h3 class="twitter">-->
+						<!--<a href="http://twitter.com/@elstamey">@elstamey</a>-->
+					<!--</h3>-->
+					<!--<h3 class="url">-->
+						<!--<a href="http://elstamey.com">http://elstamey.com</a>-->
+					<!--</h3>-->
+				<!--</div>-->
+
+			<!--</section>-->
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+            // More info https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                history: true,
+
+                // More info https://github.com/hakimel/reveal.js#dependencies
+                dependencies: [
+                    { src: 'plugin/markdown/marked.js' },
+                    { src: 'plugin/markdown/markdown.js' },
+                    { src: 'plugin/notes/notes.js', async: true },
+                    { src: 'node_modules/highlight.js/lib/highlight.js' },
+//					{ src: 'plugin/accessibility/helper.js', async: true, condition: function() {
+//						return !!document.body.classList;
+//					}},
+                    {
+                        src: 'node_modules/reveal-code-focus/reveal-code-focus.js',
+                        async: true,
+                        callback: function() {
+                            RevealCodeFocus();
+                        }
+                    },
+                    { src: 'plugin/elapsed-time-bar/elapsed-time-bar.js'}
+                ],
+
+                // The "normal" size of the presentation, aspect ratio will be preserved
+                // when the presentation is scaled to fit different resolutions. Can be
+                // specified using percentage units.
+                width: 1280,
+                height: 720,
+
+                // Factor of the display size that should remain empty around the content
+                margin: 0.1,
+
+                // Bounds for smallest/largest possible scale to apply to content
+                minScale: 0.2,
+                maxScale: 1.5,
+
+
+                // your allotted time for presentation
+                allottedTime: 50 * 60 * 1000, // 50 minutes
+
+                // - (optional) height of page/time progress bar
+                progressBarHeight: 3,
+
+                // - (optional) bar color
+                barColor: 'rgb(200,0,0)',
+
+                // - (optional) bar color when timer is paused
+                pausedBarColor: 'rgba(200,0,0,.6)',
+
+                // Display controls in the bottom right corner
+                controls: true,
+
+                // Display a presentation progress bar
+                progress: true,
+
+                // Display the page number of the current slide
+                slideNumber: true,
+
+                // Push each slide change to the browser history
+                history: true,
+
+                // Enable keyboard shortcuts for navigation
+                keyboard: true,
+
+                // Enable the slide overview mode
+                overview: true,
+
+                // Vertical centering of slides
+                center: false,
+
+                // Enables touch navigation on devices with touch input
+                touch: true,
+
+                // Loop the presentation
+                loop: false,
+
+                // Change the presentation direction to be RTL
+                rtl: false,
+
+                // Randomizes the order of slides each time the presentation loads
+                shuffle: false,
+
+                // Turns fragments on and off globally
+                fragments: true,
+
+                // Flags if the presentation is running in an embedded mode,
+                // i.e. contained within a limited portion of the screen
+                embedded: false,
+
+                // Flags if we should show a help overlay when the questionmark
+                // key is pressed
+                help: true,
+
+                // Flags if speaker notes should be visible to all viewers
+                showNotes: false,
+
+                // Number of milliseconds between automatically proceeding to the
+                // next slide, disabled when set to 0, this value can be overwritten
+                // by using a data-autoslide attribute on your slides
+                autoSlide: 0,
+
+                // Stop auto-sliding after user input
+                autoSlideStoppable: true,
+
+                // Use this method for navigation when auto-sliding
+                autoSlideMethod: Reveal.navigateNext,
+
+                // Enable slide navigation via mouse wheel
+                mouseWheel: false,
+
+                // Hides the address bar on mobile devices
+                hideAddressBar: true,
+
+                // Opens links in an iframe preview overlay
+                previewLinks: false,
+
+                // Transition style
+                transition: 'none', // none/fade/slide/convex/concave/zoom
+
+                // Transition speed
+                transitionSpeed: 'default', // default/fast/slow
+
+                // Transition style for full page slide backgrounds
+                backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+
+                // Number of slides away from the current that are visible
+                viewDistance: 3,
+
+                // Parallax background image
+                parallaxBackgroundImage: '', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+
+                // Parallax background size
+                parallaxBackgroundSize: '', // CSS syntax, e.g. "2100px 900px"
+
+                // Number of pixels to move the parallax background per slide
+                // - Calculated automatically unless specified
+                // - Set to 0 to disable movement along an axis
+                parallaxBackgroundHorizontal: null,
+                parallaxBackgroundVertical: null,
+
+                pdfMaxPagesPerSlide: 1,
+
+                // Value of the display CSS property applied to current slide to make it visible
+                display: 'flex',
+
+                keyboard: {
+                    // pause/resume time when Enter is pressed
+                    13: () => {
+                    ElapsedTimeBar.isPaused ? ElapsedTimeBar.resume() : ElapsedTimeBar.pause();
+            },
+
+            // reset timer when 'r' is pressed
+            82: () => {
+                ElapsedTimeBar.reset();
+            }
+            }
+            })
+		</script>
+	</body>
+</html>
