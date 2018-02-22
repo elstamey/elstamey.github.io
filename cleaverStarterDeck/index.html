@@ -1824,6 +1824,15 @@ based on dark.css by Ivan Sagalaev
 
   </section>
   <section>
+    <h2 id="event-sessionscored">Event: SessionScored</h2>
+<ul>
+<li>session id</li>
+<li>threat contributor </li>
+<li>score</li>
+</ul>
+
+  </section>
+  <section>
     <h2 id="event-filescored">Event: FileScored</h2>
 <ul>
 <li>after validation that a file has matched a signature, we log a new event</li>
@@ -1890,7 +1899,21 @@ based on dark.css by Ivan Sagalaev
 
   </section>
   <section>
-    <p><img src="../img/status_change/projector.png" alt="Projecctors"></p>
+    <p><img src="../img/status_change/projector.png" alt="Projectors"></p>
+
+  </section>
+  <section>
+    <h2 id="projection-session">Projection: Session</h2>
+<ul>
+<li>listens for SessionDiscovered events<ul>
+<li>creates a new row in a table with the session details and a null score</li>
+</ul>
+</li>
+<li>listens for SessionScored events<ul>
+<li>finds the session in the table and updates the score and score contributor</li>
+</ul>
+</li>
+</ul>
 
   </section>
   <section>

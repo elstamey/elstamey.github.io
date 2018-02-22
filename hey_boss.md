@@ -5,7 +5,7 @@ author:
   url: http://elstamey.com
 theme: elstamey/reveal-cleaver-theme
 style: basic-style.css
-output: index.html
+output: hey_boss.html
 controls: true
 
 --
@@ -121,7 +121,7 @@ controls: true
 
 --
 
-![Projectors](../img/status_change/projector.png)
+![Projectors](../img/status_change/Projector.png)
 
 --
 

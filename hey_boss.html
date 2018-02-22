@@ -88,6 +88,15 @@
 
 			</section>
 			<section>
+				<h2 id="event-sessionscored">Event: SessionScored</h2>
+				<ul>
+					<li>session id</li>
+					<li>threat contributor </li>
+					<li>score</li>
+				</ul>
+
+			</section>
+			<section>
 				<h2 id="event-filescored">Event: FileScored</h2>
 				<ul>
 					<li>after validation that a file has matched a signature, we log a new event</li>
@@ -158,6 +167,20 @@
 
 			</section>
 			<section>
+				<h2 id="projection-session">Projection: Session</h2>
+				<ul>
+					<li>listens for SessionDiscovered events<ul>
+						<li>creates a new row in a table with the session details and a null score</li>
+					</ul>
+					</li>
+					<li>listens for SessionScored events<ul>
+						<li>finds the session in the table and updates the score and score contributor</li>
+					</ul>
+					</li>
+				</ul>
+
+			</section>
+			<section>
 				<h2 id="projection-report-for-top-threats-by-hash">Projection: Report for Top Threats by Hash</h2>
 				<ul>
 					<li>listens for FileScored and FileRescored Events<ul>
@@ -217,20 +240,9 @@
 				</ul>
 
 			</section>
-			<!--<section>-->
-				<!--<div class="author">-->
-					<!--<h1 class="name">Emily Stamey</h1>-->
-					<!--<h3 class="twitter">-->
-						<!--<a href="http://twitter.com/@elstamey">@elstamey</a>-->
-					<!--</h3>-->
-					<!--<h3 class="url">-->
-						<!--<a href="http://elstamey.com">http://elstamey.com</a>-->
-					<!--</h3>-->
-				<!--</div>-->
-
-			<!--</section>-->
 
 		</div>
+	</div>
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.js"></script>
