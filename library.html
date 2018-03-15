@@ -1838,7 +1838,15 @@ h5.attrib a:hover {
   <section>
       <myColBox>
           <article>
-            <h1 id="introduction-the-library">Introduction: The Library</h1>
+            <p><img src="img/library/ideaGuy.png" alt="My kid and all of his ideas"></p>
+
+          </article>
+      </myColBox>
+  </section>
+  <section>
+      <myColBox>
+          <article>
+            <h1 id="the-librarian">The Librarian</h1>
 <p><img src="img/library/TheLibrarian.jpg" alt="the library"></p>
 
           </article>
@@ -1847,8 +1855,7 @@ h5.attrib a:hover {
   <section>
       <myColBox>
           <article>
-            <h1 id="introduction-the-pm">Introduction: The PM</h1>
-<p><img src="img/library/DarthVaderIsMyPM.jpg" alt="the library"></p>
+            <p><img src="img/library/DarthVaderIsMyPM.jpg" alt="the library"></p>
 
           </article>
       </myColBox>
@@ -1933,9 +1940,9 @@ class BooksController extends Controller
           <article>
             <h1 id="checking-out-and-checking-in-books">Checking Out and Checking In Books</h1>
 <ul>
-<li>could easily be a custom variation of the update</li>
-<li>using a status table to show if the book is in or out</li>
-<li>and any of this would be fine</li>
+<li>Could easily be a custom variation of the update</li>
+<li>Using a status table to show if the book is in or out</li>
+<li>Any of this would be fine</li>
 </ul>
 
           </article>
@@ -2017,28 +2024,10 @@ class BooksController extends Controller
       <myColBox>
           <article>
             <h1 id="event-attributes">Event Attributes</h1>
-<ul>
-<li>book id</li>
-<li>date</li>
-<li>patron id</li>
-</ul>
+<p>(book id, date, patron id)</p>
 <p>We are deciding between what we need to preserve and what we can look up later:</p>
 <ul>
 <li>all patron info?</li>
-</ul>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h1 id="why-events-">Why Events?</h1>
-<ul>
-<li>State transition are important</li>
-<li>We need an audit log, proof of the state we are currently in</li>
-<li>The history of what happened is more important than the current state</li>
-<li>Events are replayable if behavior in your application changes</li>
 </ul>
 
           </article>
@@ -2128,6 +2117,20 @@ class BooksController extends Controller
       <myColBox>
           <article>
             <p><img src="img/status_change/events_treated_differently.png" alt="One event with two listeners handling the event differently"></p>
+
+          </article>
+      </myColBox>
+  </section>
+  <section>
+      <myColBox>
+          <article>
+            <h1 id="why-events-">Why Events?</h1>
+<ul>
+<li>State transitions are important</li>
+<li>We need an audit log, proof of the state we are currently in</li>
+<li>The history of what happened is more important than the current state</li>
+<li>Events are replayable if behavior in your application changes</li>
+</ul>
 
           </article>
       </myColBox>
@@ -2236,9 +2239,8 @@ class BookWasCheckedOut
 
 namespace Library\ReadModel;
 
-
 use Library\Events\BookWasCheckedIn;
-use Library\Events\BookWasCheckedOut;
+use Library\Events\BookAddedToBookshelf;
 use App\Support\ReadModel\Replayable;
 use App\Support\ReadModel\SimpleProjector;
 use Illuminate\Database\Schema\Blueprint;
@@ -2387,8 +2389,7 @@ class Bookshelf extends Model
   <section>
       <myColBox>
           <article>
-            <h1 id="our-book">Our Book</h1>
-<p><img src="" alt="Image of Book details with Check out button or Request Button"></p>
+            <p><img src="img/library/interactionToEventDiagram.png" alt="Diagram of the intearction on the web page then routed to the controller action, which calls a command, If valid, the Command creates the Event"></p>
 
           </article>
       </myColBox>
@@ -2396,7 +2397,7 @@ class Bookshelf extends Model
   <section>
       <myColBox>
           <article>
-            <p>When we click the button, the router can send us to the controller action</p>
+            <p><img src="img/library/bookCheckoutForm.png" alt="Book Form to Check Out"></p>
 
           </article>
       </myColBox>
@@ -2465,6 +2466,100 @@ class Bookshelf extends Model
   <section>
       <myColBox>
           <article>
+            <h1 id="crud-to-cqrs">CRUD to CQRS</h1>
+<pre><code>public function checkOut(Request $request)
+{
+    // $request has book id, patron id
+
+    try {
+
+        $command = new CheckOutBook($request-&gt;bookId, $request-&gt;patronId);
+
+        $this-&gt;bookLendingService-&gt;handleCheckOutBook($command);
+
+
+    } catch (InvalidUserException $e) {
+        return response()-&gt;json(&quot;Not authorized to request enrollment.&quot;, Response::HTTP_FORBIDDEN);
+    } catch (BookUnavailableException $e) {
+       return response()-&gt;json(&quot;Book was not available to be checked out&quot;, 400);
+
+
+    return $Book;
+}
+
+&lt;------ dynamic command handler  ------&gt;
+
+private function handle(Command $command)
+{
+    $method = $this-&gt;getHandleMethod($command);
+
+    if (! method_exists($this, $method)) {
+        return;
+    }
+
+    $this-&gt;$method($command);
+}
+
+private function getHandleMethod(Command $command)
+{
+    return &#39;handle&#39; . class_basename($command);
+}
+
+&lt;-------- handle check out book command ---------&gt;
+
+public function handleCheckoutOutBook(CheckOutBook $command)
+{
+    $book = Book::findOrFail($command-&gt;bookId);
+    $patron = Patron::findOrFail($command-&gt;patronId);
+
+    if (!$book-&gt;isAvailable()) {
+        throw new BookUnavailableException();
+    }
+
+    if (!$patron-&gt;isAuthorized()) {
+        throw new InvalidUserException();
+    }
+
+    //record the event
+    $this-&gt;record(
+        new BookWasCheckedOut(date(&quot;Y-m-d H:i:s&quot;),
+            $patron-&gt;getId(),
+            $book-&gt;getId())
+    );
+
+
+}
+</code></pre>
+          </article>
+      </myColBox>
+  </section>
+  <section>
+      <myColBox>
+          <article>
+            <h1 id="command-handler">Command Handler</h1>
+<p>A command handler receives a command and brokers a result from the appropriate aggregate. &quot;A result&quot; is either a successful application of the command, or an exception.</p>
+<p><strong> should affect one and only one aggregate </strong></p>
+<!----- ** cannot call a read side** ----->
+          </article>
+      </myColBox>
+  </section>
+  <section>
+      <myColBox>
+          <article>
+            <h1 id="command-handler">Command Handler</h1>
+<ol>
+<li>Validate the command on its own merits.</li>
+<li>Validate the command on the current state of the aggregate.</li>
+<li>If validation is successful, create an event(s)</li>
+<li>Attempt to persist the new events. If there&#39;s a concurrency conflict during this step, retry or exit.</li>
+</ol>
+
+          </article>
+      </myColBox>
+  </section>
+  <section>
+      <myColBox>
+          <article>
             <h1 id="separate-read-write">Separate Read/Write</h1>
 <ul>
 <li>all <strong>commands</strong> go into a WriteService</li>
@@ -2485,7 +2580,7 @@ class Bookshelf extends Model
           <article>
             <h1 id="task-based-ui">Task-based UI</h1>
 <ul>
-<li>track what the user is doing and push forward commands representing the intent of the user </li>
+<li>Track what the user is doing and push forward commands representing the intent of the user </li>
 <li>CQRS <strong>does not require</strong> a task based UI (DDD does)</li>
 <li>CQRS used in a CRUD interface, makes creating separated data models harder</li>
 </ul>
@@ -2498,7 +2593,7 @@ class Bookshelf extends Model
           <article>
             <h1 id="library">Library</h1>
 <ul>
-<li>may not be a purely task-based UI</li>
+<li>May not be a purely task-based UI</li>
 <li>I don&#39;t need to optimize for load</li>
 </ul>
 <p><img src="img/library/library_angryKid.jpg" alt="model of a lego library"></p>
@@ -2509,19 +2604,7 @@ class Bookshelf extends Model
   <section>
       <myColBox>
           <article>
-            <h1 id="command-handler">Command Handler</h1>
-<p>A command handler receives a command and brokers a result from the appropriate aggregate. &quot;A result&quot; is either a successful application of the command, or an exception.</p>
-<ol>
-<li>Validate the command on its own merits.</li>
-<li>Validate the command on the current state of the aggregate.</li>
-<li>If validation is successful, 0..n events (1 is common).</li>
-<li><p>Attempt to persist the new events. If there&#39;s a concurrency conflict during this step, either give up, or retry things.</p>
-</li>
-<li><p>should affect one and only one aggregate</p>
-</li>
-<li>cannot call a read side
--</li>
-</ol>
+            <p><img src="img/library/bookCheckoutForm2.png" alt="Book Form to Request Hold"></p>
 
           </article>
       </myColBox>
@@ -2542,43 +2625,21 @@ class Bookshelf extends Model
   <section>
       <myColBox>
           <article>
-            <h1 id="the-data-structures-events-projections-read-models-cqrs">the data structures: Events, Projections, Read Models, CQRS</h1>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h1 id="how-our-code-will-change-to-create-check-in-and-check-out-events">How our code will change to create Check In and Check Out Events</h1>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h1 id="why-logging-the-check-in-and-check-out-as-events-instead-of-statuses-is-more-useful">Why logging the check-in and check-out as events instead of statuses is more useful</h1>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
             <h1 id="flexibility-gained-long-term">Flexibility gained long term</h1>
 <ul>
-<li>With our Scholarships Application, we helped a student match for the scholarship.  We kept track of the current budgets so different users of the system could see what money was left to be awarded</li>
-<li>If we needed to see the budgets on any given day in the past, we could produce that information</li>
-<li>And when they completely changed the format of budgets they wanted to review, we could easily rebuild that without affecting the amounts.</li>
+<li>Aren&#39;t locked into the current interpretation of events</li>
+<li>Can track the events and build more views of the data and add functionality later</li>
+<li>Financial reports, can show budget balance on any given day in the past, prove how you got the current balance</li>
+<li>Could display everyone who checked out a book, and style it like old cards in the book pockets</li>
 </ul>
+
+          </article>
+      </myColBox>
+  </section>
+  <section>
+      <myColBox>
+          <article>
+            <p><img src="img/library/libraryCardBackPocket.jpg" alt="Book Back Pocket with names of people who checked it out"></p>
 
           </article>
       </myColBox>
@@ -2594,26 +2655,19 @@ class Bookshelf extends Model
   <section>
       <myColBox>
           <article>
-            
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h1 id="something-happened">Something happened</h1>
-<p>In many applications, we tend to change a status to reflect that something already happened.  It&#39;s interpreted, but those statuses or interpretations can change over time, making our data inconsistent.</p>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
             <h1 id="resources">Resources</h1>
 <ul>
 <li><a href="https://martinfowler.com/bliki/CQRS.html">CQRS by Martin Fowler</a></li>
-<li><a href="http://codebetter.com/gregyoung/2010/02/16/cqrs-task-based-uis-event-sourcing-agh/">CQRS by Greg Young</a></li>
+<li><p><a href="http://codebetter.com/gregyoung/2010/02/16/cqrs-task-based-uis-event-sourcing-agh/">CQRS by Greg Young</a></p>
+</li>
+<li><p>videos</p>
+<li><a href="https://www.youtube.com/watch?v=JHGkaShoyNs">Greg Young CQRS and Event Sourcing</a></li>
+<li><a href="https://www.youtube.com/watch?v=whCk1Q87_ZI">Greg Young - long class</a></li>
+<li><a href="https://www.youtube.com/watch?v=LDW0QWie21s">Greg Young - A Decade of DDD, CQRS, Event Sourcing</a></li>
+</li>
+<li><p>podcasts</p>
+<li><a href="https://www.phproundtable.com/episode/event-sourcing-in-php">PHP Round Table - Event Sourcing</a> (+2 more)</li>
+<li><a href="https://github.com/broadway/broadway">Broadway - framework for CQRS and ES</a></li></li>
 </ul>
 
           </article>
@@ -2622,7 +2676,7 @@ class Bookshelf extends Model
   <section>
       <myColBox>
           <article>
-            <h1 id="test">Test</h1>
+            <h1 id="thank-you-">Thank You!</h1>
 
           </article>
       </myColBox>

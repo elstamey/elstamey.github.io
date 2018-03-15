@@ -16,16 +16,18 @@ controls: true
 
   Emily Stamey @elstamey
 
+-- titleblock
 
---
+![My kid and all of his ideas](img/library/ideaGuy.png)
 
-# Introduction: The Library
+-- titleblock
+
+# The Librarian
 
 ![the library](img/library/TheLibrarian.jpg)
 
---
+-- titleblock
 
-# Introduction: The PM
 
 ![the library](img/library/DarthVaderIsMyPM.jpg)
 
@@ -37,7 +39,6 @@ controls: true
 - Check out books
 - Reserve books
 - Renew books
-
 
 --
 
@@ -98,9 +99,9 @@ controls: true
 
 # Checking Out and Checking In Books
 
-- could easily be a custom variation of the update
-- using a status table to show if the book is in or out
-- and any of this would be fine
+- Could easily be a custom variation of the update
+- Using a status table to show if the book is in or out
+- Any of this would be fine
 
 --
 
@@ -153,21 +154,10 @@ The fundamental idea of Event Sourcing is that of ensuring <strong>every change 
 
 # Event Attributes
 
-- book id
-- date
-- patron id
+(book id, date, patron id)
 
 We are deciding between what we need to preserve and what we can look up later:
   - all patron info?
-
---
-
-# Why Events?
-
-- State transition are important
-- We need an audit log, proof of the state we are currently in
-- The history of what happened is more important than the current state
-- Events are replayable if behavior in your application changes
 
 --
 
@@ -221,6 +211,15 @@ We are deciding between what we need to preserve and what we can look up later:
 --
 
 ![One event with two listeners handling the event differently](img/status_change/events_treated_differently.png)
+
+--
+
+# Why Events?
+
+- State transitions are important
+- We need an audit log, proof of the state we are currently in
+- The history of what happened is more important than the current state
+- Events are replayable if behavior in your application changes
 
 
 --
@@ -313,9 +312,8 @@ A set of event handlers that work together to build and maintain a read model.
     
     namespace Library\ReadModel;
     
-    
     use Library\Events\BookWasCheckedIn;
-    use Library\Events\BookWasCheckedOut;
+    use Library\Events\BookAddedToBookshelf;
     use App\Support\ReadModel\Replayable;
     use App\Support\ReadModel\SimpleProjector;
     use Illuminate\Database\Schema\Blueprint;
@@ -450,15 +448,14 @@ A set of event handlers that work together to build and maintain a read model.
 
 # But how do the Events get there?
 
---
+-- titleblock
 
-# Our Book
-
-![Image of Book details with Check out button or Request Button]()
+![Diagram of the intearction on the web page then routed to the controller action, which calls a command, If valid, the Command creates the Event](img/library/interactionToEventDiagram.png)
 
 --
 
-When we click the button, the router can send us to the controller action
+![Book Form to Check Out](img/library/bookCheckoutForm.png)
+
 
 --
 
@@ -488,6 +485,7 @@ When we click the button, the router can send us to the controller action
     }
 
 ![cat climbing into a trash pail but doesn't quite fit](img/library/itDoesntFit.gif)
+
 --
 
 # CQRS
@@ -508,6 +506,92 @@ When we click the button, the router can send us to the controller action
 
 --
 
+# CRUD to CQRS
+
+    public function checkOut(Request $request)
+    {
+        // $request has book id, patron id
+
+        try {
+
+            $command = new CheckOutBook($request->bookId, $request->patronId);
+
+            $this->bookLendingService->handleCheckOutBook($command);
+
+
+        } catch (InvalidUserException $e) {
+            return response()->json("Not authorized to request enrollment.", Response::HTTP_FORBIDDEN);
+        } catch (BookUnavailableException $e) {
+           return response()->json("Book was not available to be checked out", 400);
+
+
+        return $Book;
+    }
+
+    <------ dynamic command handler  ------>
+
+    private function handle(Command $command)
+    {
+        $method = $this->getHandleMethod($command);
+
+        if (! method_exists($this, $method)) {
+            return;
+        }
+
+        $this->$method($command);
+    }
+
+    private function getHandleMethod(Command $command)
+    {
+        return 'handle' . class_basename($command);
+    }
+
+    <-------- handle check out book command --------->
+
+    public function handleCheckoutOutBook(CheckOutBook $command)
+    {
+        $book = Book::findOrFail($command->bookId);
+        $patron = Patron::findOrFail($command->patronId);
+
+        if (!$book->isAvailable()) {
+            throw new BookUnavailableException();
+        }
+
+        if (!$patron->isAuthorized()) {
+            throw new InvalidUserException();
+        }
+
+        //record the event
+        $this->record(
+            new BookWasCheckedOut(date("Y-m-d H:i:s"),
+                $patron->getId(),
+                $book->getId())
+        );
+
+
+    }
+
+--
+
+# Command Handler
+
+A command handler receives a command and brokers a result from the appropriate aggregate. "A result" is either a successful application of the command, or an exception.
+
+** should affect one and only one aggregate **
+
+<!----- ** cannot call a read side** ----->
+
+--
+
+# Command Handler
+
+1. Validate the command on its own merits.
+2. Validate the command on the current state of the aggregate.
+3. If validation is successful, create an event(s)
+4. Attempt to persist the new events. If there's a concurrency conflict during this step, retry or exit.
+
+--
+
 # Separate Read/Write
 
 - all **commands** go into a WriteService
@@ -521,7 +605,7 @@ When we click the button, the router can send us to the controller action
 
 # Task-based UI
 
-- track what the user is doing and push forward commands representing the intent of the user 
+- Track what the user is doing and push forward commands representing the intent of the user
 - CQRS **does not require** a task based UI (DDD does)
 - CQRS used in a CRUD interface, makes creating separated data models harder 
 
@@ -529,25 +613,15 @@ When we click the button, the router can send us to the controller action
 
 # Library
 
-- may not be a purely task-based UI
+- May not be a purely task-based UI
 - I don't need to optimize for load
 
 ![model of a lego library](img/library/library_angryKid.jpg)
 
--- 
+--
 
-# Command Handler
+![Book Form to Request Hold](img/library/bookCheckoutForm2.png)
 
-A command handler receives a command and brokers a result from the appropriate aggregate. "A result" is either a successful application of the command, or an exception.
-
-1. Validate the command on its own merits.
-2. Validate the command on the current state of the aggregate.
-3. If validation is successful, 0..n events (1 is common).
-4. Attempt to persist the new events. If there's a concurrency conflict during this step, either give up, or retry things.
-
-- should affect one and only one aggregate
-- cannot call a read side
-- 
 --
 
 # BookLendingService
@@ -558,51 +632,38 @@ A command handler receives a command and brokers a result from the appropriate a
 
 --
 
-# the data structures: Events, Projections, Read Models, CQRS
-
---
-
-# How our code will change to create Check In and Check Out Events
-
---
-
-# Why logging the check-in and check-out as events instead of statuses is more useful 
-
---
-
-
-
---
-
 # Flexibility gained long term
 
-- With our Scholarships Application, we helped a student match for the scholarship.  We kept track of the current budgets so different users of the system could see what money was left to be awarded
-- If we needed to see the budgets on any given day in the past, we could produce that information
-- And when they completely changed the format of budgets they wanted to review, we could easily rebuild that without affecting the amounts.
-
-
---
-
-# Adding Event Sourcing to Your Legacy App 
-
+- Aren't locked into the current interpretation of events
+- Can track the events and build more views of the data and add functionality later
+- Financial reports, can show budget balance on any given day in the past, prove how you got the current balance
+- Could display everyone who checked out a book, and style it like old cards in the book pockets
 
 --
 
+![Book Back Pocket with names of people who checked it out](img/library/libraryCardBackPocket.jpg)
+
 --
 
-# Something happened
+# Adding Event Sourcing to Your Legacy App
 
-In many applications, we tend to change a status to reflect that something already happened.  It's interpreted, but those statuses or interpretations can change over time, making our data inconsistent.
-
-   
 --
 
 # Resources
 
+
 - [CQRS by Martin Fowler](https://martinfowler.com/bliki/CQRS.html)
 - [CQRS by Greg Young](http://codebetter.com/gregyoung/2010/02/16/cqrs-task-based-uis-event-sourcing-agh/)
 
+- videos
+  <li><a href="https://www.youtube.com/watch?v=JHGkaShoyNs">Greg Young CQRS and Event Sourcing</a></li>
+  <li><a href="https://www.youtube.com/watch?v=whCk1Q87_ZI">Greg Young - long class</a></li>
+  <li><a href="https://www.youtube.com/watch?v=LDW0QWie21s">Greg Young - A Decade of DDD, CQRS, Event Sourcing</a></li>
+
+- podcasts
+  <li><a href="https://www.phproundtable.com/episode/event-sourcing-in-php">PHP Round Table - Event Sourcing</a> (+2 more)</li>
+  <li><a href="https://github.com/broadway/broadway">Broadway - framework for CQRS and ES</a></li>
+
 --
 
-# Test
-
+# Thank You!
