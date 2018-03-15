@@ -121,7 +121,7 @@ controls: true
 
 --
 
-![Projectors](../img/status_change/Projector.png)
+![Projectors](../img/status_change/projector.png)
 
 --
 

@@ -1441,13 +1441,13 @@ class EnrollmentRequestProjector extends SimpleProjector implements Replayable
         $builder = $this->connection->getSchemaBuilder();
 
         $builder->dropIfExists('proj_enrollment_requests_tmp');
-        $builder->create('proj_enrollment_requests_tmp', function (Blueprint $schema) {
-        $schema->string('id');
-        $schema->string('student_id');
-        $schema->string('course_offering_id');
-        $schema->string('status');
+            $builder->create('proj_enrollment_requests_tmp', function (Blueprint $schema) {
+            $schema->string('id');
+            $schema->string('student_id');
+            $schema->string('course_offering_id');
+            $schema->string('status');
 
-        $schema->primary('id');
+            $schema->primary('id');
         });
 
         $this->table = 'proj_enrollment_requests_tmp';
