@@ -10,6 +10,7 @@ style: my-style.css
 
 ### Conference Presentations
 
+- [Event Sourcing a Small Library](./library.html)
 - [Pulling up your Legacy by its Bootstraps](./bootstrapping_legacy.html)
 - [Status Change: Now Using Event Sourcing](./status_change.html)
 - [What's Your Skateboard?](./skateboard.html)
