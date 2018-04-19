@@ -57,6 +57,38 @@
 					</myColBox>
 				</section>
 				<section>
+					<myRowBox>
+						<article>
+							<myColBox>
+								<article>
+									<img src="img/library/ME.png" alt="developer">
+								</article>
+								<article>
+									<li>PHP developer</li>
+									<li>Organizer of Triangle PHP </li>
+									<li>Director WWCode Raleigh-Durham</li>
+									<li>Work at InQuest</li>
+                                    <p>&nbsp;</p>
+                                    <myColBox>
+                                        <article>
+                                            <img src="img/WWCode_Logo_Raleigh_Durham.png">
+                                        </article>
+                                        <article>
+                                            <img src="img/trianglePHP_sm.jpg">
+                                        </article>
+                                        <article>
+                                            <img src="img/inquest.svg">
+                                        </article>
+                                    </myColBox>
+								</article>
+							</myColBox>
+						</article>
+					</myRowBox>
+				</section>
+                <section data-background-image="img/library/ME1.png" class="titleblock">
+
+				</section>
+				<section>
 					<myColBox>
 						<article>
 							<p><img src="img/library/ideaGuy.png" alt="My kid and all of his ideas"></p>
@@ -928,167 +960,167 @@ public function handleCheckoutOutBook(CheckOutBook $command)
 			</div>
 		</div>
 
-        <script src="lib/js/head.min.js"></script>
-        <script src="js/reveal.js"></script>
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
 
-			<script>
-                // More info https://github.com/hakimel/reveal.js#configuration
-                Reveal.initialize({
-                    history: true,
+		<script>
+            // More info https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                history: true,
 
-                    // More info https://github.com/hakimel/reveal.js#dependencies
-                    dependencies: [
-                        { src: 'plugin/markdown/marked.js' },
-                        { src: 'plugin/markdown/markdown.js' },
-                        { src: 'plugin/notes/notes.js', async: true },
-                        { src: 'node_modules/highlight.js/lib/highlight.js' },
+                // More info https://github.com/hakimel/reveal.js#dependencies
+                dependencies: [
+                    { src: 'plugin/markdown/marked.js' },
+                    { src: 'plugin/markdown/markdown.js' },
+                    { src: 'plugin/notes/notes.js', async: true },
+                    { src: 'node_modules/highlight.js/lib/highlight.js' },
 //					{ src: 'plugin/accessibility/helper.js', async: true, condition: function() {
 //						return !!document.body.classList;
 //					}},
-                        {
-                            src: 'node_modules/reveal-code-focus/reveal-code-focus.js',
-                            async: true,
-                            callback: function() {
-                                RevealCodeFocus();
-                            }
-                        },
-                        { src: 'plugin/elapsed-time-bar/elapsed-time-bar.js'}
-                    ],
+                    {
+                        src: 'node_modules/reveal-code-focus/reveal-code-focus.js',
+                        async: true,
+                        callback: function() {
+                            RevealCodeFocus();
+                        }
+                    },
+                    { src: 'plugin/elapsed-time-bar/elapsed-time-bar.js'}
+                ],
 
-                    // The "normal" size of the presentation, aspect ratio will be preserved
-                    // when the presentation is scaled to fit different resolutions. Can be
-                    // specified using percentage units.
-                    width: 1280,
-                    height: 720,
+                // The "normal" size of the presentation, aspect ratio will be preserved
+                // when the presentation is scaled to fit different resolutions. Can be
+                // specified using percentage units.
+                width: 1280,
+                height: 720,
 
-                    // Factor of the display size that should remain empty around the content
-                    margin: 0.1,
+                // Factor of the display size that should remain empty around the content
+                margin: 0.1,
 
-                    // Bounds for smallest/largest possible scale to apply to content
-                    minScale: 0.2,
-                    maxScale: 1.5,
+                // Bounds for smallest/largest possible scale to apply to content
+                minScale: 0.2,
+                maxScale: 1.5,
 
 
-                    // your allotted time for presentation
-                    allottedTime: 50 * 60 * 1000, // 50 minutes
+                // your allotted time for presentation
+                allottedTime: 50 * 60 * 1000, // 50 minutes
 
-                    // - (optional) height of page/time progress bar
-                    progressBarHeight: 3,
+                // - (optional) height of page/time progress bar
+                progressBarHeight: 3,
 
-                    // - (optional) bar color
-                    barColor: 'rgb(200,0,0)',
+                // - (optional) bar color
+                barColor: 'rgb(200,0,0)',
 
-                    // - (optional) bar color when timer is paused
-                    pausedBarColor: 'rgba(200,0,0,.6)',
+                // - (optional) bar color when timer is paused
+                pausedBarColor: 'rgba(200,0,0,.6)',
 
-                    // Display controls in the bottom right corner
-                    controls: true,
+                // Display controls in the bottom right corner
+                controls: true,
 
-                    // Display a presentation progress bar
-                    progress: true,
+                // Display a presentation progress bar
+                progress: true,
 
-                    // Display the page number of the current slide
-                    slideNumber: true,
+                // Display the page number of the current slide
+                slideNumber: true,
 
-                    // Push each slide change to the browser history
-                    history: true,
+                // Push each slide change to the browser history
+                history: true,
 
-                    // Enable keyboard shortcuts for navigation
-                    keyboard: true,
+                // Enable keyboard shortcuts for navigation
+                keyboard: true,
 
-                    // Enable the slide overview mode
-                    overview: true,
+                // Enable the slide overview mode
+                overview: true,
 
-                    // Vertical centering of slides
-                    center: false,
+                // Vertical centering of slides
+                center: false,
 
-                    // Enables touch navigation on devices with touch input
-                    touch: true,
+                // Enables touch navigation on devices with touch input
+                touch: true,
 
-                    // Loop the presentation
-                    loop: false,
+                // Loop the presentation
+                loop: false,
 
-                    // Change the presentation direction to be RTL
-                    rtl: false,
+                // Change the presentation direction to be RTL
+                rtl: false,
 
-                    // Randomizes the order of slides each time the presentation loads
-                    shuffle: false,
+                // Randomizes the order of slides each time the presentation loads
+                shuffle: false,
 
-                    // Turns fragments on and off globally
-                    fragments: true,
+                // Turns fragments on and off globally
+                fragments: true,
 
-                    // Flags if the presentation is running in an embedded mode,
-                    // i.e. contained within a limited portion of the screen
-                    embedded: false,
+                // Flags if the presentation is running in an embedded mode,
+                // i.e. contained within a limited portion of the screen
+                embedded: false,
 
-                    // Flags if we should show a help overlay when the questionmark
-                    // key is pressed
-                    help: true,
+                // Flags if we should show a help overlay when the questionmark
+                // key is pressed
+                help: true,
 
-                    // Flags if speaker notes should be visible to all viewers
-                    showNotes: false,
+                // Flags if speaker notes should be visible to all viewers
+                showNotes: false,
 
-                    // Number of milliseconds between automatically proceeding to the
-                    // next slide, disabled when set to 0, this value can be overwritten
-                    // by using a data-autoslide attribute on your slides
-                    autoSlide: 0,
+                // Number of milliseconds between automatically proceeding to the
+                // next slide, disabled when set to 0, this value can be overwritten
+                // by using a data-autoslide attribute on your slides
+                autoSlide: 0,
 
-                    // Stop auto-sliding after user input
-                    autoSlideStoppable: true,
+                // Stop auto-sliding after user input
+                autoSlideStoppable: true,
 
-                    // Use this method for navigation when auto-sliding
-                    autoSlideMethod: Reveal.navigateNext,
+                // Use this method for navigation when auto-sliding
+                autoSlideMethod: Reveal.navigateNext,
 
-                    // Enable slide navigation via mouse wheel
-                    mouseWheel: false,
+                // Enable slide navigation via mouse wheel
+                mouseWheel: false,
 
-                    // Hides the address bar on mobile devices
-                    hideAddressBar: true,
+                // Hides the address bar on mobile devices
+                hideAddressBar: true,
 
-                    // Opens links in an iframe preview overlay
-                    previewLinks: false,
+                // Opens links in an iframe preview overlay
+                previewLinks: false,
 
-                    // Transition style
-                    transition: 'none', // none/fade/slide/convex/concave/zoom
+                // Transition style
+                transition: 'none', // none/fade/slide/convex/concave/zoom
 
-                    // Transition speed
-                    transitionSpeed: 'default', // default/fast/slow
+                // Transition speed
+                transitionSpeed: 'default', // default/fast/slow
 
-                    // Transition style for full page slide backgrounds
-                    backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+                // Transition style for full page slide backgrounds
+                backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
 
-                    // Number of slides away from the current that are visible
-                    viewDistance: 3,
+                // Number of slides away from the current that are visible
+                viewDistance: 3,
 
-                    // Parallax background image
-                    parallaxBackgroundImage: '', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+                // Parallax background image
+                parallaxBackgroundImage: '', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
 
-                    // Parallax background size
-                    parallaxBackgroundSize: '', // CSS syntax, e.g. "2100px 900px"
+                // Parallax background size
+                parallaxBackgroundSize: '', // CSS syntax, e.g. "2100px 900px"
 
-                    // Number of pixels to move the parallax background per slide
-                    // - Calculated automatically unless specified
-                    // - Set to 0 to disable movement along an axis
-                    parallaxBackgroundHorizontal: null,
-                    parallaxBackgroundVertical: null,
+                // Number of pixels to move the parallax background per slide
+                // - Calculated automatically unless specified
+                // - Set to 0 to disable movement along an axis
+                parallaxBackgroundHorizontal: null,
+                parallaxBackgroundVertical: null,
 
-                    pdfMaxPagesPerSlide: 1,
+                pdfMaxPagesPerSlide: 1,
 
-                    // Value of the display CSS property applied to current slide to make it visible
-                    display: 'flex',
+                // Value of the display CSS property applied to current slide to make it visible
+                display: 'flex',
 
-                    keyboard: {
-                        // pause/resume time when Enter is pressed
-                        13: () => {
-                        ElapsedTimeBar.isPaused ? ElapsedTimeBar.resume() : ElapsedTimeBar.pause();
-                },
+                keyboard: {
+                    // pause/resume time when Enter is pressed
+                    13: () => {
+                    ElapsedTimeBar.isPaused ? ElapsedTimeBar.resume() : ElapsedTimeBar.pause();
+            },
 
-                // reset timer when 'r' is pressed
-                82: () => {
-                    ElapsedTimeBar.reset();
-                }
-                }
-                })
-			</script>
+            // reset timer when 'r' is pressed
+            82: () => {
+                ElapsedTimeBar.reset();
+            }
+            }
+            })
+		</script>
 	</body>
 </html>
