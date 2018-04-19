@@ -96,27 +96,24 @@
 						</article>
 					</myColBox>
 				</section>
-				<section>
-					<myColBox>
-						<article>
-							<h1 id="the-librarian">The Librarian</h1>
-							<p><img src="img/library/TheLibrarian.jpg" alt="the library"></p>
-
-						</article>
-					</myColBox>
+				<section data-background-image="img/library/TheLibrarian.jpg" class="titleblock"
+                        <h3 id="the-librarian">The Librarian</h3>
 				</section>
 				<section>
-					<myColBox>
+					<myRowBox>
 						<article>
 							<img src="img/library/DarthVaderIsMyPM.jpg" alt="the library">
 
 						</article>
-					</myColBox>
+					</myRowBox>
 				</section>
 				<section>
+                    <myTitleBox>
+                        <h1 id="requirements">Requirements</h1>
+                    </myTitleBox>
 					<myColBox>
 						<article>
-							<h1 id="requirements">Requirements</h1>
+                            <p>&nbsp;</p>
 							<ul>
 								<li>Check out books</li>
 								<li>Reserve books</li>
@@ -127,9 +124,12 @@
 					</myColBox>
 				</section>
 				<section>
+                    <myTitleBox>
+                        <h1 id="the-library-process">The Librarian's Process</h1>
+                    </myTitleBox>
 					<myColBox>
 						<article>
-							<h1 id="the-library-process">The Library Process</h1>
+                            <p>&nbsp;</p>
 							<ul>
 								<li>Check in and Check out Books</li>
 								<li>View a List of Books I Own</li>
@@ -189,55 +189,56 @@ class BooksController extends Controller
 					</myColBox>
 				</section>
 				<section>
+                    <myTitleBox>
+                        <h1 id="checking-out-and-checking-in-books">Book Check-in/out</h1>
+                    </myTitleBox>
 					<myColBox>
 						<article>
-							<h1 id="checking-out-and-checking-in-books">Checking Out and Checking In Books</h1>
+							<p>&nbsp;</p>
 							<ul>
-								<li>Could easily be a custom variation of the update</li>
+								<li>Modify update method to change status</li>
 								<li>Using a status table to show if the book is in or out</li>
 								<li>Any of this would be fine</li>
 							</ul>
 
 						</article>
+                        <article>
+                            <img src="img/library/lending%20desk1.png">
+                        </article>
 					</myColBox>
 				</section>
+                <section data-background="img/status_change/CompensatingMeasures.png">
+                </section>
 				<section>
+                    <myTitleBox>
+                        <h2 id="this-will-seem-like-overkill-for-a-little-bit">Pause for Warning</h2>
+                    </myTitleBox>
 					<myColBox>
 						<article>
-							<h2 id="this-will-seem-like-overkill-for-a-little-bit">This WILL seem like overkill for a little bit</h2>
-							<ul>
-								<li>changing habits is tough</li>
-								<li>building your app around events is different than CRUD</li>
-								<li>not all applications <strong>need</strong> to be event sourced</li>
-							</ul>
-							<p><img src="img/library/alice.gif" alt="Alice falling down the rabbit hole"></p>
-
+							<p>Switch from CRUD to ES is tough</p>
+                            <p>#NotAllApplications <strong>need</strong> to be Event-Sourced</p>
+                        </article>
+                        <article>
+							<p><img src="img/library/look_here.gif"></p>
 						</article>
 					</myColBox>
 				</section>
 				<section>
+                    <myTitleBox>
+                        <h1 id="we-re-going-to-talk-about-">Learning Objectives:</h1>
+                    </myTitleBox>
 					<myColBox>
 						<article>
-							<h1 id="we-re-going-to-talk-about-">We&#39;re going to talk about:</h1>
+                            <p>&nbsp;</p>
 							<ul>
 								<li>What is Event Sourcing<ul>
 									<li>Rules to Follow</li>
-									<li>the data structures: Events, Projections, Read Models, CQRS</li>
+									<li>Data Structures: Events, Projections, Read Models, CQRS(briefly)</li>
 								</ul>
 								</li>
-								<li>How our code will change to create Check In and Check Out Events</li>
-								<li>Why logging the check-in and check-out as events instead of statuses is more useful </li>
-								<li>Flexibility gained long term</li>
-								<li>Adding Event Sourcing to Your Legacy App</li>
+								<li>How our code will change </li>
+								<li>Why would we want to use Event Sourcing</li>
 							</ul>
-
-						</article>
-					</myColBox>
-				</section>
-				<section>
-					<myColBox>
-						<article>
-
 						</article>
 					</myColBox>
 				</section>
