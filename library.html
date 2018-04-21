@@ -4,10 +4,10 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Event Sourcing a Small Library</title>
 
 		<meta name="description"
-			  content="">
+			  content="Whether you want to keep track of a tiny library or your friends borrowing from your bookshelf, event sourcing can help you collect where your books are going. When you are ready, the simple check in and check out events can build reports of what books need to be returned, or where a book may have traveled. We will use this simple project to navigate the data structures in event sourcing and show how you may use event sourcing in your next project.">
 		<meta name="author" content="Emily Stamey">
 
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -222,6 +222,13 @@ class BooksController extends Controller
 							<p><img src="img/library/look_here.gif"></p>
 						</article>
 					</myColBox>
+                    <aside class="notes">
+                        <li>Coming from a CRUD environment, Event-sourcing seems weird, but this is a light-weight approach to using it</li>
+                        <li>Reminder: As with all new things, be patient with yourself</li>
+                        <li>ES isn't for all the things!</li>
+                        <li>If we were only checking in and out books, this would be too much</li>
+                        <li>ES is powerful in that it's flexible to changes and keeping an audit log</li>
+                    </aside>
 				</section>
 				<section>
                     <myTitleBox>
@@ -257,7 +264,6 @@ class BooksController extends Controller
 						<article>
 							<h1 id="events-and-listeners">Events and Listeners</h1>
 							<p><img src="img/library/events_listeners.png" alt="An Event represented as a diamond and a Listener represented as an ear"></p>
-
 						</article>
 					</myColBox>
 				</section>
@@ -265,25 +271,23 @@ class BooksController extends Controller
 					<myColBox>
 						<article>
 							<h1 id="an-event">An Event</h1>
-							<ul>
-								<li>The thing that happened (ex. <strong>BookWasCheckedOut</strong>)</li>
-								<li>Details of that event (book id, date, patron id)</li>
-								<li>Order/Sequence they occurred</li>
-							</ul>
-
+                            <br>
+                            <p>What happened?<br>
+                            <strong>BookWasCheckedOut</strong></p>
+                            <p>What do I need to remember about it?<br>
+                            <strong>(book, patron, date)</strong></p>
 						</article>
 					</myColBox>
 				</section>
 				<section>
+                    <myTitleBox>
+                        <h1 id="event-attributes">Attributes</h1>
+                    </myTitleBox>
 					<myColBox>
 						<article>
-							<h1 id="event-attributes">Event Attributes</h1>
-							<p>(book id, date, patron id)</p>
-							<p>We are deciding between what we need to preserve and what we can look up later:</p>
-							<ul>
-								<li>all patron info?</li>
-							</ul>
-
+                            <p>&nbsp;</p>
+                            <p>Save only what you need to preserve, The rest can be looked up</p>
+                            <p><strong>(book id, patron id, date)</strong></p>
 						</article>
 					</myColBox>
 				</section>
@@ -316,7 +320,7 @@ class BooksController extends Controller
 					<myColBox>
 						<article>
 							<h1 id="don-t-store-objects">Don&#39;t store objects</h1>
-							<p><img src="img/status_change/objects.png" alt="objects can change"></p>
+							<p><img src="img/status_change/Objects.png" alt="objects can change"></p>
 
 						</article>
 					</myColBox>
@@ -339,14 +343,15 @@ class BooksController extends Controller
 					</myColBox>
 				</section>
 				<section>
+                    <myTitleBox>
+                        <h2 id="events-rarely-change">Events rarely change</h2>
+                    </myTitleBox>
 					<myColBox>
 						<article>
-							<h2 id="events-rarely-change">Events rarely change</h2>
 							<ul>
 								<li>The part of the code that will change is most likely the <strong>result that follows that event</strong>.</li>
 								<li>The <strong>structure of the resulting data</strong> is more likely to change than the thing that happened</li>
 							</ul>
-
 						</article>
 					</myColBox>
 				</section>
@@ -377,14 +382,13 @@ class BooksController extends Controller
 				<section>
 					<myColBox>
 						<article>
-							<h1 id="why-events-">Why Events?</h1>
+							<h1 id="why-events-">Reasons to use Events</h1>
 							<ul>
 								<li>State transitions are important</li>
 								<li>We need an audit log, proof of the state we are currently in</li>
 								<li>The history of what happened is more important than the current state</li>
 								<li>Events are replayable if behavior in your application changes</li>
 							</ul>
-
 						</article>
 					</myColBox>
 				</section>
@@ -392,7 +396,8 @@ class BooksController extends Controller
 					<myColBox>
 						<article>
 							<h1 id="event-class">Event Class</h1>
-							<pre><code>&amp;lt;?php
+							<pre><code>
+&lt;?php
 
 namespace Library\Events;
 
@@ -475,20 +480,16 @@ class BookWasCheckedOut
 						</article>
 					</myColBox>
 				</section>
-				<section>
-					<myColBox>
-						<article>
-							<p><img src="img/status_change/projector.png" alt="Projector reads the Events and builds the table"></p>
-							<p>A set of event handlers that work together to build and maintain a read model.</p>
-
-						</article>
-					</myColBox>
+				<section data-background="img/status_change/projector.png">
+                    <aside class="notes">
+                        <p>A set of event handlers that work together to build and maintain a table to be accessed by the read model.</p>
+                    </aside>
 				</section>
 				<section>
 					<myColBox>
 						<article>
 							<h1 id="projector">Projector</h1>
-							<pre><code>&amp;lt;?php
+							<pre><code>&lt;?php
 
 namespace Library\ReadModel;
 
@@ -577,7 +578,9 @@ class BookshelfProjector extends SimpleProjector implements Replayable
     }
 
 }
-</code></pre><p>A set of event handlers that work together to build and maintain a read model.</p>
+</code></pre>
+
+                            <p>A set of event handlers that work together to build and maintain a table to be accessed by the read model.</p>
 
 						</article>
 					</myColBox>
@@ -598,7 +601,7 @@ class BookshelfProjector extends SimpleProjector implements Replayable
 					<myColBox>
 						<article>
 							<h1 id="read-model">Read Model</h1>
-							<pre><code>&amp;lt;?php
+							<pre><code>&lt;?php
 
 namespace Library\ReadModel;
 
@@ -635,36 +638,40 @@ class Bookshelf extends Model
 					</myColBox>
 				</section>
 				<section>
-					<myColBox>
+					<myTitleBox>
+						<h1>Connecting the events</h1>
+					</myTitleBox>
+					<myRowBox>
 						<article>
-							<h1 id="but-how-do-the-events-get-there-">But how do the Events get there?</h1>
-
+							<p>&nbsp;</p>
+							<ul>
+								<li>An event is created only after validation</li>
+								<ul>
+									<li>directly in a controller 'checkout' method</li>
+									<li>using a Check Out Book Command and Handler</li>
+								</ul>
+							</ul>
 						</article>
-					</myColBox>
+					</myRowBox>
+				</section>
+				<section data-background="img/library/interactionToEventDiagram.png">
+					<!--<myColBox>-->
+						<!--<article>-->
+							<!--<p><img src="" alt="Diagram of the intearction on the web page then routed to the controller action, which calls a command, If valid, the Command creates the Event"></p>-->
+
+						<!--</article>-->
+					<!--</myColBox>-->
+				</section>
+				<section data-background="img/library/bookCheckoutForm.png">
 				</section>
 				<section>
 					<myColBox>
 						<article>
-							<p><img src="img/library/interactionToEventDiagram.png" alt="Diagram of the intearction on the web page then routed to the controller action, which calls a command, If valid, the Command creates the Event"></p>
-
-						</article>
-					</myColBox>
-				</section>
-				<section>
-					<myColBox>
-						<article>
-							<p><img src="img/library/bookCheckoutForm.png" alt="Book Form to Check Out"></p>
-
-						</article>
-					</myColBox>
-				</section>
-				<section>
-					<myColBox>
-						<article>
-							<h1 id="bookscontroller-update">BooksController: update</h1>
+							<h1 id="bookscontroller-update">CRUD: update</h1>
 							<pre><code>public function update(Request $request, $id)
 {
     // our default update method
+	// validate inputs
     $Book = Book::findOrFail($id);
     $Book-&gt;update($request-&gt;all());
 
@@ -675,20 +682,53 @@ class Bookshelf extends Model
 					</myColBox>
 				</section>
 				<section>
+					<myTitleBox>
+						<h1 id="crud-to-cqrs">CRUD Checkout</h1>
+					</myTitleBox>
 					<myColBox>
 						<article>
-							<h1 id="crud-to-cqrs">CRUD to CQRS</h1>
-							<pre><code>public function checkOutBook(Request $request, $id)
+							<p>&nbsp;</p>
+<pre><code>
+public function checkOutBook(Request $request, $id)
 {
     // altered the update method
+	// validate inputs
     $Book = Book::findOrFail($id);
     $Book-&gt;update(&#39;status&#39; =&gt; &#39;checked out&#39;,
                     &#39;patron&#39; =&gt; $request-&gt;patronId);
 
     return $Book;
 }
-</code></pre><p><img src="img/library/itDoesntFit.gif" alt="cat climbing into a trash pail but doesn&#39;t quite fit"></p>
+</code></pre>
+							<span class="fragment current-only" data-code-focus="2"></span>
+							<span class="fragment current-only" data-code-focus="6-7"></span>
+						</article>
+						<article>
+							<p>&nbsp;</p>
+							<p class="fragment"><img src="img/library/itDoesntFit.gif" alt="cat climbing into a trash pail but doesn&#39;t quite fit"></p>
 
+						</article>
+					</myColBox>
+				</section>
+				<section>
+					<myTitleBox>
+						<h1 id="crud-to-cqrs">CRUD Checkout</h1>
+					</myTitleBox>
+					<myColBox>
+						<article>
+							<p>&nbsp;</p>
+							<pre><code>
+public function checkOutBook(Request $request, $id)
+{
+    // altered the update method
+	// validate book can be checked out
+
+	$event = new BookWasCheckedOut($request->bookId,
+					$request->patronId,
+					time());
+
+}
+</code></pre>
 						</article>
 					</myColBox>
 				</section>
@@ -937,7 +977,7 @@ public function handleCheckoutOutBook(CheckOutBook $command)
 						<article><h1>Thank you!</h1></article>
 						<article>
 
-							<img src="img/trianglePHP_sm.jpg">
+							<img src="img/longhorn-php-logo-final.png">
 						</article>
 					</myColBox>
 				</section>
