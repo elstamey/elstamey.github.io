@@ -12,6 +12,47 @@ controls: true
 
 # Event Sourcing Can Fix That!
 
+--
+
+![Me](img/me.png)
+
+--
+
+![family](img/family.png)
+
+--
+
+# Scholarships
+
+- replaced in pieces
+- added DDD & ES & CQRS beside complex framework spaghetti
+- separation of concerns
+- cleaner history and reports of what had been done
+
+--
+
+## code structure to replace in pieces
+
+How did we add new, modern code within the framework?  What did we use?
+
+--
+
+# Student Enrollment Process
+
+- rewrote
+- ES to follow the process
+- status drop-down versus events
+
+--
+
+# Session Threats Report
+
+- multiple daemons running parts of code and the UI consumes the results of the analysis
+  - complex DB queries
+  - reports are slow to generate on-demand
+
+
+
 
 --
 
