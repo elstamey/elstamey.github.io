@@ -22,12 +22,42 @@ controls: true
 
 --
 
-# Scholarships
+# Scholarships 
 
 - replaced in pieces
 - added DDD & ES & CQRS beside complex framework spaghetti
 - separation of concerns
 - cleaner history and reports of what had been done
+
+--
+
+![Scholarships Project](img/boots/scholarships_diagram.png)
+
+--
+
+![Fork Knife](img/boots/knife_fork.jpg)
+
+
+--
+
+![github](img/boots/octocat_Professortocat_v2.png)
+![virtualization](img/boots/vagrant-virtualbox.png)
+![tests](img/boots/phpunit.png)
+![composer](img/boots/logo-composer-transparent.png)
+![twig](img/hey_boss/twig.jpg)
+![pimple](img/hey_boss/pimple.jpg)
+
+--
+
+![filetree](img/hey_boss/scholarships-filetree.png)
+
+
+--
+
+![bounded contexts](img/boots/bounded_contexts.png)
+
+--
+
 
 --
 
@@ -50,9 +80,9 @@ How did we add new, modern code within the framework?  What did we use?
 - multiple daemons running parts of code and the UI consumes the results of the analysis
   - complex DB queries
   - reports are slow to generate on-demand
-
-
-
+  
+  
+  
 
 --
 
