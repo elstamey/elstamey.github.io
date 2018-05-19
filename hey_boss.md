@@ -90,14 +90,6 @@ controls: true
 - really powerful to see which parts of your application could benefit from event sourcing
 - and finding the simplest way to implement
 
-
---
-
-
---
-
-
-
 --
 
 # Student Enrollment Process
@@ -108,38 +100,30 @@ controls: true
 
 --
 
+![inquest logo](img/hey_boss/inquest-logo-web.svg)
+
+--
+
+# Diagram
+
+![diagram](img/hey_boss/inquest-diagram.png)
+
+
+--
+
 # Session Threats Report
 
 - multiple daemons running parts of code and the UI consumes the results of the analysis
   - complex DB queries
   - reports are slow to generate on-demand
 
-  
-  
-  
-
---
-
-## What we'll cover:
-
-- What does an Event look like?
-- The Event Store
-- How do we create events?
-- We have events, now what?
-- A short example of how it could work
-
---
-
-## What Does an Event Look Like?
-
-- An Event is a Class named for the thing that happened
-- The event contains attributes that are relevant to that event
-
 --
 
 ## Event: SessionDiscovered
 
 - after validation to determine whether we have a valid session, we log a new event
+
+--
 
 ### new SessionDiscovered( attributes we need to know )
 
@@ -201,35 +185,6 @@ controls: true
 
 --
 
-## Event Store holds *all* events
-
-- a DB with each row being a Domain Message
-- Each Event is the payload of the Domain Message
-- The Domain Message has a uuid, timestamp, type, payload (the event itself), and version (if needed)
-- this means we can store all events in the same place regardless of the program that logs the event or handles them
-
---
-
-## Listeners
-
-- we write listeners for each of the events we care about in a given context
-- the listeners view the whole event store but cull the events by their type
-- the types of structures that have listeners are projections and aggregate roots 
-
---
-
-## Projector
-
-- a class 
-- its apply methods contain the logic of what an event means
-- writes information to the table that we will need later
-
---
-
-![Projectors](../img/status_change/projector.png)
-
---
-
 ## Projection: Session
 
 - listens for SessionDiscovered events
@@ -256,14 +211,6 @@ controls: true
 
 --
 
-## Read Model
-
-- a class
-- it contains methods for looking up information from the projection
-- ex: look up the history for a certain file, all of its scores
-
---
-
 ## Read Model: Top Threats
 
 methods: 
@@ -286,3 +233,26 @@ methods:
 - separate the logic of what an event means based on context and purpose
 - only display results that a user is allowed to see
 - flexible to change, our interpretation of events can change, and we can rebuild projections without losing the full history
+
+--
+
+## Signatures
+
+- history of changes
+- past scores/score history
+
+--
+
+## Rescans and history from rescans
+
+- what can we see?
+
+--
+
+## Efficiency
+
+- With events written, can process them for multiple contexts
+- Speed up scans by delaying the writes to the report
+- Speed up reports by building from events/optimized for read
+
+--
