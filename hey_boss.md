@@ -256,3 +256,7 @@ methods:
 - Speed up reports by building from events/optimized for read
 
 --
+
+# Thank you
+
+![php srbija](img/phpsrbija-logo.png)
