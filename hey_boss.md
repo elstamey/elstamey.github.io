@@ -22,6 +22,12 @@ controls: true
 
 --
 
+# Basics of Event Sourcing
+
+- pull from library 11-45 with thinning
+
+--
+
 # Scholarships 
 
 - replaced in pieces
@@ -70,9 +76,27 @@ controls: true
 
 --
 
-## code structure to replace in pieces
+## Dependency Injection
 
-How did we add new, modern code within the framework?  What did we use?
+
+- add slide from bootstrapping through controllers and rearrange
+
+--
+
+## Legacy
+
+- this was an example of replacing the code in pieces
+- could have replaced only one part or a few
+- really powerful to see which parts of your application could benefit from event sourcing
+- and finding the simplest way to implement
+
+
+--
+
+
+--
+
+
 
 --
 
@@ -89,6 +113,7 @@ How did we add new, modern code within the framework?  What did we use?
 - multiple daemons running parts of code and the UI consumes the results of the analysis
   - complex DB queries
   - reports are slow to generate on-demand
+
   
   
   
