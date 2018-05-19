@@ -49,7 +49,7 @@ controls: true
 
 --
 
-![filetree](img/hey_boss/scholarships-filetree.png)
+![filetree old only](img/hey_boss/scholarships-filetree-legacy.png)
 
 
 --
@@ -58,6 +58,15 @@ controls: true
 
 --
 
+![filetree with new code](img/hey_boss/scholarships-filetree.png)
+
+--
+
+![bounded contexts with Events](img/hey_boss/scholarships-bounded-contexts-events.png)
+
+--
+
+![filetree with new controllers and views](img/hey_boss/scholarships-filetree-controllers.png)
 
 --
 
