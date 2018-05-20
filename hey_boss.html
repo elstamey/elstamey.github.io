@@ -43,455 +43,433 @@
 <div class="reveal">
     <div class="slides">
         <section>
-      <myColBox>
-          <article>
-            <h1 id="event-sourcing-can-fix-that-">Event Sourcing Can Fix That!</h1>
+            <myColBox>
+                <article>
+                    <h1 id="event-sourcing-can-fix-that-">Event Sourcing Can Fix That!</h1>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/me.png" alt="Me">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/family.png" alt="family">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="basics-of-event-sourcing">Basics of Event Sourcing</h1>
+                    <ul>
+                        <li>pull from library 11-45 with thinning</li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="scholarships">Scholarships</h1>
+                    <ul>
+                        <li>replaced in pieces</li>
+                        <li>added DDD &amp; ES &amp; CQRS beside complex framework spaghetti</li>
+                        <li>separation of concerns</li>
+                        <li>cleaner history and reports of what had been done</li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/boots/scholarships_diagram.png" alt="Scholarships Project">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/boots/knife_fork.jpg" alt="Fork Knife">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myRowBox>
+                <article>
+                    <myColBox>
+                        <article>
+                            <img src="img/boots/octocat_Professortocat_v2.png" alt="github">
+                        </article>
+                        <article>
+                            <img src="img/boots/vagrant-virtualbox.png" alt="virtualization">
+                        </article>
+                        <article>
+                            <img src="img/boots/phpunit.png" alt="tests">
+                        </article>
+                    </myColBox>
+                </article>
+                <article>
+                    <myColBox>
+                        <article>
+                            <img src="img/boots/logo-composer-transparent.png" alt="composer">
+                        </article>
+                        <article>
+                            <img src="img/hey_boss/twig.jpg" alt="twig">
+                        </article>
+                        <article>
+                            <img src="img/hey_boss/pimple.jpg" alt="pimple">
+                        </article>
+                    </myColBox>
+                </article>
+            </myRowBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/hey_boss/scholarships-filetree-legacy.png" alt="filetree old only">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/boots/bounded_contexts.png" alt="bounded contexts">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/hey_boss/scholarships-filetree.png" alt="filetree with new code">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/hey_boss/scholarships-bounded-contexts-events.png" alt="bounded contexts with Events">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/hey_boss/scholarships-filetree-controllers.png" alt="filetree with new controllers and views">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h2 id="dependency-injection">Dependency Injection</h2>
+                    <ul>
+                        <li>add slide from bootstrapping through controllers and rearrange</li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h2 id="legacy">Legacy</h2>
+                    <ul>
+                        <li>this was an example of replacing the code in pieces</li>
+                        <li>could have replaced only one part or a few</li>
+                        <li>really powerful to see which parts of your application could benefit from event sourcing</li>
+                        <li>and finding the simplest way to implement</li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="student-enrollment-process">Student Enrollment Process</h1>
+                    <ul>
+                        <li>rewrote</li>
+                        <li>ES to follow the process</li>
+                        <li>status drop-down versus events</li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/hey_boss/inquest-logo-web.svg" alt="inquest logo">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="diagram">Diagram</h1>
+                    <p><img src="img/hey_boss/inquest-diagram.png" alt="diagram"></p>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="session-threats-report">Session Threats Report</h1>
+                    <ul>
+                        <li>multiple daemons running parts of code and the UI consumes the results of the analysis<ul>
+                        <li>complex DB queries</li>
+                        <li>reports are slow to generate on-demand</li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h2 id="event-sessiondiscovered">Event: SessionDiscovered</h2>
+                    <ul>
+                        <li>after validation to determine whether we have a valid session, we log a new event</li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h3 id="new-sessiondiscovered-attributes-we-need-to-know-">new SessionDiscovered( attributes we need to know )</h3>
 
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <p><img src="img/me.png" alt="Me"></p>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+        <myColBox>
+        <article>
+        <h2 id="event-sessiondiscovered">Event: SessionDiscovered</h2>
+        <ul>
+        <li>session id</li>
+        <li>start time</li>
+        <li>protocol</li>
+        <li>source ip</li>
+        <li>destination ip</li>
+        <li>source port</li>
+        <li>destination port</li>
+        </ul>
 
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <p><img src="img/family.png" alt="family"></p>
+        </article>
+        </myColBox>
+        </section>
+        <section>
+        <myColBox>
+        <article>
+        <h2 id="event-sessionscored">Event: SessionScored</h2>
+        <ul>
+        <li>session id</li>
+        <li>threat contributor</li>
+        <li>score</li>
+        </ul>
 
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h1 id="basics-of-event-sourcing">Basics of Event Sourcing</h1>
-<ul>
-<li>pull from library 11-45 with thinning</li>
-</ul>
+        </article>
+        </myColBox>
+        </section>
+        <section>
+        <myColBox>
+        <article>
+        <h2 id="event-filescored">Event: FileScored</h2>
+        <ul>
+        <li>after validation that a file has matched a signature, we log a new event</li>
+        </ul>
+        <h3 id="new-filescored-attributes-we-need-to-know-">new FileScored( attributes we need to know )</h3>
 
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h1 id="scholarships">Scholarships</h1>
-<ul>
-<li>replaced in pieces</li>
-<li>added DDD &amp; ES &amp; CQRS beside complex framework spaghetti</li>
-<li>separation of concerns</li>
-<li>cleaner history and reports of what had been done</li>
-</ul>
+        </article>
+        </myColBox>
+        </section>
+        <section>
+        <myColBox>
+        <article>
+        <h2 id="event-filescored">Event: FileScored</h2>
+        <ul>
+        <li>file id</li>
+        <li>session id</li>
+        <li>integration</li>
+        <li>score</li>
+        <li>signature that found it</li>
+        </ul>
 
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <p><img src="img/boots/scholarships_diagram.png" alt="Scholarships Project"></p>
+        </article>
+        </myColBox>
+        </section>
+        <section>
+        <myColBox>
+        <article>
+        <h2 id="event-filerescored">Event: FileRescored</h2>
+        <ul>
+        <li>after validation that a file has matched a signature and that it has been scored before\n- we log a new event</li>
+        </ul>
+        <h3 id="new-filerescored-attributes-we-need-to-know-">new FileRescored( attributes we need to know )</h3>
 
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <p><img src="img/boots/knife_fork.jpg" alt="Fork Knife"></p>
+        </article>
+        </myColBox>
+        </section>
+        <section>
+        <myColBox>
+        <article>
+        <h2 id="event-filerescored">Event: FileRescored</h2>
+        <ul>
+        <li>file id</li>
+        <li>session id</li>
+        <li>integration</li>
+        <li>new score</li>
+        <li>signature that found it</li>
+        </ul>
 
-          </article>
-      </myColBox>
-  </section>
-    <section>
-        <myRowBox>
-            <article>
-                <myColBox>
-                    <article>
-                        <img src="img/boots/octocat_Professortocat_v2.png" alt="github">
-                    </article>
-                    <article>
-                        <img src="img/boots/vagrant-virtualbox.png" alt="virtualization">
-                    </article>
-                    <article>
-                        <img src="img/boots/phpunit.png" alt="tests">
-                    </article>
-                </myColBox>
-            </article>
-            <article>
-                <myColBox>
-                    <article>
-                        <img src="img/boots/logo-composer-transparent.png" alt="composer">
-                    </article>
-                    <article>
-                        <img src="img/hey_boss/twig.jpg" alt="twig">
-                    </article>
-                    <article>
-                        <img src="img/hey_boss/pimple.jpg" alt="pimple">
-                    </article>
-                </myColBox>
-            </article>
-        </myRowBox>
-    </section>
-  <section>
-      <myColBox>
-          <article>
-            <p><img src="img/hey_boss/scholarships-filetree-legacy.png" alt="filetree old only"></p>
+        </article>
+        </myColBox>
+        </section>
+        <section>
+        <myColBox>
+        <article>
+        <h2 id="projection-session">Projection: Session</h2>
+        <ul>
+        <li>listens for SessionDiscovered events<ul>
+        <li>creates a new row in a table with the session details and a null score</li>
+        </ul>
+        </li>
+        <li>listens for SessionScored events<ul>
+        <li>finds the session in the table and updates the score and score contributor</li>
+        </ul>
+        </li>
+        </ul>
 
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <p><img src="img/boots/bounded_contexts.png" alt="bounded contexts"></p>
+        </article>
+        </myColBox>
+        </section>
+        <section>
+        <myColBox>
+        <article>
+        <h2 id="projection-report-for-top-threats-by-hash">Projection: Report for Top Threats by Hash</h2>
+        <ul>
+        <li>listens for FileScored and FileRescored Events<ul>
+        <li>looks up details of file by the file id</li>
+        <li>adds a row to table with <ul>
+        <li>file id</li>
+        <li>file md5 hash</li>
+        <li>the filename</li>
+        <li>file type</li>
+        <li>the score</li>
+        <li>signature that scored it</li>
+        <li>source ip</li>
+        <li>destination ip</li>
+        <li>protocol</li>
+        </ul>
+        </li>
+        </ul>
+        </li>
+        </ul>
 
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <p><img src="img/hey_boss/scholarships-filetree.png" alt="filetree with new code"></p>
+        </article>
+        </myColBox>
+        </section>
+        <section>
+        <myColBox>
+        <article>
+        <h2 id="read-model-top-threats">Read Model: Top Threats</h2>
+        <p>methods: </p>
+        <ul>
+        <li><p>top 10 threats by the file hash</p>
+        <ul>
+        <li>this excludes hits I&#39;m not allowed to see by the signature that did the scoring</li>
+        <li>gets a current hit count of only the records I can see</li>
+        </ul>
+        </li>
+        <li><p>top threats by file type</p>
+        </li>
+        <li>top threats by source/destination ip pairs</li>
+        <li>top threats by protocol</li>
+        </ul>
 
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <p><img src="img/hey_boss/scholarships-bounded-contexts-events.png" alt="bounded contexts with Events"></p>
+        </article>
+        </myColBox>
+        </section>
+        <section>
+        <myColBox>
+        <article>
+        <h2 id="good-stuff-">Good Stuff!</h2>
+        <ul>
+        <li>works well in our environment where we have multiple applications doing different things</li>
+        <li>full audit log of what has happened in our environment</li>
+        <li>the results of those events can be optimized for read to shorten the time to retrieve data</li>
+        <li>separate the logic of what an event means based on context and purpose</li>
+        <li>only display results that a user is allowed to see</li>
+        <li>flexible to change, our interpretation of events can change, and we can rebuild projections without losing the full history</li>
+        </ul>
 
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <p><img src="img/hey_boss/scholarships-filetree-controllers.png" alt="filetree with new controllers and views"></p>
+        </article>
+        </myColBox>
+        </section>
+        <section>
+        <myColBox>
+        <article>
+        <h2 id="signatures">Signatures</h2>
+        <ul>
+        <li>history of changes</li>
+        <li>past scores/score history</li>
+        </ul>
 
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h2 id="dependency-injection">Dependency Injection</h2>
-<ul>
-<li>add slide from bootstrapping through controllers and rearrange</li>
-</ul>
+        </article>
+        </myColBox>
+        </section>
+        <section>
+        <myColBox>
+        <article>
+        <h2 id="rescans-and-history-from-rescans">Rescans and history from rescans</h2>
+        <ul>
+        <li>what can we see?</li>
+        </ul>
 
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h2 id="legacy">Legacy</h2>
-<ul>
-<li>this was an example of replacing the code in pieces</li>
-<li>could have replaced only one part or a few</li>
-<li>really powerful to see which parts of your application could benefit from event sourcing</li>
-<li>and finding the simplest way to implement</li>
-</ul>
+        </article>
+        </myColBox>
+        </section>
+        <section>
+        <myColBox>
+        <article>
+        <h2 id="efficiency">Efficiency</h2>
+        <ul>
+        <li>With events written, can process them for multiple contexts</li>
+        <li>Speed up scans by delaying the writes to the report</li>
+        <li>Speed up reports by building from events/optimized for read</li>
+        </ul>
 
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h1 id="student-enrollment-process">Student Enrollment Process</h1>
-<ul>
-<li>rewrote</li>
-<li>ES to follow the process</li>
-<li>status drop-down versus events</li>
-</ul>
+        </article>
+        </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="thank-you">Thank you</h1>
+                    <img src="img/phpsrbija-logo.png" alt="php srbija">
 
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <p><img src="img/hey_boss/inquest-logo-web.svg" alt="inquest logo"></p>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h1 id="diagram">Diagram</h1>
-<p><img src="img/hey_boss/inquest-diagram.png" alt="diagram"></p>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h1 id="session-threats-report">Session Threats Report</h1>
-<ul>
-<li>multiple daemons running parts of code and the UI consumes the results of the analysis<ul>
-<li>complex DB queries</li>
-<li>reports are slow to generate on-demand</li>
-</ul>
-</li>
-</ul>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h2 id="event-sessiondiscovered">Event: SessionDiscovered</h2>
-<ul>
-<li>after validation to determine whether we have a valid session, we log a new event</li>
-</ul>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h3 id="new-sessiondiscovered-attributes-we-need-to-know-">new SessionDiscovered( attributes we need to know )</h3>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h2 id="event-sessiondiscovered">Event: SessionDiscovered</h2>
-<ul>
-<li>session id</li>
-<li>start time</li>
-<li>protocol</li>
-<li>source ip</li>
-<li>destination ip</li>
-<li>source port</li>
-<li>destination port</li>
-</ul>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h2 id="event-sessionscored">Event: SessionScored</h2>
-<ul>
-<li>session id</li>
-<li>threat contributor</li>
-<li>score</li>
-</ul>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h2 id="event-filescored">Event: FileScored</h2>
-<ul>
-<li>after validation that a file has matched a signature, we log a new event</li>
-</ul>
-<h3 id="new-filescored-attributes-we-need-to-know-">new FileScored( attributes we need to know )</h3>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h2 id="event-filescored">Event: FileScored</h2>
-<ul>
-<li>file id</li>
-<li>session id</li>
-<li>integration</li>
-<li>score</li>
-<li>signature that found it</li>
-</ul>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h2 id="event-filerescored">Event: FileRescored</h2>
-<ul>
-<li>after validation that a file has matched a signature and that it has been scored before\n- we log a new event</li>
-</ul>
-<h3 id="new-filerescored-attributes-we-need-to-know-">new FileRescored( attributes we need to know )</h3>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h2 id="event-filerescored">Event: FileRescored</h2>
-<ul>
-<li>file id</li>
-<li>session id</li>
-<li>integration</li>
-<li>new score</li>
-<li>signature that found it</li>
-</ul>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h2 id="projection-session">Projection: Session</h2>
-<ul>
-<li>listens for SessionDiscovered events<ul>
-<li>creates a new row in a table with the session details and a null score</li>
-</ul>
-</li>
-<li>listens for SessionScored events<ul>
-<li>finds the session in the table and updates the score and score contributor</li>
-</ul>
-</li>
-</ul>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h2 id="projection-report-for-top-threats-by-hash">Projection: Report for Top Threats by Hash</h2>
-<ul>
-<li>listens for FileScored and FileRescored Events<ul>
-<li>looks up details of file by the file id</li>
-<li>adds a row to table with <ul>
-<li>file id</li>
-<li>file md5 hash</li>
-<li>the filename</li>
-<li>file type</li>
-<li>the score</li>
-<li>signature that scored it</li>
-<li>source ip</li>
-<li>destination ip</li>
-<li>protocol</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h2 id="read-model-top-threats">Read Model: Top Threats</h2>
-<p>methods: </p>
-<ul>
-<li><p>top 10 threats by the file hash</p>
-<ul>
-<li>this excludes hits I&#39;m not allowed to see by the signature that did the scoring</li>
-<li>gets a current hit count of only the records I can see</li>
-</ul>
-</li>
-<li><p>top threats by file type</p>
-</li>
-<li>top threats by source/destination ip pairs</li>
-<li>top threats by protocol</li>
-</ul>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h2 id="good-stuff-">Good Stuff!</h2>
-<ul>
-<li>works well in our environment where we have multiple applications doing different things</li>
-<li>full audit log of what has happened in our environment</li>
-<li>the results of those events can be optimized for read to shorten the time to retrieve data</li>
-<li>separate the logic of what an event means based on context and purpose</li>
-<li>only display results that a user is allowed to see</li>
-<li>flexible to change, our interpretation of events can change, and we can rebuild projections without losing the full history</li>
-</ul>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h2 id="signatures">Signatures</h2>
-<ul>
-<li>history of changes</li>
-<li>past scores/score history</li>
-</ul>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h2 id="rescans-and-history-from-rescans">Rescans and history from rescans</h2>
-<ul>
-<li>what can we see?</li>
-</ul>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h2 id="efficiency">Efficiency</h2>
-<ul>
-<li>With events written, can process them for multiple contexts</li>
-<li>Speed up scans by delaying the writes to the report</li>
-<li>Speed up reports by building from events/optimized for read</li>
-</ul>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <h1 id="thank-you">Thank you</h1>
-<p><img src="img/phpsrbija-logo.png" alt="php srbija"></p>
-
-          </article>
-      </myColBox>
-  </section>
-  <section>
-      <myColBox>
-          <article>
-            <div class="author">
-  <h1 class="name">Emily Stamey</h1>
-    <h3 class="twitter">
-      <a href="http://twitter.com/@elstamey">@elstamey</a>
-    </h3>
-    <h3 class="url">
-      <a href="http://elstamey.com">http://elstamey.com</a>
-    </h3>
-</div>
-
-          </article>
-      </myColBox>
-  </section>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <div class="author">
+                        <h1 class="name">Emily Stamey</h1>
+                        <h3 class="twitter">
+                        <a href="http://twitter.com/@elstamey">@elstamey</a>
+                        </h3>
+                        <h3 class="url">
+                        <a href="http://elstamey.com">http://elstamey.com</a>
+                        </h3>
+                    </div>
+                </article>
+            </myColBox>
+        </section>
 
     </div>
 </div>
