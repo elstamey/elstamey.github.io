@@ -403,8 +403,7 @@ class BookWasCheckedOut
                         <li>Domain-specific database</li>
                         <li>Based on a Publish-Subscribe message pattern</li>
                     </ul>
-                    <p><img src="img/status_change/EventStore.png" alt="EventStore"></p>
-
+                    <p><img src="img/hey_boss/event-store-domain-message.png" alt="EventStore"></p>
                 </article>
             </myColBox>
         </section>
@@ -592,7 +591,7 @@ class Bookshelf extends Model
                     <pre><code>public function update(Request $request, $id)
 {
     // our default update method
-	// validate inputs
+    // validate inputs
     $Book = Book::findOrFail($id);
     $Book-&gt;update($request-&gt;all());
 
@@ -774,41 +773,70 @@ public function handleCheckoutOutBook(CheckOutBook $command)
                 <article>
                     <h1 id="separate-read-write">Optimize</h1>
                     <ul>
-                        <li>all <strong>commands</strong> go into a WriteService</li>
-                        <li>all <strong>queries</strong> go into a ReadService</li>
-                        <li>to optimize your application for reads and writes</li>
-                        <li>Separate the load from reads and writes allowing you to scale each independently. <ul>
-                            <li><em>If your application sees a big disparity between reads and writes this is very handy.</em> </li>
-                        </ul>
-                        </li>
-                        <li>Uses a separate model for all queries</li>
+
+                        <li>to optimize your application for reads and writes
+                        <ul>
+                            <li>all <strong>commands</strong> go into a WriteService</li>
+                            <li>all <strong>queries</strong> go into a ReadService</li>
+                        </ul></li>
+                        <li>Separate the load from reads and writes allowing you to scale each independently. </li>
                     </ul>
 
+                </article>
+            </myColBox>
+        </section>
+        <!--<section>-->
+            <!--<myColBox>-->
+                <!--<article>-->
+                    <!--<h1 id="task-based-ui">Task-based UI</h1>-->
+                    <!--<ul>-->
+                        <!--<li>Track what the user is doing and push forward commands representing the intent of the user </li>-->
+                        <!--<li>CQRS <strong>does not require</strong> a task based UI (DDD does)</li>-->
+                        <!--<li>CQRS used in a CRUD interface, makes creating separated data models harder</li>-->
+                    <!--</ul>-->
+
+                <!--</article>-->
+            <!--</myColBox>-->
+        <!--</section>-->
+        <section>
+            <myTitleBox>
+                <h3>You can choose which is best</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <ul>
+                        <li>Event-Sourcing</li>
+                        <li>Event-Sourcing with CQRS</li>
+                        <li>Event-Sourcing, CQRS, DDD</li>
+                    </ul>
+                </article>
+                <article>
+                    <img src="img/hey_boss/choice-2692466_1920.jpg">
                 </article>
             </myColBox>
         </section>
         <section>
+            <myTitleBox>
+                <h3>My Projects</h3>
+            </myTitleBox>
             <myColBox>
                 <article>
-                    <h1 id="task-based-ui">Task-based UI</h1>
                     <ul>
-                        <li>Track what the user is doing and push forward commands representing the intent of the user </li>
-                        <li>CQRS <strong>does not require</strong> a task based UI (DDD does)</li>
-                        <li>CQRS used in a CRUD interface, makes creating separated data models harder</li>
+                        <li>Scholarships</li>
+                        <li>Course Registration</li>
+                        <li>Complex Reports</li>
                     </ul>
-
                 </article>
             </myColBox>
         </section>
-
         <section>
             <myColBox>
                 <article>
                     <h1 id="scholarships">Scholarships</h1>
                     <ul>
-                        <li>replaced in pieces</li>
+                        <li>replaced legacy Code Igniter in pieces</li>
                         <li>added DDD &amp; ES &amp; CQRS beside complex framework spaghetti</li>
-                        <li>separation of concerns</li>
+                        <li>created separate domains</li>
                         <li>cleaner history and reports of what had been done</li>
                     </ul>
                 </article>
