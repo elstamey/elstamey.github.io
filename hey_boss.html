@@ -1,410 +1,2023 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+    <title>Hey Boss, Event Sourcing Can Fix That!</title>
 
-		<meta name="description"
-			  content="">
-		<meta name="author" content="Emily Stamey">
+    <meta name="description"
+          content="Our application has so much going on! Slow page loads and a large legacy codebase make developers feel stuck between a rock and a hard place. In this session, we will explore a strategy to add a modern codebase alongside the legacy code, allowing them to run simultaneously until you replace it. We will discuss common legacy problems like complex database queries causing slow downs and large reports that take so long to load, users must wait instead of analyzing the data. As our system has grown, we may need to separate our application into distinct parts and pass relevant information between them. Or maybe we have two distinct codebases already and each codebase is affected by the other's changes in ways we didn't expect. We will examine how to add Event Sourcing and CQRS to these pain points and throw away that legacy spaghetti!">
+    <meta name="author" content="Emily Stamey">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
-		<meta name="viewport"
-			  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/white.css">
+    <link rel="stylesheet" href="css/my-style.css">
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/white.css">
-		<link rel="stylesheet" href="css/my-style.css">
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="./node_modules/highlight.js/styles/zenburn.css">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="./node_modules/highlight.js/styles/zenburn.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
-		<link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
 
-		<!--[if lt IE 9]>
-		<script src="lib/js/html5shiv.js"></script>
-		<![endif]-->
+    <!--<link rel="stylesheet" href="plugin/accessibility/helper.css">-->
 
-		<!--<link rel="stylesheet" href="plugin/accessibility/helper.css">-->
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/hey_boss/hey-boss-title.png">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myRowBox>
+                <article>
+                    <myTitleBox>
+                        <h3>Drago mi je sto sam ovde</h3>
+                    </myTitleBox>
+                    <myColBox>
+                        <article>
+                            <img src="img/me.png" alt="developer">
+                        </article>
+                        <article>
+                            <!--<li>PHP developer</li>-->
+                            <!--<li>Organizer of Triangle PHP </li>-->
+                            <!--<li>Director WWCode Raleigh-Durham</li>-->
+                            <!--<li>Work at InQuest</li>-->
+                            <!--<p>&nbsp;</p>-->
+                            <myRowBox>
+                                <article>
+                                    <myColBox>
+                                        <article>
+                                            <img src="img/Map_of_USA_NC.svg" alt="Map of US with NC highlighted">
+                                        </article>
+                                        <article>
+                                            <img src="img/WWCode_Logo_Raleigh_Durham.png">
+                                        </article>
+                                        <article>
+                                            <img src="img/trianglePHP_sm.jpg">
+                                        </article>
+                                    </myColBox>
+                                </article>
+                                <article>
+                                    <img src="img/inquest.svg">
+                                </article>
+                            </myRowBox>
+                        </article>
+                    </myColBox>
+                </article>
+            </myRowBox>
+            <aside class="notes">
+                <li>drago me J sco sahm of-day</li>
+            </aside>
+        </section>
+        <section>
+            <myTitleBox>
+                <h2 id="this-will-seem-like-overkill-for-a-little-bit">Before we begin</h2>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <p>Switch from CRUD to Event-Sourcing is tough</p>
+                    <p>Event-Sourcing isn't for your whole application</p>
+                </article>
+                <article>
+                    <p><img src="img/library/look_here.gif"></p>
+                </article>
+            </myColBox>
+            <aside class="notes">
+                <li>Coming from a CRUD environment, Event-sourcing seems weird, it isn't normal to learn it all at once.  It can take a while!</li>
+                <li>Reminder: As with all new things, be patient with yourself</li>
+                <li>ES isn't for all the things!</li>
+                <li>If we were simply managing inventory or building a blog app, we probably wouldn't need ES</li>
+                <li>ES is helpful for they things that make our applications difficult to maintain over time, the changes in process</li>
+                <li>ES is great for proving how you got to your results</li>
+                <li>ES is powerful in that it's flexible to changes and keeping an audit log</li>
+            </aside>
+        </section>
+        <section>
+            <myTitleBox>
+                <h1 id="we-re-going-to-talk-about-">Learning Objectives:</h1>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <p>&nbsp;</p>
+                    <ul>
+                        <li>Basics of Event Sourcing</li>
+                        <li>Adding Event Sourcing to existing projects and the problems they can resolve
+                        </li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="event-sourcing">Event Sourcing</h1>
+                    <p>The fundamental idea of Event Sourcing is that of ensuring <strong>every change to the state</strong> of an application <strong>is captured in an event object</strong>, and that these event objects are themselves stored in the sequence they were applied for the same lifetime as the application state itself.</p></p>
+                    <p>  Martin Fowler</p>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3>Events and Listeners</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <img src="img/library/events_listeners.png" alt="An Event represented as a diamond and a Listener represented as an ear">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3 id="an-event">An Event</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <p>What happened?<br>
+                        <strong>BookWasCheckedOut</strong></p>
+                    <p>What do I need to remember about it?<br>
+                        <strong>(book, patron, date)</strong></p>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3 id="event-attributes">Event Attributes</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <ul>
+                        <li>Save only what you need to preserve</li>
+                        <li>The rest can be looked up</li>
+                    </ul>
+                    <p><strong>(book id, patron id, date)</strong></p>
+                </article>
+                <article>
+                    <img src="img/hey_boss/event-with-attributes.png">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="event-class">Event Class</h1>
+                    <pre><code>
+&lt;?php
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-	<div class="reveal">
-		<div class="slides">
-			<section>
-				<h1 id="event-sourcing-can-fix-that-">Event Sourcing Can Fix That!</h1>
+namespace Library\Events;
 
-			</section>
-			<section>
-				<h2 id="what-we-ll-cover-">What we&#39;ll cover:</h2>
-				<ul>
-					<li>What does an Event look like?</li>
-					<li>The Event Store</li>
-					<li>How do we create events?</li>
-					<li>We have events, now what?</li>
-					<li>A short example of how it could work</li>
-				</ul>
+use Library\Support\Event;
 
-			</section>
-			<section>
-				<h2 id="what-does-an-event-look-like-">What Does an Event Look Like?</h2>
-				<ul>
-					<li>An Event is a Class named for the thing that happened</li>
-					<li>The event contains attributes that are relevant to that event</li>
-				</ul>
+class BookWasCheckedOut
+{
 
-			</section>
-			<section>
-				<h2 id="event-sessiondiscovered">Event: SessionDiscovered</h2>
-				<ul>
-					<li>after validation to determine whether we have a valid session, we log a new event</li>
-				</ul>
-				<h3 id="new-sessiondiscovered-attributes-we-need-to-know-">new SessionDiscovered( attributes we need to know )</h3>
+    /**
+     * @var DateTime
+     */
+    public $checkoutDate;
 
-			</section>
-			<section>
-				<h2 id="event-sessiondiscovered">Event: SessionDiscovered</h2>
-				<ul>
-					<li>session id</li>
-					<li>start time</li>
-					<li>protocol</li>
-					<li>source ip</li>
-					<li>destination ip</li>
-					<li>source port</li>
-					<li>destination port</li>
-				</ul>
+    /**
+     * @var int
+     */
+    public $patronId;
 
-			</section>
-			<section>
-				<h2 id="event-sessionscored">Event: SessionScored</h2>
-				<ul>
-					<li>session id</li>
-					<li>threat contributor </li>
-					<li>score</li>
-				</ul>
+    /**
+     * @var int
+     */
+    public $bookId;
 
-			</section>
-			<section>
-				<h2 id="event-filescored">Event: FileScored</h2>
-				<ul>
-					<li>after validation that a file has matched a signature, we log a new event</li>
-				</ul>
-				<h3 id="new-filescored-attributes-we-need-to-know-">new FileScored( attributes we need to know )</h3>
+    public function __construct(DateTime $checkoutDate, PatronId $patronId, BookId $bookId)
+    {
 
-			</section>
-			<section>
-				<h2 id="event-filescored">Event: FileScored</h2>
-				<ul>
-					<li>file id</li>
-					<li>session id</li>
-					<li>integration</li>
-					<li>score</li>
-					<li>signature that found it</li>
-				</ul>
+        $this-&gt;checkoutDate = $checkoutDate;
+        $this-&gt;patronId = $patronId;
+        $this-&gt;bookId = $bookId;
+    }
 
-			</section>
-			<section>
-				<h2 id="event-filerescored">Event: FileRescored</h2>
-				<ul>
-					<li>after validation that a file has matched a signature and that it has been scored before\n- we log a new event</li>
-				</ul>
-				<h3 id="new-filerescored-attributes-we-need-to-know-">new FileRescored( attributes we need to know )</h3>
+    /**
+    * @return array
+    */
+    public function serialize()
+    {
+        return [
+            &#39;checkout_date&#39; =&gt; $this-&gt;$checkoutDate-&gt;toString(),
+            &#39;patron_id&#39; =&gt; $this-&gt;patronId-&gt;toNative(),
+            &#39;book_id&#39; =&gt; $this-&gt;bookId-&gt;toNative(),
+        ];
+    }
 
-			</section>
-			<section>
-				<h2 id="event-filerescored">Event: FileRescored</h2>
-				<ul>
-					<li>file id</li>
-					<li>session id</li>
-					<li>integration</li>
-					<li>new score</li>
-					<li>signature that found it</li>
-				</ul>
+    /**
+    * @param array $data
+    *
+    * @return static
+    */
+    public static function deserialize($data)
+    {
+        return new BookWasCheckedOut(
+            DateTime::createFromFormat(&#39;j-M-Y&#39;, $data[&#39;checkout_date&#39;]),
+            PatronId::fromNative($data[&#39;patron_id&#39;]),
+            BookId::fromNative($data[&#39;book_id&#39;])
+        );
+    }
+}
+</code></pre>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3 id="rules-to-follow">Rules for Events</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <ul>
+                        <li>Usually named as past-tense verbs</li>
+                        <li><strong>RARELY</strong> changed</li>
+                        <li><strong>Never</strong> deleted</li>
+                        <li>Has attributes that are values<ul>
+                            <li>not model, object, collection, or aggregate root</li>
+                        </ul>
+                        </li>
+                    </ul>
 
-			</section>
-			<section>
-				<h2 id="event-store-holds-all-events">Event Store holds <em>all</em> events</h2>
-				<ul>
-					<li>a DB with each row being a Domain Message</li>
-					<li>Each Event is the payload of the Domain Message</li>
-					<li>The Domain Message has a uuid, timestamp, type, payload (the event itself), and version (if needed)</li>
-					<li>this means we can store all events in the same place regardless of the program that logs the event or handles them</li>
-				</ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/status_change/dont_delete_events.png" alt="3 symbols representing events of a deposit, a correction, and a deposit">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3 id="don-t-store-objects">Don&#39;t store objects</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <img src="img/status_change/Objects.png" alt="objects can change">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3>If We Stored Objects in an Event...</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <img src="img/status_change/EventWithObject.png" alt="Event With Object">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myTitleBox>
+                <!--<h3 id="events-are-not-bionic">Events are not Bionic</h3>-->
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <img src="img/hey_boss/could-should.jpg" alt="Jeff Goldblum in Jurassic Park saying you never stopped to think whether you should">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3 id="events-rarely-change">Events rarely change</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <ul>
+                        <li>The part of the code that will change is most likely the <strong>result that follows that event</strong>.</li>
+                        <li>The <strong>structure of the resulting data</strong> is more likely to change than the thing that happened</li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <p><img src="img/library/event_with_listener.png" alt="One event with one listener handling the event"></p>
 
-			</section>
-			<section>
-				<h2 id="listeners">Listeners</h2>
-				<ul>
-					<li>we write listeners for each of the events we care about in a given context</li>
-					<li>the listeners view the whole event store but cull the events by their type</li>
-					<li>the types of structures that have listeners are projections and aggregate roots</li>
-				</ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <p><img src="img/status_change/events_replaced.png" alt="One event with two listeners handling the event differently, one is thrown away"></p>
 
-			</section>
-			<section>
-				<h2 id="projector">Projector</h2>
-				<ul>
-					<li>a class </li>
-					<li>its apply methods contain the logic of what an event means</li>
-					<li>writes information to the table that we will need later</li>
-				</ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <p><img src="img/status_change/events_treated_differently.png" alt="One event with two listeners handling the event differently"></p>
 
-			</section>
-			<section>
-				<p><img src="img/status_change/projector.png" alt="Projectors"></p>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="why-events-">Reasons to use Events</h1>
+                    <ul>
+                        <li>State transitions are important</li>
+                        <li>We need an audit log, proof of the state we are currently in</li>
+                        <li>The history of what happened is more important than the current state</li>
+                        <li>Events are replayable if behavior in your application changes</li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
 
-			</section>
-			<section>
-				<h2 id="projection-session">Projection: Session</h2>
-				<ul>
-					<li>listens for SessionDiscovered events<ul>
-						<li>creates a new row in a table with the session details and a null score</li>
-					</ul>
-					</li>
-					<li>listens for SessionScored events<ul>
-						<li>finds the session in the table and updates the score and score contributor</li>
-					</ul>
-					</li>
-				</ul>
+        <section>
+            <myColBox>
+                <article>
+                    <p><img src="img/status_change/DomainMessage.png" alt="Domain Message"></p>
 
-			</section>
-			<section>
-				<h2 id="projection-report-for-top-threats-by-hash">Projection: Report for Top Threats by Hash</h2>
-				<ul>
-					<li>listens for FileScored and FileRescored Events<ul>
-						<li>looks up details of file by the file id</li>
-						<li>adds a row to table with <ul>
-							<li>file id</li>
-							<li>file md5 hash</li>
-							<li>the filename</li>
-							<li>file type</li>
-							<li>the score</li>
-							<li>signature that scored it</li>
-							<li>source ip</li>
-							<li>destination ip</li>
-							<li>protocol</li>
-						</ul>
-						</li>
-					</ul>
-					</li>
-				</ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3 id="event-store">Event Store</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <ul>
+                        <li>Domain-specific database</li>
+                        <li>Based on a Publish-Subscribe message pattern</li>
+                    </ul>
+                    <p><img src="img/hey_boss/event-store-domain-message.png" alt="EventStore"></p>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <section data-background="img/status_change/projector.png">
+                <aside class="notes">
+                    <p>A set of event handlers that work together to build and maintain a table to be accessed by the read model.</p>
+                </aside>
+            </section>
+            <section>
+                <myColBox>
+                    <article>
+                        <h1 id="projector">Projector</h1>
+<pre><code>&lt;?php
 
-			</section>
-			<section>
-				<h2 id="read-model">Read Model</h2>
-				<ul>
-					<li>a class</li>
-					<li>it contains methods for looking up information from the projection</li>
-					<li>ex: look up the history for a certain file, all of its scores</li>
-				</ul>
+namespace Library\ReadModel;
 
-			</section>
-			<section>
-				<h2 id="read-model-top-threats">Read Model: Top Threats</h2>
-				<p>methods: </p>
-				<ul>
-					<li><p>top 10 threats by the file hash</p>
-						<ul>
-							<li>this excludes hits I&#39;m not allowed to see by the signature that did the scoring</li>
-							<li>gets a current hit count of only the records I can see</li>
-						</ul>
-					</li>
-					<li><p>top threats by file type</p>
-					</li>
-					<li>top threats by source/destination ip pairs</li>
-					<li>top threats by protocol</li>
-				</ul>
+use Library\Events\BookWasCheckedIn;
+use Library\Events\BookAddedToBookshelf;
+use App\Support\ReadModel\Replayable;
+use App\Support\ReadModel\SimpleProjector;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Connection;
 
-			</section>
-			<section>
-				<h2 id="good-stuff-">Good Stuff!</h2>
-				<ul>
-					<li>works well in our environment where we have multiple applications doing different things</li>
-					<li>full audit log of what has happened in our environment</li>
-					<li>the results of those events can be optimized for read to shorten the time to retrieve data</li>
-					<li>separate the logic of what an event means based on context and purpose</li>
-					<li>only display results that a user is allowed to see</li>
-					<li>flexible to change, our interpretation of events can change, and we can rebuild projections without losing the full history</li>
-				</ul>
+class BookshelfProjector extends SimpleProjector implements Replayable
+{
 
-			</section>
+    /**
+     * @var Connection
+     */
+    private $connection;
 
-		</div>
-	</div>
+    /**
+     * @var string table we&#39;re playing events into
+     */
+    private $table = &#39;proj_bookshelf&#39;;
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+    public function __construct(Connection $connection)
+    {
+        $this-&gt;connection = $connection;
+    }
 
-		<script>
-            // More info https://github.com/hakimel/reveal.js#configuration
-            Reveal.initialize({
-                history: true,
+    public function beforeReplay()
+    {
+        $builder = $this-&gt;connection-&gt;getSchemaBuilder();
 
-                // More info https://github.com/hakimel/reveal.js#dependencies
-                dependencies: [
-                    { src: 'plugin/markdown/marked.js' },
-                    { src: 'plugin/markdown/markdown.js' },
-                    { src: 'plugin/notes/notes.js', async: true },
-                    { src: 'node_modules/highlight.js/lib/highlight.js' },
+        $builder-&gt;dropIfExists(&#39;proj_bookshelf&#39;);
+        $builder-&gt;create(&#39;proj_bookshelf_tmp&#39;, function (Blueprint $schema) {
+            $schema-&gt;string(&#39;book_id&#39;);
+            $schema-&gt;string(&#39;book_title&#39;);
+            $schema-&gt;string(&#39;book_author&#39;);
+            $schema-&gt;string(&#39;status&#39;);
+            $schema-&gt;string(&#39;checkout_date&#39;);
+            $schema-&gt;string(&#39;patron_id&#39;);
+
+            $schema-&gt;primary(&#39;book_id&#39;);
+        });
+
+        $this-&gt;table = &#39;proj_bookshelf_tmp&#39;;
+    }
+
+    public function afterReplay()
+    {
+        $builder = $this-&gt;connection-&gt;getSchemaBuilder();
+
+        $builder-&gt;dropIfExists(&#39;proj_bookshelf&#39;);
+        $builder-&gt;rename(&#39;proj_bookshelf_tmp&#39;, &#39;proj_bookshelf&#39;);
+
+        $this-&gt;table = &#39;proj_bookshelf&#39;;
+    }
+
+    /**
+    * @param BookWasCheckedOut $event
+    */
+    public function applyBookWasCheckedOut(BookWasCheckedOut $event)
+    {
+        $bookshelfItem = BookshelfItem::where(&#39;id&#39;, $event-&gt;bookId);
+
+        $book-&gt;status = &#39;Checked Out&#39;;
+        $book-&gt;checkout_date = $event-&gt;checkoutDate;
+        $book-&gt;patron_id = $event-&gt;patronId;
+
+        $book-&gt;save();
+    }
+
+    /**
+    * @param BookAddedToBookshelf $event
+    */
+    public function applyBookAddedToBookshelf(BookAddedToBookshelf $event)
+    {
+        $bookshelfItem = new BookshelfItem();
+        $bookshelfItem-&gt;setTable($this-&gt;table);
+
+        $bookshelfItem-&gt;bookId = $event-&gt;bookId;
+        $bookshelfItem-&gt;bookTitle = $event-&gt;bookTitle;
+        $bookshelfItem-&gt;bookAuthor = $event-&gt;bookAuthor;
+        $bookshelfItem-&gt;status = &#39;on shelf&#39;;
+
+        $bookshelfItem-&gt;save();
+    }
+
+}
+</code></pre>
+
+                        <p>A set of event handlers that work together to build and maintain a table to be accessed by the read model.</p>
+
+                    </article>
+                </myColBox>
+            </section>
+        </section>
+        <section>
+            <section>
+                <myTitleBox>
+                    <h1 id="read-model">Read Model</h1>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+
+                        <img src="img/library/read_model.png" alt="Read Model table with highlighted rows and queries">
+
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myColBox>
+                    <article>
+                        <h1 id="read-model">Read Model</h1>
+<pre><code>&lt;?php
+
+namespace Library\ReadModel;
+
+
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
+
+/**
+* @codeCoverageIgnore
+*/
+class Bookshelf extends Model
+{
+    protected  $table = &#39;proj_bookshelf&#39;;
+    public $incrementing = false;
+    public $timestamps = false;
+
+    public static function lookupLoansFor($patronId)
+    {
+        return static::where(&#39;patron_id&#39;, $patronId)-&gt;get();
+    }
+
+    public function lookupAvailableBooks()
+    {
+        return static::where(&#39;status&#39;, &#39;on shelf&#39;)-&gt;get();
+    }
+
+    public function lookupOverdueBooks()
+    {
+        return static::where(&#39;checkout_date&#39;, &#39;&lt;&#39;, date(&#39;Y-m-d&#39;, strtotime(&#39;-7 days&#39;)))-&gt;get();
+    }
+}
+</code></pre>
+                    </article>
+                </myColBox>
+            </section>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3>Connecting the events</h3>
+            </myTitleBox>
+            <myRowBox>
+                <article>
+                    <ul>
+                        <li><b>An event is created only after validation</b>
+                            <ul>
+
+                                <ul>
+                                    <li>directly in a controller 'checkout' method</li>
+                                    <li>using a Check Out Book Command and Handler</li>
+                                </ul>
+                            </ul>
+                        </li>
+                    </ul>
+                </article>
+            </myRowBox>
+        </section>
+        <section data-background="img/library/interactionToEventDiagram.png">
+            <!--<myColBox>-->
+            <!--<article>-->
+            <!--<p><img src="" alt="Diagram of the intearction on the web page then routed to the controller action, which calls a command, If valid, the Command creates the Event"></p>-->
+
+            <!--</article>-->
+            <!--</myColBox>-->
+        </section>
+
+        <!--<section data-background="img/library/bookCheckoutForm.png">-->
+        <!--</section>-->
+        <!--<section>-->
+            <!--<myColBox>-->
+                <!--<article>-->
+                    <!--<h1 id="bookscontroller-update">CRUD: update method</h1>-->
+                    <!--<pre><code>public function update(Request $request, $id)-->
+<!--{-->
+    <!--// our default update method-->
+    <!--// validate inputs-->
+    <!--$Book = Book::findOrFail($id);-->
+    <!--$Book-&gt;update($request-&gt;all());-->
+
+    <!--return $Book;-->
+<!--}-->
+<!--</code></pre>-->
+                <!--</article>-->
+            <!--</myColBox>-->
+        <!--</section>-->
+        <!--<section>-->
+            <!--<myTitleBox>-->
+                <!--<h1 id="crud-to-cqrs">CRUD Checkout</h1>-->
+            <!--</myTitleBox>-->
+            <!--<myColBox>-->
+                <!--<article>-->
+                    <!--<p>&nbsp;</p>-->
+                    <!--<pre><code>-->
+<!--public function checkOutBook(Request $request, $id)-->
+<!--{-->
+    <!--// altered the update method-->
+	<!--// validate inputs-->
+    <!--$Book = Book::findOrFail($id);-->
+    <!--$Book-&gt;update(&#39;status&#39; =&gt; &#39;checked out&#39;,-->
+                    <!--&#39;patron&#39; =&gt; $request-&gt;patronId);-->
+
+    <!--return $Book;-->
+<!--}-->
+<!--</code></pre>-->
+                    <!--<span class="fragment current-only" data-code-focus="2"></span>-->
+                    <!--<span class="fragment current-only" data-code-focus="7-8"></span>-->
+                <!--</article>-->
+                <!--<article>-->
+                    <!--<p>&nbsp;</p>-->
+                    <!--<p class="fragment"><img src="img/library/itDoesntFit.gif" alt="cat climbing into a trash pail but doesn&#39;t quite fit"></p>-->
+                <!--</article>-->
+            <!--</myColBox>-->
+        <!--</section>-->
+        <!--<section>-->
+            <!--<myTitleBox>-->
+                <!--<h1 id="crud-to-cqrs">CRUD Checkout</h1>-->
+            <!--</myTitleBox>-->
+            <!--<myColBox>-->
+                <!--<article>-->
+                    <!--<p>&nbsp;</p>-->
+                    <!--<pre><code>-->
+<!--public function checkOutBook(Request $request, $id)-->
+<!--{-->
+    <!--// altered the update method-->
+    <!--// validate book can be checked out-->
+
+    <!--$event = new BookWasCheckedOut($request->bookId,-->
+				<!--$request->patronId,-->
+				<!--time());-->
+
+<!--}-->
+<!--</code></pre>-->
+                    <!--<span class="fragment current-only" data-code-focus="5"></span>-->
+                    <!--<span class="fragment current-only" data-code-focus="7-9"></span>-->
+                <!--</article>-->
+            <!--</myColBox>-->
+        <!--</section>-->
+        <section>
+            <myRowBox>
+                <article>
+                    <h1 id="cqrs">CQRS</h1>
+                    <p><strong>Command and Query Response Segregation</strong></p>
+                    <ul>
+                        <li><strong>Command</strong> is any method that mutates state</li>
+                        <li><strong>Query</strong> is any method that returns a value</li>
+                        <li>These methods become part of Services</li>
+                        <li>When parts of your application no longer fit a CRUD model</li>
+                        <li>Should only be used on specific portions of a system, not the system as a whole</li>
+                    </ul>
+                </article>
+            </myRowBox>
+        </section>
+        <!--<section>-->
+            <!--<myColBox>-->
+                <!--<article>-->
+                    <!--<h1 id="crud-to-cqrs">CRUD to CQRS</h1>-->
+                    <!--<pre><code>public function update(Request $request)-->
+<!--{-->
+    <!--// $request has book id, patron id-->
+
+    <!--try {-->
+
+        <!--$command = new CheckOutBook($request-&gt;bookId, $request-&gt;patronId);-->
+
+        <!--$this-&gt;bookLendingService-&gt;handleCheckOutBook($command);-->
+
+    <!--} catch (InvalidUserException $e) {-->
+        <!--return response()-&gt;json(&quot;Not authorized to check out a book.&quot;, Response::HTTP_FORBIDDEN);-->
+    <!--} catch (BookUnavailableException $e) {-->
+       <!--return response()-&gt;json(&quot;Book was not available to be checked out&quot;, 400);-->
+
+
+    <!--return $Book;-->
+<!--}-->
+
+<!--&lt;&#45;&#45;&#45;&#45;&#45;&#45; dynamic command handler  &#45;&#45;&#45;&#45;&#45;&#45;&gt;-->
+
+<!--private function handle(Command $command)-->
+<!--{-->
+    <!--$method = $this-&gt;getHandleMethod($command);-->
+
+    <!--if (! method_exists($this, $method)) {-->
+        <!--return;-->
+    <!--}-->
+
+    <!--$this-&gt;$method($command);-->
+<!--}-->
+
+<!--private function getHandleMethod(Command $command)-->
+<!--{-->
+    <!--return &#39;handle&#39; . class_basename($command);-->
+<!--}-->
+
+<!--&lt;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; handle check out book command -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&gt;-->
+
+<!--public function handleCheckoutOutBook(CheckOutBook $command)-->
+<!--{-->
+    <!--$book = Book::findOrFail($command-&gt;bookId);-->
+    <!--$patron = Patron::findOrFail($command-&gt;patronId);-->
+
+    <!--if (!$book-&gt;isAvailable()) {-->
+        <!--throw new BookUnavailableException();-->
+    <!--}-->
+
+    <!--if (!$patron-&gt;isAuthorized()) {-->
+        <!--throw new InvalidUserException();-->
+    <!--}-->
+
+    <!--//record the event-->
+    <!--$this-&gt;record(-->
+        <!--new BookWasCheckedOut(date(&quot;Y-m-d H:i:s&quot;),-->
+            <!--$patron-&gt;getId(),-->
+            <!--$book-&gt;getId())-->
+    <!--);-->
+
+
+<!--}-->
+<!--</code></pre>-->
+                    <!--<span class="fragment current-only" data-code-focus="1"></span>-->
+                    <!--<span class="fragment current-only" data-code-focus="7"></span>-->
+                    <!--<span class="fragment current-only" data-code-focus="9"></span>-->
+                    <!--<span class="fragment current-only" data-code-focus="11-14"></span>-->
+                    <!--<span class="fragment current-only" data-code-focus="40"></span>-->
+                    <!--<span class="fragment current-only" data-code-focus="42-43"></span>-->
+                    <!--<span class="fragment current-only" data-code-focus="45-51"></span>-->
+                    <!--<span class="fragment current-only" data-code-focus="54-58"></span>-->
+                <!--</article>-->
+            <!--</myColBox>-->
+        <!--</section>-->
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="command-handler">Command Handler</h1>
+                    <p>A command handler receives a command and brokers a result from the appropriate aggregate. &quot;A result&quot; is either a successful application of the command, or an exception.</p>
+                    <p><strong> should affect one and only one aggregate </strong></p>
+                    <!----- ** cannot call a read side** ----->
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="command-handler">Command Handler</h1>
+                    <ol>
+                        <li>Validate the command on its own merits.</li>
+                        <li>Validate the command on the current state of the aggregate.</li>
+                        <li>If validation is successful, create an event(s)</li>
+                        <li>Attempt to persist the new events. If there&#39;s a concurrency conflict during this step, retry or exit.</li>
+                    </ol>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="separate-read-write">Optimize</h1>
+                    <ul>
+
+                        <li>to optimize your application for reads and writes
+                        <ul>
+                            <li>all <strong>commands</strong> go into a WriteService</li>
+                            <li>all <strong>queries</strong> go into a ReadService</li>
+                        </ul></li>
+                        <li>Separate the load from reads and writes allowing you to scale each independently. </li>
+                    </ul>
+
+                </article>
+            </myColBox>
+        </section>
+        <!--<section>-->
+            <!--<myColBox>-->
+                <!--<article>-->
+                    <!--<h1 id="task-based-ui">Task-based UI</h1>-->
+                    <!--<ul>-->
+                        <!--<li>Track what the user is doing and push forward commands representing the intent of the user </li>-->
+                        <!--<li>CQRS <strong>does not require</strong> a task based UI (DDD does)</li>-->
+                        <!--<li>CQRS used in a CRUD interface, makes creating separated data models harder</li>-->
+                    <!--</ul>-->
+
+                <!--</article>-->
+            <!--</myColBox>-->
+        <!--</section>-->
+        <section>
+            <myTitleBox>
+                <h3>You can choose which is best</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <ul>
+                        <li>CRUD</li>
+                        <li>Event-Sourcing</li>
+                        <li>Event-Sourcing with CQRS</li>
+                        <li>Event-Sourcing, CQRS, DDD</li>
+                    </ul>
+                </article>
+                <article>
+                    <img src="img/hey_boss/choice-2692466_1920.jpg">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3>My Projects</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <ul>
+                        <li>Scholarships</li>
+                        <li>Course Registration</li>
+                        <li>Threat Reports</li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
+        <section data-background-image="img/hey_boss/bg-scholarships.png">
+            <myColBox>
+                <article>
+                    <h1 id="scholarships">Scholarships</h1>
+                    <ul>
+                        <li>replaced legacy Code Igniter in pieces</li>
+                        <li>added DDD &amp; ES &amp; CQRS beside complex framework spaghetti</li>
+                        <li>created separate domains</li>
+                        <li>cleaner history and reports of what had been done</li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/boots/scholarships_diagram.png" alt="Scholarships Project">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/boots/knife_fork.jpg" alt="Fork Knife">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myRowBox>
+                <article>
+                    <myColBox>
+                        <article>
+                            <img src="img/boots/octocat_Professortocat_v2.png" alt="github">
+                        </article>
+                        <article>
+                            <img src="img/boots/vagrant-virtualbox.png" alt="virtualization">
+                        </article>
+                        <article>
+                            <img src="img/boots/phpunit.png" alt="tests">
+                        </article>
+                    </myColBox>
+                </article>
+                <article>
+                    <myColBox>
+                        <article>
+                            <img src="img/boots/logo-composer-transparent.png" alt="composer">
+                        </article>
+                        <article>
+                            <img src="img/hey_boss/twig.jpg" alt="twig">
+                        </article>
+                        <article>
+                            <img src="img/hey_boss/pimple.jpg" alt="pimple">
+                        </article>
+                    </myColBox>
+                </article>
+            </myRowBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/hey_boss/scholarships-filetree-legacy.png" alt="filetree old only">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/boots/bounded_contexts.png" alt="bounded contexts">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <section>
+                <myColBox>
+                    <article>
+                        <img src="img/hey_boss/scholarships-filetree.png" alt="filetree with new code">
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3>Bootstrapping:  Namespaces</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+                        <ul>
+                            <li>'/src' is given a namespace</li>
+                            <li>namespaces are autoloaded in composer</li>
+                        </ul>
+                        <span class="fragment current-only" data-code-focus="7-11"></span>
+                    </article>
+                </myColBox>
+                <footer>
+    <pre><code>
+{
+    "name": "itecs/scholarships",
+    "description": "Scholarships application for the College of Engineering.",
+    ...
+    "autoload": {
+        "psr-4": {
+            "ITECS\\Scholarships\\": [ "src/", "app/core/" ],
+            "Codeception\\Module\\": "src/",
+            "Tests\\Substitute\\": "tests/_helpers/"
+        }
+    }
+}
+</code></pre>
+                </footer>
+
+                <aside class="notes">
+                    <li>Composer allowed us to build this independent structure. </li>
+                    <li>We used it to load a lot of the tooling I already mentioned</li>
+                    <li>And we used it to autoload the namespaced code in our source folder.</li>
+                    <li>(*)Here we label the /src folder as the namespace ITECS/Scholarships</li>
+                </aside>
+            </section>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/hey_boss/scholarships-bounded-contexts-events.png" alt="bounded contexts with Events">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/hey_boss/scholarships-filetree-controllers.png" alt="filetree with new controllers and views">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <section data-background-image="img/boots/dependency_puzzle.png" data-background-size="20%" data-background-position="top">
+                <h1>Dependency Injection</h1>
+                <aside class="notes">
+                    <li>We positioned our new code adjacent to the framework</li>
+                    <li>We needed to bring the fully namespaced services into that framework</li>
+                    <li>Dependency Injection allowed us to do that</li>
+                    <li>We used Pimple to build our container and define the dependencies</li>
+                </aside>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3>Dependencies</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+                        <p>The <u>dependencies</u> are the objects your class needs to function</p>
+                        <p>GPAService needed a DB connection</p>
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3>Inject the Dependencies</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+<pre><code>
+function __construct(Database $database)
+{
+    $this->database = $database;
+}
+</code></pre>
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3>Dependency Injection</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+                        <ul>
+                            <li>Decouples our code from low level implementation details</li>
+                            <li>Instantiate our classes with their dependencies</li>
+                            <li class="fragment"><u>AND</u> instantiate those dependencies</li>
+                        </ul>
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3>Dependency Map</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+                        <p>'/app/bindings.php'</p>
+                        <pre><code>
+&lt;?php
+
+    /* example one */
+
+    use Scholarships\Selection\Services\IlluminateDatabaseGpaService;
+
+    $container['Scholarships\Common\Services\GpaService'] = function($c) {
+        return new IlluminateDatabaseGpaService($c['database']);
+    };
+
+</code></pre>
+                    </article>
+                    <span class="fragment current-only" data-code-focus="6"></span>
+                    <span class="fragment current-only" data-code-focus="9"></span>
+                    <span class="fragment current-only" data-code-focus="8"></span>
+                </myColBox>
+
+                <aside class="notes">
+                    <!--<li>We needed an injector to bring our code dependencies into our CodeIgniter framework.  </li>-->
+                    <!--<li>In order to do this, we defined container in a file called `bindings.php`</li>-->
+                    <!--<li>T</li>-->
+                    <!--<li>The controller could then inject the service container and receive its dependencies.</li>-->
+                    <li>(*)The first example is our GPA Service</li>
+                    <li>(*)Its only dependency was a DB connection to look up the student's GPA</li>
+                    <li>(*)We applied it to the container using the fully namespaced classname</li>
+                </aside>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3>Dependency Map</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+                        <p>'/app/bindings.php'
+                        <pre><code>
+&lt;?php
+
+/* example two */
+
+use Scholarships\Selection\ApplicantQueryService;
+
+$container['Scholarships\Selection\ApplicantQueryService'] = function($c) {
+    return new ApplicantQueryService(
+        $c['Scholarships\StudentApplication\StudentQueryService'],
+        $c['Scholarships\Common\Services\ResidenciesService'],
+        $c['Scholarships\Common\Services\GpaService'],
+        $c['Scholarships\Common\Services\UnmetNeedService'],
+        $c['Scholarships\Common\Services\CandidateQualificationService']
+    );
+};
+</code></pre>
+                    </article>
+                </myColBox>
+                <span class="fragment current-only" data-code-focus="6,9"></span>
+                <span class="fragment current-only" data-code-focus="10-14"></span>
+                <aside class="notes">
+                    <li>We were bringing in large chunks of code.  Some Services involved more dependencies, and
+                        preserving them was critical</li>
+                    <li>(*) We included the class, the Applicant Query Service</li>
+                    <li>(*)In this example, we needed Students, Their Residency, GPAs, Unmet Financial Need, and their qualification for the scholarship.  Each of those dependencies had their own dependencies. </li>
+                    <li>And they were all included in this mapping for our DIC</li>
+                </aside>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3>Dependency Injection Container</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+                        <ul>
+                            <!--<li>Dependency injection is a software design pattern that implements inversion of control for resolving dependencies.</li>-->
+                            <!--<li>A dependency is an object that can be used (a service).</li>-->
+                            <!--<li>An injection is the passing of a dependency to a dependent object (a client) that would use it.</li>-->
+                            <!--<li>The Pimple Container helps us pass the Service or Object we need in the application along with all of its dependencies</li>-->
+                            <!--<li>We don't have to wait to let the dependencies resolve when the user accesses the object, we can ensure they are there ahead of time</li>-->
+                            <li>A map of dependencies your class needs along with the logic to create those dependencies if they haven't been created yet</li>
+                            <li>Can resolve complex dependencies transparently</li>
+                            <li>Modular when you need to swap a dependency, only update the container</li>
+                        </ul>
+                    </article>
+                </myColBox>
+            </section>
+        </section>
+        <section>
+            <section>
+                <myTitleBox>
+                    <h3>Pimple</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+                        <ul>
+                            <li>Create your container by instantiating the Pimple class</li>
+                        </ul>
+                    </article>
+                    <article><img src="img/hey_boss/pimple.jpg"> </article>
+                </myColBox>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3>'app/services.php'</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+<pre><code>
+&lt;?php
+
+    use Pimple\Container;
+    use Illuminate\Database\Capsule\Manager as Capsule;
+
+    $container = new Container();
+
+    $container['config'] = require_once('config.php');
+
+    $container['database'] = function ($c) {
+    $capsule = new Capsule;
+
+    // PHP 5.3 doesn't do array de-referencing.
+    // @todo update for php54
+    $config = $c['config'];
+
+    $capsule->addConnection(
+        array(
+            'driver'    => 'mysql',
+            'host'      => $config['db']['default']['hostname'],
+            'port'      => $config['db']['default']['port'],
+            'database'  => $config['db']['default']['database'],
+            'username'  => $config['db']['default']['username'],
+            'password'  => $config['db']['default']['password'],
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            ),
+            'default'
+        );
+
+        // Make this Capsule instance available globally via static methods... (optional)
+        $capsule->setAsGlobal();
+
+        return $capsule;
+    };
+</code></pre>
+                        <span class="fragment current-only" data-code-focus="7"></span>
+                        <span class="fragment current-only" data-code-focus="9"></span>
+                        <span class="fragment current-only" data-code-focus="11"></span>
+                        <span class="fragment current-only" data-code-focus="12"></span>
+                        <span class="fragment current-only" data-code-focus="18-31"></span>
+                        <span class="fragment current-only" data-code-focus="36"></span>
+
+                    </article>
+                </myColBox>
+                <aside class="notes">
+                    <li>(*)In our services.php file in CodeIgniter, we initialized the container</li>
+                    <li>(*)We included our configuration file and assigned it to a config container</li>
+                    <li>(*)We could then build our database container</li>
+                    <li>(*)We made a new capsule for our database container</li>
+                    <li>(*)We applied the connection parameters from that config container</li>
+                    <li>and after we properly set up our database configuration we returned the capsule</li>
+                </aside>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3>Configuration file</h3>
+                </myTitleBox>
+                <myColBox>
+                    <ul>
+                        <li>DB connections</li>
+                        <li>Base URL </li>
+                        <li>Set paths to twig templates</li>
+                        <li>Customize Notice messages</li>
+                        <li>Set config variables for services</li>
+                    </ul>
+                </myColBox>
+                <aside class="notes">
+                    <li>This config file allowed us to support the many environments: development, staging, production was a configuration file. </li>
+                    <li>This was not version controlled. But a template was.</li>
+                    <li>We could download that template and fill in our local DB connections, the base_url path</li>
+                    <li>We could set paths to twig templates, custom notice messages and many other things</li>
+                </aside>
+            </section>
+            <section>
+                <h3>Configuration file</h3>
+                <p>'/app/config.php'
+                <pre><code>
+&lt;?php
+    return array(
+        /* base url for path in the site */
+        &#39;app&#39; =&gt; array(
+            &#39;base_url&#39; =&gt; sprintf(&#39;http://localhost:%s/&#39;, isset($_SERVER[&#39;SERVER_PORT&#39;])
+            ? $_SERVER[&#39;SERVER_PORT&#39;] : &#39;&#39;),
+            &#39;index_page&#39; =&gt; &#39;index.php/&#39;,
+            &#39;debug&#39; =&gt; FALSE
+        ),
+
+        /* DB configuration */
+        &#39;db&#39; =&gt; array(
+            &#39;default&#39; =&gt; array(
+                &#39;hostname&#39; =&gt; &quot;local__server&quot;,
+                &#39;port&#39; =&gt; &quot;3306&quot;,
+                &#39;username&#39; =&gt; &quot;uname&quot;,
+                &#39;password&#39; =&gt; &quot;pword&quot;,
+                &#39;database&#39; =&gt; &quot;db_name_&quot;
+            )
+        ),
+
+        &#39;twig&#39; =&gt; array(
+            &#39;template_path&#39; =&gt; array(
+                __DIR__ . &#39;/templates&#39;,
+                __DIR__ . &#39;/templates/dashboard&#39;,
+            )
+        ),
+
+        &#39;authorization&#39; =&gt; array(
+            &#39;funding&#39; =&gt; array(&#39;elstamey&#39;, &#39;person2&#39;),
+            &#39;developers&#39; =&gt; array(&#39;elstamey&#39;),
+            &#39;coordinators&#39; =&gt; array(&#39;person3&#39;)
+        ),
+
+        &#39;notice&#39; =&gt; array(
+            &#39;enabled&#39; =&gt; false,
+            &#39;type&#39; =&gt; &#39;info&#39;,
+            &#39;headline&#39; =&gt; null,
+            &#39;message&#39; =&gt; null,
+            &#39;syslink&#39; =&gt; null
+        ),
+
+        &#39;errorHandling&#39; =&gt; array(
+            &#39;emailExceptions&#39; =&gt; false
+        ),
+
+        &#39;awardLetters&#39; =&gt; array(
+            &#39;letterhead&#39; =&gt; &#39;_itecs/notification-samples/ncsu_coe_aa_letterhead.pdf&#39;,
+            &#39;academicYears&#39; =&gt; &#39;2015-2016&#39;,
+            &#39;respondByDate&#39; =&gt; &#39;May 11, 2015&#39;,
+            &#39;templates&#39; =&gt; array(
+                &#39;awardLetter&#39; =&gt; &#39;layouts/letters/award-letter.twig&#39;,
+                &#39;awardEmail&#39; =&gt; &#39;layouts/letters/award-email-body.twig&#39;
+            ),
+            &#39;fixedAttachments&#39; =&gt; array(
+                &#39;_itecs/notification-samples/thank_you_template.pdf&#39;
+            ),
+            &#39;signatureImagePath&#39; =&gt; &#39;_uploads/tmp/deans_signature.png&#39;,
+            &#39;outputPath&#39; =&gt; &#39;_uploads/awardLetters/&#39;
+        ),
+
+        &#39;emailService&#39; =&gt; array(
+            &#39;sendLimit&#39; =&gt; 5,
+            &#39;retries&#39; =&gt; 3,
+            &#39;throttleTime&#39; =&gt; 2, // seconds
+            &#39;fromAddress&#39; =&gt; &#39;Scholarships Application &lt;engr-webmaster@ncsu.edu&gt;&#39;,
+            &#39;replyToAddress&#39;=&gt;&#39;College of Engineering &lt;engineering@ncsu.edu&gt;&#39;
+        )
+    );
+
+?&gt;
+</code></pre>
+                <p>We passed this array into a <b>$container['config']</b> variable</p>
+                <aside class="notes">
+                    <li>setting the base_url was very helpful in supporting paths to resources in both our local environment and production </li>
+                    <li>Our project used two DBs and we were able to configure both using this. The
+                        parts of CodeIgniter that configured the DB could then pull in our config variable to remain consistent</li>
+                    <li>We also put paths to twig templates, which were then configured into the framework similarly to the DB connections</li>
+                    <!--<li>We created an authorization array to limit access to the portions of the app-->
+                    <!--because this would give us flexibility to turn access on and off when we needed to change-->
+                    <!--the application</li>-->
+                </aside>
+            </section>
+        </section>
+        <section>
+            <h3>Base Controller</h3>
+            <pre><code>
+&lt;?php
+
+namespace ITECS\Scholarships;
+
+use \ReflectionClass;
+use \Log;
+
+/**
+* Base Application Controller Class
+*
+*/
+class BaseController extends \Controller {
+
+    const BAD_REQUEST=400;
+    const FORBIDDEN=403;
+    const NOT_FOUND=404;
+    const METHOD_NOT_ALLOWED=405;
+    const SERVER_ERROR=500;
+
+    protected $serverResponseCodes;
+    protected $authenticationService;
+
+    /**
+    * @var Pimple\Container
+    */
+    protected $container = null;
+
+    /**
+    * Constructor
+    */
+    public function BaseController()
+    {
+        parent::Controller();
+
+        // BaseController Contains Container
+        global $container;
+        $this->container = $container;
+
+        $this->authenticationService = $this->container['ITECS\Scholarships\IdentityAccess\AuthenticationService'];
+
+        session_start();
+
+        $this->setExceptionHandler();
+
+        log_message('debug', "Base Controller Class Initialized");
+    }
+}
+</code></pre>
+            <span class="fragment current-only" data-code-focus="32"></span>
+            <span class="fragment current-only" data-code-focus="38"></span>
+            <aside class="notes">
+                <li>(*)We did this in the BaseController of the CI app </li>
+                <li>(*)Here We defined our container globally </li>
+            </aside>
+        </section>
+        <section>
+            <h3>Connecting to the Framework</h3>
+            <ul>
+                <li>'/app/bindings.php'
+                    <br>the roadmap of our new code and dependencies
+                    <br>required in the '/app/services.php' file</li>
+
+                <li>'/app/services.php'
+                    <br>defined and configured twig, database, et al
+                    <br>required in the CI index.php file</li>
+
+                <li>'/app/controllers'
+                    <br>new controllers for the new functionality</></li>
+            </ul>
+            <aside class="notes">
+                <li>We  created new controllers to separate new features from the old</li>
+                <li>These controllers linked to our container and passed the required classes and services we needed in the requests and templates</li>
+                <li>The services file is where we configured the database connections and twig templates and tooling and things like that.  This accessed our config variables from the config.php file</li>
+                <li>The bindings was our complete class map for our dependency injection container</li>
+            </aside>
+        </section>
+        <section>
+            <section>
+                <h3>Controllers</h3>
+                <pre><code>
+&lt;?php
+
+class Selectionnext extends BaseController
+{
+    public function Selectionnext()
+    {
+        parent::BaseController();
+
+        $this->scholarshipRepository = $this->container['Scholarships\Selection\Scholarship\ScholarshipRepository'];
+        $this->collaborationsService = $this->container['Scholarships\Selection\CollaborationsService'];
+        $this->committeeService = $this->container['Scholarships\Selection\CommitteeService'];
+        $this->authService = $this->container['Scholarships\IdentityAccess\AuthenticationService'];
+        $this->awardsService = $this->container['Scholarships\Selection\Scholarship\AwardsService'];
+        $this->events = $this->container['Scholarships\Support\Events\EventStore'];
+    }
+
+    private function getScholarshipDashboard($scholarshipId,$keepItLight=false)
+    {
+        $committeeMember = $this->getCommitteeMember();
+
+        $presenter = new ScholarshipDashboardPresenter(
+            $committeeMember,
+            ScholarshipId::fromString($scholarshipId),
+            $this->events,
+            $this->scholarshipRepository,
+            $this->container['Scholarships\Selection\ApplicantQueryService'],
+            $keepItLight
+        );
+
+        $scholDetails = $presenter->asArrayForJson();
+        $scholDetails['json_string'] = json_encode($scholDetails);
+
+        return $scholDetails;
+    }
+?&gt;
+</code></pre>
+                <span class="fragment current-only" data-code-focus="6"></span>
+                <span class="fragment current-only" data-code-focus="10-15"></span>
+                <span class="fragment current-only" data-code-focus="27"></span>
+                <!--<span class="fragment current-only" data-code-focus="22"></span>-->
+                <!--<span class="fragment current-only" data-code-focus="31"></span>-->
+                <!--<span class="fragment current-only" data-code-focus="34"></span>-->
+
+                <aside class="notes">
+                    <li>Our controller extended the BaseController, so we could access the container variable</li>
+                    <li>(*)Here is our new Selection controller and (*)in its function, we could define the classes we needed in all methods </li>
+                    <li>(*) here in the selection dashboard we are accessing the Applicant Query Service to show our Qualified Students</li>
+                    <li>(*)This informed a presenter to display the Scholarship, its requirements, valid candidates, and any awards already given.</li>
+                    <li>(*)We returned this as Scholarship Details that would later be displayed by the template</li>
+                </aside>
+            </section>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3 id="legacy">Scholarships wrap-up</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <ul>
+                        <li>this was an example of replacing the code in pieces</li>
+                        <li>could have replaced only one part or a few</li>
+                        <li>really powerful to see which parts of your application could benefit from event sourcing</li>
+                        <li>and finding the simplest way to implement</li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="student-enrollment-process">Student Enrollment Process</h1>
+                    <ul>
+                        <li>rewrote</li>
+                        <li>ES to follow the process</li>
+                        <li>status drop-down versus events</li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myTitleBox>
+                <h2>Began with Paper Forms</h2>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <p>A lot of our systems were built to replace paper processes</p>
+                    <p>They often closely map to this physical form.</p>
+                </article>
+                <article>
+                    <img src="img/status_change/tax_form_aidanmorgan.jpg" alt="Paper form">
+                    <h5 class="attrib" style="">&copy; photo by <a
+                            href="https://www.flickr.com/photos/aidanmorgan/">Aidan Morgan</a></h5>
+                </article>
+            </myColBox>
+            <aside class="notes">
+                <li>At the University our applications began with a need to
+                    collect data from paper forms that students were filling out.</li>
+                <li>As the administration became comfortable with computers, more of the process went into our applications</li>
+                <li>Often this increased the complexity in the tools</li>
+            </aside>
+        </section>
+        <section>
+            <img src="img/status_change/form_process.png" alt="FormProcess"></p>
+            <aside class="notes">
+                <li>For this application, a student requests enrollment in a Distance Ed class</li>
+                <li>That request is either approved or rejected</li>
+                <li>The paper version of this process meant the Admin put the request form into an approve
+                    or reject pile</li>
+            </aside>
+        </section>
+        <section>
+            <myTitleBox>
+                <h2>Paper Forms handling state</h2>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <img src="img/status_change/collegerejection.jpg" alt="stamped application">
+                </article>
+                <article>
+                    <p>Status labels are like a rubber stamp</p>
+                    <p>Status doesn&#39;t always communicate why or what happened</p>
+                    <p></p>
+                </article>
+            </myColBox>
+            <aside class="notes">
+                <li>You may have seen a paper form with a rubber stamp on it with its status.  </li>
+                <li>What if it changes state multiple times through the process?  And each time the status overwrites itself?</li>
+                <li>The rubber stamp method wasn't flexible to change </li>
+                <li>But what if things change, and a rejection can be undone. Suppose it was rejected because tuition wasn't paid at the time</li>
+                <!--<li>The history doesn't convey between piles. And sometimes our application doesn't retain that information either</li>-->
+            </aside>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/status_change/CompensatingMeasures.png" alt="Compensating Measures: diagram of a table with a status column added and a drawing of a table with a related status table">
+                </article>
+            </myColBox>
+            <aside class="notes">
+                <li>We wanted to capture these status changes, so we added a column to the table with our form data</li>
+                <p>Or we added a related table to attempt to preserve history</p>
+                <!--<li>more statuses to include the many forks in the process (like what type of hold)</li>-->
+            </aside>
+        </section>
+
+        <section>
+            <myTitleBox>
+                <h2>How workflows become complex</h2>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <img src="img/status_change/requestPath.png" alt="a diagram of a request coming in to be reviewed and the admin sending it either to approved, rejected, or hold piles; but hold has another fork for reasons and hold can be for academic or financial reasons">
+                </article>
+            </myColBox>
+            <aside class="notes">
+                <li>Over time we add more states to the process to solve confusion, or to distribute load, lots of reasons!</li>
+                <li>Processes that handled lots of paper could become much more complex, even in trying to organize them</li>
+            </aside>
+        </section>
+        <section>
+            <myTitleBox>
+                <h2>Paper Forms handling state</h2>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Copies_of_documents_at_European_Parliament_in_Strasbourg.jpg/1024px-Copies_of_documents_at_European_Parliament_in_Strasbourg.jpg" alt="Paper forms sorted for a process">
+                </article>
+                <article>
+                    <p>Piles indicate status of the form</p>
+                </article>
+            </myColBox>
+            <aside class="notes">
+                <li>These piles indicated the status of the student's request for a class</li>
+                <li>On the web, we created an admin panel with a drop-down to indicate status</li>
+
+            </aside>
+        </section>
+        <section>
+            <myTitleBox>
+                <h2>A simple status drop-down</h2>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <select name="newStatus">
+                        <option value="RECEIVED">RECEIVED</option>
+                        <option value="CANCELLED">CANCELLED</option>
+                        <option value="COURSE CANCELLED">COURSE CANCELLED</option>
+                        <option value="COURSE NOT APPROVED">COURSE NOT APPROVED</option>
+                        <option value="CPC DENIED">CPC DENIED</option>
+                        <option value="CPC NOT APPROVED">CPC NOT APPROVED</option>
+                        <option value="CPC PENDING TRANSCRIPT">CPC PENDING TRANSCRIPT</option>
+                        <option value="CPC PROCESSING">CPC PROCESSING<em></option>
+                        <option value="DENIED">DENIED</option>
+                        <option value="DROPPED AFTER CENSUS">DROPPED AFTER CENSUS</em></option>
+                        <option value="DROPPED BEFORE CLASSES BEGUN">DROPPED BEFORE CLASSES BEGUN<em></option>
+                        <option value="DROPPED BETWEEN BEGINNING OF CLASS AND CENSUS DATE">DROPPED BETWEEN BEGINNING OF CLASS AND CENSUS DATE</em></option>
+                        <option value="DROPS/WITHDRAWALS AT SITES">DROPS/WITHDRAWALS AT SITES<em></option>
+                        <option value="ECE ON CAMPUS STUDENTS">ECE ON CAMPUS STUDENTS</option>
+                        <option value="ENROLLMENT CANCELLED">ENROLLMENT CANCELLED</option>
+                        <option value="EOL APPROVED">EOL APPROVED</em></option>
+                        <option value="EOL MISC">EOL MISC<em></option>
+                        <option value="NEW STUDENT REGISTRATION">NEW STUDENT REGISTRATION</option>
+                        <option value="PENDING ON CAMPUS REQUEST">PENDING ON CAMPUS REQUEST</option>
+                        <option value="ON CAMPUS STUDENT NOT APPROVED">ON CAMPUS STUDENT NOT APPROVED</option>
+                        <option value="PENDING CASHIER HOLD">PENDING CASHIER HOLD</option>
+                        <option value="PENDING EOL APPROVAL">PENDING EOL APPROVAL</em></option>
+                        <option value="PENDING INSTRUCTOR APPROVAL">PENDING INSTRUCTOR APPROVAL</option>
+                        <option value="PENDING INTERNATIONAL STUDENT">PENDING INTERNATIONAL STUDENT</option>
+                        <option value="PENDING NDS OPEN ENROLLMENT">PENDING NDS OPEN ENROLLMENT</option>
+                        <option value="PENDING OIS VISA STUDENT">PENDING OIS VISA STUDENT</option>
+                        <option value="PENDING PERMANENT RESIDENT">PENDING PERMANENT RESIDENT</option>
+                        <option value="PENDING TERM ADVISEMENT HOLD">PENDING TERM ADVISEMENT HOLD</option>
+                        <option value="PENDING TRANSCRIPT">PENDING TRANSCRIPT</option>
+                        <option value="PENDING TUITION PREPAYMENT">PENDING TUITION PREPAYMENT</option>
+                        <option value="PREAPPROVED RETURNING">PREAPPROVED RETURNING</option>
+                        <option value="PROCESSING NDS">PROCESSING NDS<em></option>
+                        <option value="PROCESSING SITE">PROCESSING SITE</em></option>
+                        <option value="PROCESSING Z">PROCESSING Z<em></option>
+                        <option value="PROJECT MESSAGE - MAE 586">PROJECT MESSAGE - MAE 586</option>
+                        <option value="PROJECT MESSAGE - NE 693">PROJECT MESSAGE - NE 693</option>
+                        <option value="REGISTERED">REGISTERED</option>
+                        <option value="REGISTERED ASHEVILLE">REGISTERED ASHEVILLE</option>
+                        <option value="REGISTERED HAVELOCK">REGISTERED HAVELOCK</option>
+                        <option value="REGISTERED WILMINGTON">REGISTERED WILMINGTON</option>
+                        <option value="SITE APPROVAL: ASHEVILLE">SITE APPROVAL: ASHEVILLE</em></option>
+                        <option value="SITE APPROVAL: HAVELOCK">SITE APPROVAL: HAVELOCK<em></option>
+                        <option value="SITE APPROVAL: WILMINGTON">SITE APPROVAL: WILMINGTON</em></option>
+                        <option value="SITE NOT APPROVED">SITE NOT APPROVED</option>
+                        <option value="SWAPPED OUT">SWAPPED OUT</option>
+                        <option value="TRANSCRIPT APPROVED">TRANSCRIPT APPROVED<em></option>
+                        <option value="WITHDRAWN">WITHDRAWN</em></option>
+                    </select>
+                </article>
+            </myColBox>
+            <aside class="notes">
+                <li>This is that simple drop-down after about ten years of this app being used.</li>
+                <li>It looks fairly innocuous, right?</li>
+            </aside>
+        </section>
+        <section>
+            <myTitleBox>
+                <h2>A "simple" status drop-down</h2>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <select name="newStatus" size="47">
+                        <option value="RECEIVED">RECEIVED</option>
+                        <option value="CANCELLED">CANCELLED</option>
+                        <option value="COURSE CANCELLED">COURSE CANCELLED</option>
+                        <option value="COURSE NOT APPROVED">COURSE NOT APPROVED</option>
+                        <option value="CPC DENIED">CPC DENIED</option>
+                        <option value="CPC NOT APPROVED">CPC NOT APPROVED</option>
+                        <option value="CPC PENDING TRANSCRIPT">CPC PENDING TRANSCRIPT</option>
+                        <option value="CPC PROCESSING">CPC PROCESSING<em></option>
+                        <option value="DENIED">DENIED</option>
+                        <option value="DROPPED AFTER CENSUS">DROPPED AFTER CENSUS</em></option>
+                        <option value="DROPPED BEFORE CLASSES BEGUN">DROPPED BEFORE CLASSES BEGUN<em></option>
+                        <option value="DROPPED BETWEEN BEGINNING OF CLASS AND CENSUS DATE">DROPPED BETWEEN BEGINNING OF CLASS AND CENSUS DATE</em></option>
+                        <option value="DROPS/WITHDRAWALS AT SITES">DROPS/WITHDRAWALS AT SITES<em></option>
+                        <option value="ECE ON CAMPUS STUDENTS">ECE ON CAMPUS STUDENTS</option>
+                        <option value="ENROLLMENT CANCELLED">ENROLLMENT CANCELLED</option>
+                        <option value="EOL APPROVED">EOL APPROVED</em></option>
+                        <option value="EOL MISC">EOL MISC<em></option>
+                        <option value="NEW STUDENT REGISTRATION">NEW STUDENT REGISTRATION</option>
+                        <option value="PENDING ON CAMPUS REQUEST">PENDING ON CAMPUS REQUEST</option>
+                        <option value="ON CAMPUS STUDENT NOT APPROVED">ON CAMPUS STUDENT NOT APPROVED</option>
+                        <option value="PENDING CASHIER HOLD">PENDING CASHIER HOLD</option>
+                        <option value="PENDING EOL APPROVAL">PENDING EOL APPROVAL</em></option>
+                        <option value="PENDING INSTRUCTOR APPROVAL">PENDING INSTRUCTOR APPROVAL</option>
+                        <option value="PENDING INTERNATIONAL STUDENT">PENDING INTERNATIONAL STUDENT</option>
+                        <option value="PENDING NDS OPEN ENROLLMENT">PENDING NDS OPEN ENROLLMENT</option>
+                        <option value="PENDING OIS VISA STUDENT">PENDING OIS VISA STUDENT</option>
+                        <option value="PENDING PERMANENT RESIDENT">PENDING PERMANENT RESIDENT</option>
+                        <option value="PENDING TERM ADVISEMENT HOLD">PENDING TERM ADVISEMENT HOLD</option>
+                        <option value="PENDING TRANSCRIPT">PENDING TRANSCRIPT</option>
+                        <option value="PENDING TUITION PREPAYMENT">PENDING TUITION PREPAYMENT</option>
+                        <option value="PREAPPROVED RETURNING">PREAPPROVED RETURNING</option>
+                        <option value="PROCESSING NDS">PROCESSING NDS<em></option>
+                        <option value="PROCESSING SITE">PROCESSING SITE</em></option>
+                        <option value="PROCESSING Z">PROCESSING Z<em></option>
+                        <option value="PROJECT MESSAGE - MAE 586">PROJECT MESSAGE - MAE 586</option>
+                        <option value="PROJECT MESSAGE - NE 693">PROJECT MESSAGE - NE 693</option>
+                        <option value="REGISTERED">REGISTERED</option>
+                        <option value="REGISTERED ASHEVILLE">REGISTERED ASHEVILLE</option>
+                        <option value="REGISTERED HAVELOCK">REGISTERED HAVELOCK</option>
+                        <option value="REGISTERED WILMINGTON">REGISTERED WILMINGTON</option>
+                        <option value="SITE APPROVAL: ASHEVILLE">SITE APPROVAL: ASHEVILLE</em></option>
+                        <option value="SITE APPROVAL: HAVELOCK">SITE APPROVAL: HAVELOCK<em></option>
+                        <option value="SITE APPROVAL: WILMINGTON">SITE APPROVAL: WILMINGTON</em></option>
+                        <option value="SITE NOT APPROVED">SITE NOT APPROVED</option>
+                        <option value="SWAPPED OUT">SWAPPED OUT</option>
+                        <option value="TRANSCRIPT APPROVED">TRANSCRIPT APPROVED<em></option>
+                        <option value="WITHDRAWN">WITHDRAWN</em></option>
+                    </select>
+                </article>
+            </myColBox>
+            <aside class="notes">
+                <p>I like to open this up for the full effect of how ridiculous it can become.  This group was
+                    maintaining their own web app before we inherited it</p>
+                <p>There are some that are actually subsets of the same status with some explanation attached</p>
+                <li>Registered with a Site location</li>
+                <li>Pending with reasons attached</li>
+                <li>dropped with a time component of when it was dropped</li>
+                <li>Things like this make the drop-down complicated, error-prone, and go beyond the the problem we want to solve</li>
+            </aside>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3>Something happened</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <p>Status is a reflection of something that happened</p>
+                    <p>There is ONE of each status + reasons/details  </p>
+                    <p>Events can record what happened</p>
+                </article>
+                <article>
+                    <img src="img/status_change/collegerejection.jpg" alt="stamped application">
+                </article>
+            </myColBox>
+            <aside class="notes">
+                <p>In a workflow, usually something happens and THEN your object&#39;s status is
+                    updated to reflect that something happened.</p>
+                <p>There aren&#39;t 9 PENDING states.  There is ONE PENDING and some number of reasons for it to be PENDING </p>
+                <p>Events can record what ACTUALLY happened and the important details of that event.  It is actually your history!</p>
+                <p>Our code can then be written to describe what that event means with context.</p>
+            </aside>
+        </section>
+        <section>
+            <myTitleBox>
+                <h2>The Request Doesn't Get Stuck</h2>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <img src="img/status_change/events_guage.png">
+                </article>
+            </myColBox>
+            <aside class="notes">
+                <p>The request doesn't have to get stuck.  One event can happen, and then another event can occur after it.</p>
+                <p>A Hold can be lifted, and the request can continue through the process</p>
+                <p>The request can move to a next state </p>
+                <p>History is preserved</p>
+            </aside>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3>Streamlined Process</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <ul>
+                        <li>Focused our customers on their process and provided tools to simplify their jobs</li>
+                        <li>Managed the process flow and controlled when the student was notified about changes</li>
+                        <li>Managed the process flow and controlled when the student was notified about changes</li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/hey_boss/inquest-logo-web.svg" alt="inquest logo">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <p><img src="img/hey_boss/inquest-diagram.png" alt="diagram"></p>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3>Reports</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <img src="img/hey_boss/inquest_report.png">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3>Reports</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <img src="img/hey_boss/inquest-joins.png">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3>Reports - Filtered for User Access</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <img src="img/hey_boss/inquest-joins-with-users.png">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/hey_boss/inquest-event-sourced-reports.png">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+        <myColBox>
+        <article>
+        <h2 id="good-stuff-">Planned Improvements</h2>
+        <ul>
+            <li>No more complex DB queries</li>
+            <li>Separates us from older schema</li>
+            <li>Events can be passed from the Engine to Customer-facing Site</li>
+        <li>full audit log of what has happened in our environment</li>
+        <li>the results of those events can be optimized for read to shorten the time to retrieve data</li>
+        <li>separate the logic of what an event means based on context and purpose</li>
+        <li>only display results that a user is allowed to see</li>
+        <li>flexible to change, our interpretation of events can change, and we can rebuild projections without losing the full history</li>
+        </ul>
+
+        </article>
+        </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="thank-you">много вам хвала</h1>
+                    <img src="img/phpsrbija-logo.png" alt="php srbija" style="background-color: #1a6091">
+                </article>
+            </myColBox>
+            <aside class="notes">
+                <li>mnongo vam hvala</li>
+            </aside>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <div class="author">
+                        <h1 class="name">Emily Stamey</h1>
+                        <h3 class="twitter">
+                        <a href="http://twitter.com/@elstamey">@elstamey</a>
+                        </h3>
+                        <h3 class="url">
+                        <a href="http://elstamey.com">http://elstamey.com</a>
+                        </h3>
+                    </div>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <p>New Stuff to check out!</p>
+                    <ul>
+                        <li><a href="https://t.co/XQVd9mVpJb">That Podcast Episode 50: </a>The One Where We Talk to Shawn about Event Sourcery, CQRS, Event Sourcing and GDPR</li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="resources">Resources</h1>
+                    <ul>
+                        <li><p>Tools</p>
+                            <ul>
+                                <li><a href="https://eventsauce.io/">Event Sauce - Event-sourcing & Commands</a></li>
+                                <li><a href="http://getprooph.org/">Prooph - CQRS and ES</a></li>
+                                <li><a href="https://github.com/broadway/broadway">Broadway - framework for CQRS and ES</a></li>
+                            </ul>
+                    </ul>
+
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="resources">Resources</h1>
+                    <ul>
+                        <li><a href="https://martinfowler.com/bliki/CQRS.html">CQRS by Martin Fowler</a></li>
+                        <li><p><a href="http://codebetter.com/gregyoung/2010/02/16/cqrs-task-based-uis-event-sourcing-agh/">CQRS by Greg Young</a></p></li>
+                        <li><p>videos</p>
+                            <ul>
+                                <li><a href="https://www.youtube.com/watch?v=JHGkaShoyNs">Greg Young CQRS and Event Sourcing</a></li>
+                                <li><a href="https://www.youtube.com/watch?v=whCk1Q87_ZI">Greg Young - long class</a></li>
+                                <li><a href="https://www.youtube.com/watch?v=LDW0QWie21s">Greg Young - A Decade of DDD, CQRS, Event Sourcing</a></li>
+                            </ul>
+                        </li>
+                        <li><p>podcasts</p>
+                            <ul>
+                                <li><a href="https://www.phproundtable.com/episode/event-sourcing-in-php">PHP Round Table - Event Sourcing</a> (+2 more)</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </article>
+            </myColBox>
+        </section>
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+    // More info https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        history: true,
+
+        // More info https://github.com/hakimel/reveal.js#dependencies
+        dependencies: [
+            { src: 'plugin/markdown/marked.js' },
+            { src: 'plugin/markdown/markdown.js' },
+            { src: 'plugin/notes/notes.js', async: true },
+            { src: 'node_modules/highlight.js/lib/highlight.js' },
 //					{ src: 'plugin/accessibility/helper.js', async: true, condition: function() {
 //						return !!document.body.classList;
 //					}},
-                    {
-                        src: 'node_modules/reveal-code-focus/reveal-code-focus.js',
-                        async: true,
-                        callback: function() {
-                            RevealCodeFocus();
-                        }
-                    },
-                    { src: 'plugin/elapsed-time-bar/elapsed-time-bar.js'}
-                ],
-
-                // The "normal" size of the presentation, aspect ratio will be preserved
-                // when the presentation is scaled to fit different resolutions. Can be
-                // specified using percentage units.
-                width: 1280,
-                height: 720,
-
-                // Factor of the display size that should remain empty around the content
-                margin: 0.1,
-
-                // Bounds for smallest/largest possible scale to apply to content
-                minScale: 0.2,
-                maxScale: 1.5,
-
-
-                // your allotted time for presentation
-                allottedTime: 50 * 60 * 1000, // 50 minutes
-
-                // - (optional) height of page/time progress bar
-                progressBarHeight: 3,
-
-                // - (optional) bar color
-                barColor: 'rgb(200,0,0)',
-
-                // - (optional) bar color when timer is paused
-                pausedBarColor: 'rgba(200,0,0,.6)',
-
-                // Display controls in the bottom right corner
-                controls: true,
-
-                // Display a presentation progress bar
-                progress: true,
-
-                // Display the page number of the current slide
-                slideNumber: true,
-
-                // Push each slide change to the browser history
-                history: true,
-
-                // Enable keyboard shortcuts for navigation
-                keyboard: true,
-
-                // Enable the slide overview mode
-                overview: true,
-
-                // Vertical centering of slides
-                center: false,
-
-                // Enables touch navigation on devices with touch input
-                touch: true,
-
-                // Loop the presentation
-                loop: false,
-
-                // Change the presentation direction to be RTL
-                rtl: false,
-
-                // Randomizes the order of slides each time the presentation loads
-                shuffle: false,
-
-                // Turns fragments on and off globally
-                fragments: true,
-
-                // Flags if the presentation is running in an embedded mode,
-                // i.e. contained within a limited portion of the screen
-                embedded: false,
-
-                // Flags if we should show a help overlay when the questionmark
-                // key is pressed
-                help: true,
-
-                // Flags if speaker notes should be visible to all viewers
-                showNotes: false,
-
-                // Number of milliseconds between automatically proceeding to the
-                // next slide, disabled when set to 0, this value can be overwritten
-                // by using a data-autoslide attribute on your slides
-                autoSlide: 0,
-
-                // Stop auto-sliding after user input
-                autoSlideStoppable: true,
-
-                // Use this method for navigation when auto-sliding
-                autoSlideMethod: Reveal.navigateNext,
-
-                // Enable slide navigation via mouse wheel
-                mouseWheel: false,
-
-                // Hides the address bar on mobile devices
-                hideAddressBar: true,
-
-                // Opens links in an iframe preview overlay
-                previewLinks: false,
-
-                // Transition style
-                transition: 'none', // none/fade/slide/convex/concave/zoom
-
-                // Transition speed
-                transitionSpeed: 'default', // default/fast/slow
-
-                // Transition style for full page slide backgrounds
-                backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
-
-                // Number of slides away from the current that are visible
-                viewDistance: 3,
-
-                // Parallax background image
-                parallaxBackgroundImage: '', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
-
-                // Parallax background size
-                parallaxBackgroundSize: '', // CSS syntax, e.g. "2100px 900px"
-
-                // Number of pixels to move the parallax background per slide
-                // - Calculated automatically unless specified
-                // - Set to 0 to disable movement along an axis
-                parallaxBackgroundHorizontal: null,
-                parallaxBackgroundVertical: null,
-
-                pdfMaxPagesPerSlide: 1,
-
-                // Value of the display CSS property applied to current slide to make it visible
-                display: 'flex',
-
-                keyboard: {
-                    // pause/resume time when Enter is pressed
-                    13: () => {
-                    ElapsedTimeBar.isPaused ? ElapsedTimeBar.resume() : ElapsedTimeBar.pause();
+            {
+                src: 'node_modules/reveal-code-focus/reveal-code-focus.js',
+                async: true,
+                callback: function() {
+                    RevealCodeFocus();
+                }
             },
+            { src: 'plugin/elapsed-time-bar/elapsed-time-bar.js'}
+        ],
 
-            // reset timer when 'r' is pressed
-            82: () => {
-                ElapsedTimeBar.reset();
-            }
-            }
-            })
-		</script>
-	</body>
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // Bounds for smallest/largest possible scale to apply to content
+        minScale: 0.2,
+        maxScale: 1.5,
+
+
+        // your allotted time for presentation
+        allottedTime: 50 * 60 * 1000, // 50 minutes
+
+        // - (optional) height of page/time progress bar
+        progressBarHeight: 3,
+
+        // - (optional) bar color
+        barColor: 'rgb(200,0,0)',
+
+        // - (optional) bar color when timer is paused
+        pausedBarColor: 'rgba(200,0,0,.6)',
+
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: Reveal.navigateNext,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // Hides the address bar on mobile devices
+        hideAddressBar: true,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style
+        transition: 'none', // none/fade/slide/convex/concave/zoom
+
+        // Transition speed
+        transitionSpeed: 'default', // default/fast/slow
+
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'none', // none/fade/slide/convex/concave/zoom
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Parallax background image
+        parallaxBackgroundImage: '', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+
+        // Parallax background size
+        parallaxBackgroundSize: '', // CSS syntax, e.g. "2100px 900px"
+
+        // Number of pixels to move the parallax background per slide
+        // - Calculated automatically unless specified
+        // - Set to 0 to disable movement along an axis
+        parallaxBackgroundHorizontal: null,
+        parallaxBackgroundVertical: null,
+
+        pdfMaxPagesPerSlide: 1,
+
+        // Value of the display CSS property applied to current slide to make it visible
+        display: 'flex',
+
+        keyboard: {
+            // pause/resume time when Enter is pressed
+            13: () => {
+            ElapsedTimeBar.isPaused ? ElapsedTimeBar.resume() : ElapsedTimeBar.pause();
+    },
+
+    // reset timer when 'r' is pressed
+    82: () => {
+        ElapsedTimeBar.reset();
+    }
+    }
+    })
+</script>
+</body>
 </html>

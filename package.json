@@ -39,5 +39,9 @@
     "mustache": "^2.3.0",
     "socket.io": "^2.1.0"
   },
+  "dependencies": {
+    "highlight.js": "^9.11.0",
+    "reveal-code-focus": "^1.0.0"
+  },
   "license": "MIT"
 }
