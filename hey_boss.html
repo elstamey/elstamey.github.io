@@ -69,13 +69,13 @@
                                 <article>
                                     <myColBox>
                                         <article>
+                                            <img src="img/Map_of_USA_NC.svg" alt="Map of US with NC highlighted">
+                                        </article>
+                                        <article>
                                             <img src="img/WWCode_Logo_Raleigh_Durham.png">
                                         </article>
                                         <article>
                                             <img src="img/trianglePHP_sm.jpg">
-                                        </article>
-                                        <article>
-                                            <img src="img/Map_of_USA_NC.svg" alt="Map of US with NC highlighted">
                                         </article>
                                     </myColBox>
                                 </article>
@@ -88,7 +88,7 @@
                 </article>
             </myRowBox>
             <aside class="notes">
-                <li>drago me J sco sahm of day</li>
+                <li>drago me J sco sahm of-day</li>
             </aside>
         </section>
         <section>
@@ -122,13 +122,9 @@
                 <article>
                     <p>&nbsp;</p>
                     <ul>
-                        <li>What is Event Sourcing
-                            <ul>
-                                <li>Rules to Follow</li>
-                                <li>briefly describe the data structures: Events, Projections, Read Models, CQRS</li>
-                            </ul>
+                        <li>Basics of Event Sourcing</li>
+                        <li>Adding Event Sourcing to existing projects and the problems they can resolve
                         </li>
-                        <li>3 legacy projects that benefited from Event Sourcing</li>
                     </ul>
                 </article>
             </myColBox>
@@ -167,7 +163,7 @@
         </section>
         <section>
             <myTitleBox>
-                <h3 id="event-attributes">Attributes</h3>
+                <h3 id="event-attributes">Event Attributes</h3>
             </myTitleBox>
             <myColBox>
                 <article>
@@ -177,111 +173,8 @@
                     </ul>
                     <p><strong>(book id, patron id, date)</strong></p>
                 </article>
-            </myColBox>
-        </section>
-        <section>
-            <myTitleBox>
-                <h3 id="rules-to-follow">Rules for Events</h3>
-            </myTitleBox>
-            <myColBox>
                 <article>
-                    <ul>
-                        <li>Usually named as past-tense verbs</li>
-                        <li><strong>RARELY</strong> changed</li>
-                        <li><strong>Never</strong> deleted</li>
-                        <li>Has attributes that are values<ul>
-                            <li>not model, object, collection, or aggregate root</li>
-                        </ul>
-                        </li>
-                    </ul>
-
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myColBox>
-                <article>
-                    <img src="img/status_change/dont_delete_events.png" alt="3 symbols representing events of a deposit, a correction, and a deposit">
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myTitleBox>
-                <h3 id="don-t-store-objects">Don&#39;t store objects</h3>
-            </myTitleBox>
-            <myColBox>
-                <article>
-                    <img src="img/status_change/Objects.png" alt="objects can change">
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myTitleBox>
-                <h3>If We Stored Objects in an Event...</h3>
-            </myTitleBox>
-            <myColBox>
-                <article>
-                    <img src="img/status_change/EventWithObject.png" alt="Event With Object">
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myTitleBox>
-                <!--<h3 id="events-are-not-bionic">Events are not Bionic</h3>-->
-            </myTitleBox>
-            <myColBox>
-                <article>
-                    <img src="img/status_change/we_can_rebuild_him.jpg" alt="Events and Bionic Cat">
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myTitleBox>
-                <h3 id="events-rarely-change">Events rarely change</h3>
-            </myTitleBox>
-            <myColBox>
-                <article>
-                    <ul>
-                        <li>The part of the code that will change is most likely the <strong>result that follows that event</strong>.</li>
-                        <li>The <strong>structure of the resulting data</strong> is more likely to change than the thing that happened</li>
-                    </ul>
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myColBox>
-                <article>
-                    <p><img src="img/library/event_with_listener.png" alt="One event with one listener handling the event"></p>
-
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myColBox>
-                <article>
-                    <p><img src="img/status_change/events_replaced.png" alt="One event with two listeners handling the event differently, one is thrown away"></p>
-
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myColBox>
-                <article>
-                    <p><img src="img/status_change/events_treated_differently.png" alt="One event with two listeners handling the event differently"></p>
-
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myColBox>
-                <article>
-                    <h1 id="why-events-">Reasons to use Events</h1>
-                    <ul>
-                        <li>State transitions are important</li>
-                        <li>We need an audit log, proof of the state we are currently in</li>
-                        <li>The history of what happened is more important than the current state</li>
-                        <li>Events are replayable if behavior in your application changes</li>
-                    </ul>
+                    <img src="img/hey_boss/event-with-attributes.png">
                 </article>
             </myColBox>
         </section>
@@ -353,6 +246,113 @@ class BookWasCheckedOut
             </myColBox>
         </section>
         <section>
+            <myTitleBox>
+                <h3 id="rules-to-follow">Rules for Events</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <ul>
+                        <li>Usually named as past-tense verbs</li>
+                        <li><strong>RARELY</strong> changed</li>
+                        <li><strong>Never</strong> deleted</li>
+                        <li>Has attributes that are values<ul>
+                            <li>not model, object, collection, or aggregate root</li>
+                        </ul>
+                        </li>
+                    </ul>
+
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/status_change/dont_delete_events.png" alt="3 symbols representing events of a deposit, a correction, and a deposit">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3 id="don-t-store-objects">Don&#39;t store objects</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <img src="img/status_change/Objects.png" alt="objects can change">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3>If We Stored Objects in an Event...</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <img src="img/status_change/EventWithObject.png" alt="Event With Object">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myTitleBox>
+                <!--<h3 id="events-are-not-bionic">Events are not Bionic</h3>-->
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <img src="img/hey_boss/could-should.jpg" alt="Jeff Goldblum in Jurassic Park saying you never stopped to think whether you should">
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myTitleBox>
+                <h3 id="events-rarely-change">Events rarely change</h3>
+            </myTitleBox>
+            <myColBox>
+                <article>
+                    <ul>
+                        <li>The part of the code that will change is most likely the <strong>result that follows that event</strong>.</li>
+                        <li>The <strong>structure of the resulting data</strong> is more likely to change than the thing that happened</li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <p><img src="img/library/event_with_listener.png" alt="One event with one listener handling the event"></p>
+
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <p><img src="img/status_change/events_replaced.png" alt="One event with two listeners handling the event differently, one is thrown away"></p>
+
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <p><img src="img/status_change/events_treated_differently.png" alt="One event with two listeners handling the event differently"></p>
+
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="why-events-">Reasons to use Events</h1>
+                    <ul>
+                        <li>State transitions are important</li>
+                        <li>We need an audit log, proof of the state we are currently in</li>
+                        <li>The history of what happened is more important than the current state</li>
+                        <li>Events are replayable if behavior in your application changes</li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
+
+        <section>
             <myColBox>
                 <article>
                     <p><img src="img/status_change/DomainMessage.png" alt="Domain Message"></p>
@@ -374,16 +374,17 @@ class BookWasCheckedOut
                 </article>
             </myColBox>
         </section>
-        <section data-background="img/status_change/projector.png">
-            <aside class="notes">
-                <p>A set of event handlers that work together to build and maintain a table to be accessed by the read model.</p>
-            </aside>
-        </section>
         <section>
-            <myColBox>
-                <article>
-                    <h1 id="projector">Projector</h1>
-                    <pre><code>&lt;?php
+            <section data-background="img/status_change/projector.png">
+                <aside class="notes">
+                    <p>A set of event handlers that work together to build and maintain a table to be accessed by the read model.</p>
+                </aside>
+            </section>
+            <section>
+                <myColBox>
+                    <article>
+                        <h1 id="projector">Projector</h1>
+<pre><code>&lt;?php
 
 namespace Library\ReadModel;
 
@@ -474,28 +475,30 @@ class BookshelfProjector extends SimpleProjector implements Replayable
 }
 </code></pre>
 
-                    <p>A set of event handlers that work together to build and maintain a table to be accessed by the read model.</p>
+                        <p>A set of event handlers that work together to build and maintain a table to be accessed by the read model.</p>
 
-                </article>
-            </myColBox>
+                    </article>
+                </myColBox>
+            </section>
         </section>
         <section>
-            <myTitleBox>
-                <h1 id="read-model">Read Model</h1>
-            </myTitleBox>
-            <myColBox>
-                <article>
-
-                    <img src="img/library/read_model.png" alt="Read Model table with highlighted rows and queries">
-
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myColBox>
-                <article>
+            <section>
+                <myTitleBox>
                     <h1 id="read-model">Read Model</h1>
-                    <pre><code>&lt;?php
+                </myTitleBox>
+                <myColBox>
+                    <article>
+
+                        <img src="img/library/read_model.png" alt="Read Model table with highlighted rows and queries">
+
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myColBox>
+                    <article>
+                        <h1 id="read-model">Read Model</h1>
+<pre><code>&lt;?php
 
 namespace Library\ReadModel;
 
@@ -528,38 +531,29 @@ class Bookshelf extends Model
     }
 }
 </code></pre>
-                </article>
-            </myColBox>
+                    </article>
+                </myColBox>
+            </section>
         </section>
-        <!--<section>-->
-        <!--<myTitleBox>-->
-        <!--<h1>Aggregate Root</h1>-->
-        <!--</myTitleBox>-->
-        <!--<myRowBox>-->
-        <!--<article>-->
-        <!--<p>An aggregate root is an entity that is modeled using events. </p>-->
-        <!--</article>-->
-        <!--</myRowBox>-->
-        <!--</section>-->
         <section>
-        <myTitleBox>
-            <h3>Connecting the events</h3>
-        </myTitleBox>
-        <myRowBox>
-            <article>
-                <ul>
-                    <li><b>An event is created only after validation</b>
-                        <ul>
-
+            <myTitleBox>
+                <h3>Connecting the events</h3>
+            </myTitleBox>
+            <myRowBox>
+                <article>
+                    <ul>
+                        <li><b>An event is created only after validation</b>
                             <ul>
-                                <li>directly in a controller 'checkout' method</li>
-                                <li>using a Check Out Book Command and Handler</li>
+
+                                <ul>
+                                    <li>directly in a controller 'checkout' method</li>
+                                    <li>using a Check Out Book Command and Handler</li>
+                                </ul>
                             </ul>
-                        </ul>
-                    </li>
-                </ul>
-            </article>
-        </myRowBox>
+                        </li>
+                    </ul>
+                </article>
+            </myRowBox>
         </section>
         <section data-background="img/library/interactionToEventDiagram.png">
             <!--<myColBox>-->
@@ -818,7 +812,7 @@ class Bookshelf extends Model
                 </article>
             </myColBox>
         </section>
-        <section>
+        <section data-background-image="img/hey_boss/bg-scholarships.png">
             <myColBox>
                 <article>
                     <h1 id="scholarships">Scholarships</h1>
@@ -1693,12 +1687,6 @@ class Selectionnext extends BaseController
                 <article>
                     <img src="img/status_change/events_guage.png">
                 </article>
-                <!--<article>-->
-                <!--<p>The request doesn't get stuck.  One event can happen, and then another event can occur after it.</p>-->
-                <!--<p>A Hold can be lifted, and the request can continue through the process</p>-->
-                <!--<p>The request can move to a next state </p>-->
-                <!--<p>History is preserved</p>-->
-                <!--</article>-->
             </myColBox>
             <aside class="notes">
                 <p>The request doesn't have to get stuck.  One event can happen, and then another event can occur after it.</p>
@@ -1775,9 +1763,11 @@ class Selectionnext extends BaseController
         <section>
         <myColBox>
         <article>
-        <h2 id="good-stuff-">Good Stuff!</h2>
+        <h2 id="good-stuff-">Planned Improvements</h2>
         <ul>
-        <li>works well in our environment where we have multiple applications doing different things</li>
+            <li>No more complex DB queries</li>
+            <li>Separates us from older schema</li>
+            <li>Events can be passed from the Engine to Customer-facing Site</li>
         <li>full audit log of what has happened in our environment</li>
         <li>the results of those events can be optimized for read to shorten the time to retrieve data</li>
         <li>separate the logic of what an event means based on context and purpose</li>
@@ -1796,8 +1786,7 @@ class Selectionnext extends BaseController
                 </article>
             </myColBox>
             <aside class="notes">
-                <li>hvala sto ste me primili</li>
-                <li>hvala shto shtay may pree-mily</li>
+                <li>mnongo vam hvala</li>
             </aside>
         </section>
         <section>
@@ -1815,7 +1804,56 @@ class Selectionnext extends BaseController
                 </article>
             </myColBox>
         </section>
+        <section>
+            <myColBox>
+                <article>
+                    <p>New Stuff to check out!</p>
+                    <ul>
+                        <li><a href="https://t.co/XQVd9mVpJb">That Podcast Episode 50: </a>The One Where We Talk to Shawn about Event Sourcery, CQRS, Event Sourcing and GDPR</li>
+                    </ul>
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="resources">Resources</h1>
+                    <ul>
+                        <li><p>Tools</p>
+                            <ul>
+                                <li><a href="https://eventsauce.io/">Event Sauce - Event-sourcing & Commands</a></li>
+                                <li><a href="http://getprooph.org/">Prooph - CQRS and ES</a></li>
+                                <li><a href="https://github.com/broadway/broadway">Broadway - framework for CQRS and ES</a></li>
+                            </ul>
+                    </ul>
 
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="resources">Resources</h1>
+                    <ul>
+                        <li><a href="https://martinfowler.com/bliki/CQRS.html">CQRS by Martin Fowler</a></li>
+                        <li><p><a href="http://codebetter.com/gregyoung/2010/02/16/cqrs-task-based-uis-event-sourcing-agh/">CQRS by Greg Young</a></p></li>
+                        <li><p>videos</p>
+                            <ul>
+                                <li><a href="https://www.youtube.com/watch?v=JHGkaShoyNs">Greg Young CQRS and Event Sourcing</a></li>
+                                <li><a href="https://www.youtube.com/watch?v=whCk1Q87_ZI">Greg Young - long class</a></li>
+                                <li><a href="https://www.youtube.com/watch?v=LDW0QWie21s">Greg Young - A Decade of DDD, CQRS, Event Sourcing</a></li>
+                            </ul>
+                        </li>
+                        <li><p>podcasts</p>
+                            <ul>
+                                <li><a href="https://www.phproundtable.com/episode/event-sourcing-in-php">PHP Round Table - Event Sourcing</a> (+2 more)</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </article>
+            </myColBox>
+        </section>
     </div>
 </div>
 
