@@ -41,6 +41,9 @@
 </head>
 <body>
 <div class="reveal">
+    <div class='footer'>
+        @elstamey <a href="https://joind.in/talk/3df64 ">https://joind.in/talk/3df64</a>
+    </div>
     <div class="slides">
         <section>
             <myColBox>
@@ -52,25 +55,17 @@
         <section>
             <myRowBox>
                 <article>
-                    <myTitleBox>
-                        <h3>Drago mi je sto sam ovde</h3>
-                    </myTitleBox>
                     <myColBox>
                         <article>
                             <img src="img/me.png" alt="developer">
                         </article>
                         <article>
-                            <!--<li>PHP developer</li>-->
-                            <!--<li>Organizer of Triangle PHP </li>-->
-                            <!--<li>Director WWCode Raleigh-Durham</li>-->
-                            <!--<li>Work at InQuest</li>-->
-                            <!--<p>&nbsp;</p>-->
                             <myRowBox>
                                 <article>
                                     <myColBox>
-                                        <article>
-                                            <img src="img/Map_of_USA_NC.svg" alt="Map of US with NC highlighted">
-                                        </article>
+                                        <!--<article>-->
+                                            <!--<img src="img/Map_of_USA_NC.svg" alt="Map of US with NC highlighted">-->
+                                        <!--</article>-->
                                         <article>
                                             <img src="img/WWCode_Logo_Raleigh_Durham.png">
                                         </article>
@@ -88,7 +83,11 @@
                 </article>
             </myRowBox>
             <aside class="notes">
-                <li>drago me J sco sahm of-day</li>
+                <ul>
+                    <li>I'm a PHP developer.  I love seeing talks about legacy strategies because I feel like most of us
+                        support large applications and have fewer opportunities to build a new app from scratch.</li>
+                </ul>
+
             </aside>
         </section>
         <section>
@@ -122,9 +121,28 @@
                 <article>
                     <p>&nbsp;</p>
                     <ul>
-                        <li>Basics of Event Sourcing</li>
-                        <li>Adding Event Sourcing to existing projects and the problems they can resolve
-                        </li>
+                        <li>Basics of Event Sourcing
+                        <ul>
+                            <li>Simple library example</li>
+                        </ul></li>
+                        <li>3 projects and the problems Event Sourcing solved</li>
+                        <ul>
+                            <li>University Scholarships
+                            <ul>
+                                <li>Adding new onto a legacy project</li>
+                                <li>Events to share across bounded contexts</li>
+                            </ul></li>
+                            <li>University Student Course Registration
+                            <ul>
+                                <li>Events to simplify complex workflow</li>
+                            </ul></li>
+                            <li>InQuest Threat History
+                            <ul>
+                                <li>Events to pass information</li>
+                                <li>Events to preserve history</li>
+                            </ul></li>
+
+                        </ul>
                     </ul>
                 </article>
             </myColBox>
@@ -240,10 +258,15 @@ class BookWasCheckedOut
             BookId::fromNative($data[&#39;book_id&#39;])
         );
     }
+
+
 }
 </code></pre>
                 </article>
             </myColBox>
+            <span class="fragment current-only" data-code-focus="8"></span>
+            <span class="fragment current-only" data-code-focus="14,19"></span>
+            <span class="fragment current-only" data-code-focus="26"></span>
         </section>
         <section>
             <myTitleBox>
@@ -472,6 +495,20 @@ class BookshelfProjector extends SimpleProjector implements Replayable
         $bookshelfItem-&gt;save();
     }
 
+
+    /**
+    * @param BookWasReturned $event
+    */
+    public function applyBookWasReturned(BookWasReturned $event)
+    {
+        $bookshelfItem = BookshelfItem::where(&#39;id&#39;, $event-&gt;bookId);
+
+        $book-&gt;status = &#39;Available&#39;;
+        $book-&gt;checkout_date = '';
+        $book-&gt;patron_id = '';
+
+        $book-&gt;save();
+    }
 }
 </code></pre>
 
@@ -479,6 +516,11 @@ class BookshelfProjector extends SimpleProjector implements Replayable
 
                     </article>
                 </myColBox>
+                <span class="fragment current-only" data-code-focus="12"></span>
+                <span class="fragment current-only" data-code-focus="23"></span>
+                <span class="fragment current-only" data-code-focus="62"></span>
+                <span class="fragment current-only" data-code-focus="76"></span>
+                <span class="fragment current-only" data-code-focus="93"></span>
             </section>
         </section>
         <section>
@@ -522,7 +564,7 @@ class Bookshelf extends Model
 
     public function lookupAvailableBooks()
     {
-        return static::where(&#39;status&#39;, &#39;on shelf&#39;)-&gt;get();
+        return static::where(&#39;status&#39;, &#39;Available&#39;)-&gt;get();
     }
 
     public function lookupOverdueBooks()
@@ -533,11 +575,16 @@ class Bookshelf extends Model
 </code></pre>
                     </article>
                 </myColBox>
+                <span class="fragment current-only" data-code-focus="12"></span>
+                <span class="fragment current-only" data-code-focus="14"></span>
+                <span class="fragment current-only" data-code-focus="18"></span>
+                <span class="fragment current-only" data-code-focus="23"></span>
+                <span class="fragment current-only" data-code-focus="28"></span>
             </section>
         </section>
         <section>
             <myTitleBox>
-                <h3>Connecting the events</h3>
+                <h3>Creating the events</h3>
             </myTitleBox>
             <myRowBox>
                 <article>
@@ -1704,7 +1751,6 @@ class Selectionnext extends BaseController
                     <ul>
                         <li>Focused our customers on their process and provided tools to simplify their jobs</li>
                         <li>Managed the process flow and controlled when the student was notified about changes</li>
-                        <li>Managed the process flow and controlled when the student was notified about changes</li>
                     </ul>
                 </article>
             </myColBox>
@@ -1781,8 +1827,8 @@ class Selectionnext extends BaseController
         <section>
             <myColBox>
                 <article>
-                    <h1 id="thank-you">много вам хвала</h1>
-                    <img src="img/phpsrbija-logo.png" alt="php srbija" style="background-color: #1a6091">
+                    <h1 id="thank-you">Thank you!</h1>
+                    <img src="img/sephp-lg.png" alt="southeast php">
                 </article>
             </myColBox>
             <aside class="notes">
