@@ -79,6 +79,10 @@
                                 </article>
                             </myRowBox>
                         </article>
+                        <aside class="notes">
+                            <li>Supporting women in their careers in tech</li>
+                            <li>Women leave tech at a 45% higher rate than men.</li>
+                        </aside>
                     </myColBox>
                 </article>
             </myRowBox>
@@ -92,34 +96,18 @@
         </section>
         <section>
             <myTitleBox>
-                <h1 id="we-re-going-to-talk-about-">Learning Objectives:</h1>
+                <h3 id="we-re-going-to-talk-about-">Learning Objectives</h3>
             </myTitleBox>
             <myColBox>
                 <article>
                     <p>&nbsp;</p>
                     <ul>
                         <li>Basics of Event Sourcing
-                        <ul>
-                            <li>Simple library example</li>
-                        </ul></li>
+                            <ul>
+                                <li>Simple library example</li>
+                            </ul>
+                        </li>
                         <li>3 projects and the problems Event Sourcing solved</li>
-                        <ul>
-                            <li>University Scholarships
-                            <ul>
-                                <li>Adding new onto a legacy project</li>
-                                <li>Events to share across bounded contexts</li>
-                            </ul></li>
-                            <li>University Student Course Registration
-                            <ul>
-                                <li>Events to simplify complex workflow</li>
-                            </ul></li>
-                            <li>InQuest Threat History
-                            <ul>
-                                <li>Events to pass information</li>
-                                <li>Events to preserve history</li>
-                            </ul></li>
-
-                        </ul>
                     </ul>
                 </article>
             </myColBox>
@@ -603,8 +591,8 @@ class Bookshelf extends Model
                     <ul>
                         <li><b>An event is created only after validation</b>
                             <ul>
-                                <li>directly in a controller 'checkout' method</li>
-                                <li>using a Check Out Book Command and Handler</li>
+                                <li>Directly in a controller 'checkout' method</li>
+                                <li>Using a Check Out Book Command and Handler</li>
                             </ul>
                         </li>
                     </ul>
@@ -826,8 +814,8 @@ public function handleCheckoutOutBook(CheckOutBook $command)
                     <ul>
                         <li>Separate the load from reads and writes allowing you to scale each independently. </li>
                         <ul>
-                            <li>all <strong>commands</strong> go into a WriteService</li>
-                            <li>all <strong>queries</strong> go into a ReadService</li>
+                            <li>All <strong>commands</strong> go into a WriteService</li>
+                            <li>All <strong>queries</strong> go into a ReadService</li>
                         </ul></li>
 
                     </ul>
@@ -1490,9 +1478,10 @@ public function handleCheckoutOutBook(CheckOutBook $command)
                 <article>
                     <h1 id="student-enrollment-process">Student Enrollment Process</h1>
                     <ul>
-                        <li>rewrote</li>
+                        <li>For Distance Education Students in the College of Engineering</li>
+                        <li>Rewrote Application</li>
                         <li>ES to follow the process</li>
-                        <li>status drop-down versus events</li>
+                        <li>Status drop-down versus events</li>
                     </ul>
                 </article>
             </myColBox>
@@ -1720,7 +1709,7 @@ public function handleCheckoutOutBook(CheckOutBook $command)
                 <p>There are some that are actually subsets of the same status with some explanation attached</p>
                 <li>Registered with a Site location</li>
                 <li>Pending with reasons attached</li>
-                <li>dropped with a time component of when it was dropped</li>
+                <li>Dropped with a time component of when it was dropped</li>
                 <li>Things like this make the drop-down complicated, error-prone, and go beyond the the problem we want to solve</li>
             </aside>
         </section>
@@ -1747,30 +1736,33 @@ public function handleCheckoutOutBook(CheckOutBook $command)
             </aside>
         </section>
         <section>
-            <myTitleBox>
-                <h2>The Request Doesn't Get Stuck</h2>
-            </myTitleBox>
             <myColBox>
                 <article>
-                    <img src="img/status_change/events_guage.png">
+                    <img src="img/hey_boss/eol-events.png">
                 </article>
             </myColBox>
             <aside class="notes">
-                <p>The request doesn't have to get stuck.  One event can happen, and then another event can occur after it.</p>
-                <p>A Hold can be lifted, and the request can continue through the process</p>
-                <p>The request can move to a next state </p>
-                <p>History is preserved</p>
+            </aside>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <img src="img/hey_boss/process-guage.png">
+                </article>
+            </myColBox>
+            <aside class="notes">
             </aside>
         </section>
         <section>
             <myTitleBox>
-                <h3>Streamlined Process</h3>
+                <h3>Student Enrollment Wrap-up</h3>
             </myTitleBox>
             <myColBox>
                 <article>
                     <ul>
-                        <li>Focused our customers on their process and provided tools to simplify their jobs</li>
-                        <li>Managed the process flow and controlled when the student was notified about changes</li>
+                        <li>Streamlined Process</li>
+                        <li>Connected the system to Student Information System</li>
+                        <li>Facilitated communication between students and admins</li>
                     </ul>
                 </article>
             </myColBox>
@@ -1809,56 +1801,37 @@ public function handleCheckoutOutBook(CheckOutBook $command)
                 </article>
             </myColBox>
         </section>
-        <section>
-            <myColBox>
-                <article>
-                    <img src="img/hey_boss/inquest-event-sourced-reports.png">
-                </article>
-            </myColBox>
+        <section data-background-image="img/hey_boss/inquest-event-sourced-reports.png">
         </section>
         <section data-background-image="img/hey_boss/inquest-session-history.png">
         </section>
         <section>
-        <myColBox>
-        <article>
-        <h2 id="good-stuff-">Planned Improvements</h2>
-        <ul>
-            <li>No more complex DB queries</li>
-            <li>Separates us from older schema</li>
-            <li>Events can be passed from the Engine to Customer-facing Site</li>
-        <li>full audit log of what has happened in our environment</li>
-        <li>the results of those events can be optimized for read to shorten the time to retrieve data</li>
-        <li>separate the logic of what an event means based on context and purpose</li>
-        <li>only display results that a user is allowed to see</li>
-        <li>flexible to change, our interpretation of events can change, and we can rebuild projections without losing the full history</li>
-        </ul>
-
-        </article>
-        </myColBox>
-        </section>
-        <section>
+            <myTitleBox>
+                <h3>Inquest wrap-up</h3>
+            </myTitleBox>
             <myColBox>
-                <article>
-                    <h1 id="thank-you">Thank you!</h1>
-                    <img src="img/sephp-lg.png" alt="southeast php">
-                </article>
+                <ul>
+                    <li>Events created by the Engine; used in Customer-facing Site</li>
+                    <li>Events capture Session Threat History</li>
+                    <li>Optimize the results for Read, reducing time to retrieve large amounts of data</li>
+                    <li>Results are still filtered by a user's access</li>
+                    <li>Full audit log</li>
+                    <li>These events will lead to more improvements</li>
+                </ul>
             </myColBox>
-            <aside class="notes">
-                <li>mnongo vam hvala</li>
-            </aside>
         </section>
         <section>
+            <myTitleBox>
+                <h3>Planned Improvements</h3>
+            </myTitleBox>
             <myColBox>
                 <article>
-                    <div class="author">
-                        <h1 class="name">Emily Stamey</h1>
-                        <h3 class="twitter">
-                        <a href="http://twitter.com/@elstamey">@elstamey</a>
-                        </h3>
-                        <h3 class="url">
-                        <a href="http://elstamey.com">http://elstamey.com</a>
-                        </h3>
-                    </div>
+                    <ul>
+                        <li>Fewer complex DB queries</li>
+                        <li>Could separate us from older schema; or reduce dependence on it</li>
+                        <li>Separate the logic of what an event means based on context and purpose</li>
+                        <li>Flexible to change, our interpretation of events can change, and we can rebuild projections without losing the full history</li>
+                    </ul>
                 </article>
             </myColBox>
         </section>
@@ -1879,12 +1852,12 @@ public function handleCheckoutOutBook(CheckOutBook $command)
                     <ul>
                         <li><p>Tools</p>
                             <ul>
+                                <li><a href="http://eventstore.org">EventStore.org</a> - production-ready eventstore, postgres implementation with streams</li>
                                 <li><a href="https://eventsauce.io/">Event Sauce - Event-sourcing & Commands</a></li>
                                 <li><a href="http://getprooph.org/">Prooph - CQRS and ES</a></li>
                                 <li><a href="https://github.com/broadway/broadway">Broadway - framework for CQRS and ES</a></li>
                             </ul>
                     </ul>
-
                 </article>
             </myColBox>
         </section>
@@ -1908,7 +1881,31 @@ public function handleCheckoutOutBook(CheckOutBook $command)
                             </ul>
                         </li>
                     </ul>
-
+                </article>
+            </myColBox>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <h1 id="thank-you">Thank you!</h1>
+                    <img src="img/sephp-lg.png" alt="southeast php">
+                </article>
+            </myColBox>
+            <aside class="notes">
+            </aside>
+        </section>
+        <section>
+            <myColBox>
+                <article>
+                    <div class="author">
+                        <h1 class="name">Emily Stamey</h1>
+                        <h3 class="twitter">
+                            <a href="http://twitter.com/@elstamey">@elstamey</a>
+                        </h3>
+                        <h3 class="url">
+                            <a href="http://elstamey.com">http://elstamey.com</a>
+                        </h3>
+                    </div>
                 </article>
             </myColBox>
         </section>
