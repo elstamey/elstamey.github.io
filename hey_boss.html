@@ -204,17 +204,17 @@ class BookWasCheckedOut
     /**
      * @var DateTime
      */
-    public $checkoutDate;
+    protected $checkoutDate;
 
     /**
      * @var int
      */
-    public $patronId;
+    protected $patronId;
 
     /**
      * @var int
      */
-    public $bookId;
+    protected $bookId;
 
     public function __construct(DateTime $checkoutDate, PatronId $patronId, BookId $bookId)
     {
@@ -248,6 +248,30 @@ class BookWasCheckedOut
             PatronId::fromNative($data[&#39;patron_id&#39;]),
             BookId::fromNative($data[&#39;book_id&#39;])
         );
+    }
+
+     /**
+     * @return int
+     */
+    public function getBookId()
+    {
+        return $this->bookId;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCheckoutDate(): DateTime
+    {
+        return $this->checkoutDate;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPatronId(): int
+    {
+        return $this->patronId;
     }
 
 
