@@ -42,7 +42,7 @@
 <body>
 <div class="reveal">
     <div class='footer'>
-        @elstamey <a href="https://joind.in/talk/3df64 ">https://joind.in/talk/3df64</a>
+        @elstamey <!--a href="https://joind.in/talk/3df64 ">https://joind.in/talk/3df64</a-->
     </div>
     <div class="slides">
         <section>
@@ -57,15 +57,15 @@
                 <article>
                     <myColBox>
                         <article>
-                            <img src="img/me.png" alt="developer">
-                        </article>
-                        <article>
                             <myRowBox>
                                 <article>
                                     <myColBox>
-                                        <!--<article>-->
-                                            <!--<img src="img/Map_of_USA_NC.svg" alt="Map of US with NC highlighted">-->
-                                        <!--</article>-->
+                                        <article>
+                                            <img src="img/me.png" alt="developer">
+                                        </article>
+                                        <article>
+                                            <img src="img/Map_of_USA_NC.svg">
+                                        </article>
                                         <article>
                                             <img src="img/WWCode_Logo_Raleigh_Durham.png">
                                         </article>
@@ -75,23 +75,46 @@
                                     </myColBox>
                                 </article>
                                 <article>
-                                    <img src="img/inquest.svg">
+                                    <myColBox>
+                                        <article>
+                                            <img src="img/php-logo.png">
+                                        </article>
+                                        <article>
+                                            <img src="img/iatf-federation-logo-colour-rgb.png">
+                                        </article>
+
+                                        <article>
+                                            <img src="img/mandala_madness.jpg">
+                                        </article>
+                                    </myColBox>
                                 </article>
                             </myRowBox>
                         </article>
-                        <aside class="notes">
-                            <li>Supporting women in their careers in tech</li>
-                            <li>Women leave tech at a 45% higher rate than men.</li>
-                        </aside>
                     </myColBox>
                 </article>
             </myRowBox>
             <aside class="notes">
                 <ul>
+                    <li>Supporting women in their careers in tech</li>
+                    <li>Women leave tech at a 45% higher rate than men.</li>
                     <li>I'm a PHP developer.  I love seeing talks about legacy strategies because I feel like most of us
                         support large applications and have fewer opportunities to build a new app from scratch.</li>
                 </ul>
-
+            </aside>
+        </section>
+        <section>
+            <myTitleBox><h3>I LOVE Legacy!</h3></myTitleBox>
+            <myColBox>
+                <article>
+                    <img src="img/boots/knife_fork.jpg" alt="Fork Knife">
+                </article>
+            </myColBox>
+            <aside class="notes">
+                <p>I love to give and hear talks about Legacy solutions because there is so much creativity and problem solving! </p>
+                <p>Event Sourcing, I feel, is a great for fixing so many things that Legacy Applications ArE or HAVE BECOME</p>
+                <p>I really liked Eric Evans photo and reverence for the legacy application through the photo of the tree being propped up</p>
+                <p>One of my favorite photos to represent Legacy is also this one.  Because so many of the legacy apps I've worked on have started out as a knife and over time our users or developers decided they needed a fork, and this is what they came up with. </p>
+                <p>At first when you look at it, things may be messy, but in reality this is pretty magnificent ingenuity, right?</p>
             </aside>
         </section>
         <section>
@@ -100,14 +123,10 @@
             </myTitleBox>
             <myColBox>
                 <article>
-                    <p>&nbsp;</p>
                     <ul>
-                        <li>Basics of Event Sourcing
-                            <ul>
-                                <li>Simple library example</li>
-                            </ul>
-                        </li>
-                        <li>3 projects and the problems Event Sourcing solved</li>
+                        <li>Basics of Event Sourcing using an example of a library (the kind where you check out books)</li>
+                        <p>&nbsp;</p>
+                        <li>Three projects I have worked on and the ways we used Event Sourcing on them</li>
                     </ul>
                 </article>
             </myColBox>
@@ -118,19 +137,20 @@
             </myTitleBox>
             <myColBox>
                 <article>
-                    <p>Switch from CRUD to Event-Sourcing is tough</p>
+                    <p>Learning Event-Sourcing (or DDD) is tough! i</p>
+                    <p>Be kind to learners (including yourself)</p>
                     <p>Event-Sourcing isn't for your whole application</p>
                 </article>
-                <article>
+                <!--article>
                     <p><img src="img/library/look_here.gif"></p>
-                </article>
+                </article-->
             </myColBox>
             <aside class="notes">
                 <li>Coming from a CRUD environment, Event-sourcing seems weird, it isn't normal to learn it all at once.  It can take a while!</li>
                 <li>Reminder: As with all new things, be patient with yourself</li>
                 <li>ES isn't for all the things!</li>
                 <li>If we were simply managing inventory or building a blog app, we probably wouldn't need ES</li>
-                <li>ES is helpful for they things that make our applications difficult to maintain over time, the changes in process</li>
+                <li>ES is helpful for the things that make our applications difficult to maintain over time, the changes in process</li>
                 <li>ES is great for proving how you got to your results</li>
                 <li>ES is powerful in that it's flexible to changes and keeping an audit log</li>
             </aside>
@@ -171,27 +191,28 @@
             </myColBox>
         </section>
         <section>
-            <myTitleBox>
-                <h3 id="event-attributes">Event Attributes</h3>
-            </myTitleBox>
-            <myColBox>
-                <article>
-                    <ul>
-                        <li>Save only what you need to preserve</li>
-                        <li>The rest can be looked up</li>
-                    </ul>
-                    <p><strong>(book id, patron id, date)</strong></p>
-                </article>
-                <article>
-                    <img src="img/hey_boss/event-with-attributes.png">
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myColBox>
-                <article>
-                    <h1 id="event-class">Event Class</h1>
-                    <pre><code>
+            <section>
+                <myTitleBox>
+                    <h3 id="event-attributes">Event Attributes</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+                        <ul>
+                            <li>Save only what you need to preserve</li>
+                            <li>The rest can be looked up</li>
+                        </ul>
+                        <p><strong>(book id, patron id, date)</strong></p>
+                    </article>
+                    <article>
+                        <img src="img/hey_boss/event-with-attributes.png">
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myColBox>
+                    <article>
+                        <h1 id="event-class">Event Class</h1>
+                        <pre><code>
 &lt;?php
 
 namespace Library\Events;
@@ -277,11 +298,12 @@ class BookWasCheckedOut
 
 }
 </code></pre>
-                </article>
-            </myColBox>
-            <span class="fragment current-only" data-code-focus="8"></span>
-            <span class="fragment current-only" data-code-focus="14,19"></span>
-            <span class="fragment current-only" data-code-focus="26"></span>
+                    </article>
+                </myColBox>
+                <span class="fragment current-only" data-code-focus="8"></span>
+                <span class="fragment current-only" data-code-focus="14,19"></span>
+                <span class="fragment current-only" data-code-focus="26"></span>
+            </section>
         </section>
         <section>
             <myTitleBox>
@@ -623,10 +645,10 @@ class Bookshelf extends Model
                 </article>
             </myRowBox>
         </section>
-        <section data-background="img/library/interactionToEventDiagram.png">
+        <section data-background="img/hey_boss/interactionToEventDiagram.jpg">
             <!--<myColBox>-->
             <!--<article>-->
-            <!--<p><img src="" alt="Diagram of the intearction on the web page then routed to the controller action, which calls a command, If valid, the Command creates the Event"></p>-->
+            <!--<p><img src="" alt="Diagram of the interaction on the web page then routed to the controller action, which calls a command, If valid, the Command creates the Event"></p>-->
 
             <!--</article>-->
             <!--</myColBox>-->
@@ -741,96 +763,97 @@ class Bookshelf extends Model
         <!--</myColBox>-->
         <!--</section>-->
         <section>
-            <myColBox>
-                <article>
-                    <h1 id="command-handler">Command Handler</h1>
-                    <ol>
-                        <li>Validate the command on its own merits.</li>
-                        <li>Validate the command on the current state of the aggregate.</li>
-                        <li>If validation is successful, create an event(s)</li>
-                        <li>Attempt to persist the new events. If there&#39;s a concurrency conflict during this step, retry or exit.</li>
-                    </ol>
-                </article>
-            </myColBox>
+            <section>
+                <myColBox>
+                    <article>
+                        <h1 id="command-handler">Command Handler</h1>
+                        <ol>
+                            <li>Validate the command on its own merits.</li>
+                            <li>Validate the command on the current state of the aggregate.</li>
+                            <li>If validation is successful, create an event(s)</li>
+                            <li>Attempt to persist the new events. If there&#39;s a concurrency conflict during this step, retry or exit.</li>
+                        </ol>
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3 id="crud-to-cqrs">Command Handler example</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+                        <pre><code>public function update(Request $request)
+    {
+        // $request has book id, patron id
+
+        try {
+
+            $command = new CheckOutBook($request-&gt;bookId, $request-&gt;patronId);
+
+            $this-&gt;bookLendingService-&gt;handleCheckOutBook($command);
+
+        } catch (InvalidUserException $e) {
+            return response()-&gt;json(&quot;Not authorized to check out a book.&quot;, Response::HTTP_FORBIDDEN);
+        } catch (BookUnavailableException $e) {
+           return response()-&gt;json(&quot;Book was not available to be checked out&quot;, 400);
+
+    }
+
+    &lt;------ dynamic command handler  ------&gt;
+
+    private function handle(Command $command)
+    {
+        $method = $this-&gt;getHandleMethod($command);
+
+        if (! method_exists($this, $method)) {
+            return;
+        }
+
+        $this-&gt;$method($command);
+    }
+
+    private function getHandleMethod(Command $command)
+    {
+        return &#39;handle&#39; . class_basename($command);
+    }
+
+    &lt;-------- handle check out book command ---------&gt;
+
+    public function handleCheckoutOutBook(CheckOutBook $command)
+    {
+        $book = Book::findOrFail($command-&gt;bookId);
+        $patron = Patron::findOrFail($command-&gt;patronId);
+
+        if (!$book-&gt;isAvailable()) {
+            throw new BookUnavailableException();
+        }
+
+        if (!$patron-&gt;isAuthorized()) {
+            throw new InvalidUserException();
+        }
+
+        //record the event
+        $this-&gt;record(
+            new BookWasCheckedOut(date(&quot;Y-m-d H:i:s&quot;),
+                $patron-&gt;getId(),
+                $book-&gt;getId())
+        );
+
+
+    }
+    </code></pre>
+                        <span class="fragment current-only" data-code-focus="1"></span>
+                        <span class="fragment current-only" data-code-focus="7"></span>
+                        <span class="fragment current-only" data-code-focus="9"></span>
+                        <span class="fragment current-only" data-code-focus="11-14"></span>
+                        <span class="fragment current-only" data-code-focus="38"></span>
+                        <span class="fragment current-only" data-code-focus="40-41"></span>
+                        <span class="fragment current-only" data-code-focus="43-49"></span>
+                        <span class="fragment current-only" data-code-focus="52-56"></span>
+                    </article>
+                </myColBox>
+            </section>
         </section>
-        <section>
-            <myTitleBox>
-                <h3 id="crud-to-cqrs">Command Handler example</h3>
-            </myTitleBox>
-            <myColBox>
-                <article>
-                    <pre><code>public function update(Request $request)
-{
-    // $request has book id, patron id
-
-    try {
-
-        $command = new CheckOutBook($request-&gt;bookId, $request-&gt;patronId);
-
-        $this-&gt;bookLendingService-&gt;handleCheckOutBook($command);
-
-    } catch (InvalidUserException $e) {
-        return response()-&gt;json(&quot;Not authorized to check out a book.&quot;, Response::HTTP_FORBIDDEN);
-    } catch (BookUnavailableException $e) {
-       return response()-&gt;json(&quot;Book was not available to be checked out&quot;, 400);
-
-}
-
-&lt;------ dynamic command handler  ------&gt;
-
-private function handle(Command $command)
-{
-    $method = $this-&gt;getHandleMethod($command);
-
-    if (! method_exists($this, $method)) {
-        return;
-    }
-
-    $this-&gt;$method($command);
-}
-
-private function getHandleMethod(Command $command)
-{
-    return &#39;handle&#39; . class_basename($command);
-}
-
-&lt;-------- handle check out book command ---------&gt;
-
-public function handleCheckoutOutBook(CheckOutBook $command)
-{
-    $book = Book::findOrFail($command-&gt;bookId);
-    $patron = Patron::findOrFail($command-&gt;patronId);
-
-    if (!$book-&gt;isAvailable()) {
-        throw new BookUnavailableException();
-    }
-
-    if (!$patron-&gt;isAuthorized()) {
-        throw new InvalidUserException();
-    }
-
-    //record the event
-    $this-&gt;record(
-        new BookWasCheckedOut(date(&quot;Y-m-d H:i:s&quot;),
-            $patron-&gt;getId(),
-            $book-&gt;getId())
-    );
-
-
-}
-</code></pre>
-                    <span class="fragment current-only" data-code-focus="1"></span>
-                    <span class="fragment current-only" data-code-focus="7"></span>
-                    <span class="fragment current-only" data-code-focus="9"></span>
-                    <span class="fragment current-only" data-code-focus="11-14"></span>
-                    <span class="fragment current-only" data-code-focus="38"></span>
-                    <span class="fragment current-only" data-code-focus="40-41"></span>
-                    <span class="fragment current-only" data-code-focus="43-49"></span>
-                    <span class="fragment current-only" data-code-focus="52-56"></span>
-                </article>
-            </myColBox>
-        </section>
-
         <section>
             <myColBox>
                 <article>
@@ -889,13 +912,6 @@ public function handleCheckoutOutBook(CheckOutBook $command)
         <section>
             <myColBox>
                 <article>
-                    <img src="img/boots/knife_fork.jpg" alt="Fork Knife">
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myColBox>
-                <article>
                     <img src="img/boots/bounded_contexts.png" alt="bounded contexts">
                 </article>
             </myColBox>
@@ -907,52 +923,52 @@ public function handleCheckoutOutBook(CheckOutBook $command)
                 </article>
             </myColBox>
         </section>
-        <section>
-            <myRowBox>
-                <article>
-                    <myColBox>
-                        <article>
-                            <img src="img/boots/octocat_Professortocat_v2.png" alt="github">
-                        </article>
-                        <article>
-                            <img src="img/boots/vagrant-virtualbox.png" alt="virtualization">
-                        </article>
-                        <article>
-                            <img src="img/boots/phpunit.png" alt="tests">
-                        </article>
-                    </myColBox>
-                </article>
-                <article>
-                    <myColBox>
-                        <article>
-                            <img src="img/boots/logo-composer-transparent.png" alt="composer">
-                        </article>
-                        <article>
-                            <img src="img/hey_boss/twig.jpg" alt="twig">
-                        </article>
-                        <article>
-                            <img src="img/hey_boss/pimple.jpg" alt="pimple">
-                        </article>
-                    </myColBox>
-                </article>
-            </myRowBox>
-        </section>
-        <section>
-            <myColBox>
-                <article>
-                    <img src="img/hey_boss/scholarships-filetree-legacy.png" alt="filetree old only">
-                </article>
-            </myColBox>
-        </section>
+        <!--<section>-->
+            <!--<myRowBox>-->
+                <!--<article>-->
+                    <!--<myColBox>-->
+                        <!--<article>-->
+                            <!--<img src="img/boots/octocat_Professortocat_v2.png" alt="github">-->
+                        <!--</article>-->
+                        <!--<article>-->
+                            <!--<img src="img/boots/vagrant-virtualbox.png" alt="virtualization">-->
+                        <!--</article>-->
+                        <!--<article>-->
+                            <!--<img src="img/boots/phpunit.png" alt="tests">-->
+                        <!--</article>-->
+                    <!--</myColBox>-->
+                <!--</article>-->
+                <!--<article>-->
+                    <!--<myColBox>-->
+                        <!--<article>-->
+                            <!--<img src="img/boots/logo-composer-transparent.png" alt="composer">-->
+                        <!--</article>-->
+                        <!--<article>-->
+                            <!--<img src="img/hey_boss/twig.jpg" alt="twig">-->
+                        <!--</article>-->
+                        <!--<article>-->
+                            <!--<img src="img/hey_boss/pimple.jpg" alt="pimple">-->
+                        <!--</article>-->
+                    <!--</myColBox>-->
+                <!--</article>-->
+            <!--</myRowBox>-->
+        <!--</section>-->
+        <!--<section>-->
+            <!--<myColBox>-->
+                <!--<article>-->
+                    <!--<img src="img/hey_boss/scholarships-filetree-legacy.png" alt="filetree old only">-->
+                <!--</article>-->
+            <!--</myColBox>-->
+        <!--</section>-->
 
 
-        <section>
-            <myColBox>
-                <article>
-                    <img src="img/hey_boss/scholarships-filetree.png" alt="filetree with new code">
-                </article>
-            </myColBox>
-        </section>
+        <!--<section>-->
+            <!--<myColBox>-->
+                <!--<article>-->
+                    <!--<img src="img/hey_boss/scholarships-filetree.png" alt="filetree with new code">-->
+                <!--</article>-->
+            <!--</myColBox>-->
+        <!--</section>-->
             <!--<section>-->
                 <!--<myTitleBox>-->
                     <!--<h3>Bootstrapping:  Namespaces</h3>-->
@@ -992,13 +1008,13 @@ public function handleCheckoutOutBook(CheckOutBook $command)
             <!--</section>-->
         <!--</section>-->
 
-        <section>
-            <myColBox>
-                <article>
-                    <img src="img/hey_boss/scholarships-filetree-controllers.png" alt="filetree with new controllers and views">
-                </article>
-            </myColBox>
-        </section>
+        <!--<section>-->
+            <!--<myColBox>-->
+                <!--<article>-->
+                    <!--<img src="img/hey_boss/scholarships-filetree-controllers.png" alt="filetree with new controllers and views">-->
+                <!--</article>-->
+            <!--</myColBox>-->
+        <!--</section>-->
         <!--<section>-->
             <!--<section data-background-image="img/boots/dependency_puzzle.png" data-background-size="20%" data-background-position="top">-->
                 <!--<h1>Dependency Injection</h1>-->
@@ -1728,8 +1744,7 @@ public function handleCheckoutOutBook(CheckOutBook $command)
                 </article>
             </myColBox>
             <aside class="notes">
-                <p>I like to open this up for the full effect of how ridiculous it can become.  This group was
-                    maintaining their own web app before we inherited it</p>
+                <p>I like to open this up for the full effect of how ridiculous it can become.  </p>
                 <p>There are some that are actually subsets of the same status with some explanation attached</p>
                 <li>Registered with a Site location</li>
                 <li>Pending with reasons attached</li>
@@ -1859,7 +1874,7 @@ public function handleCheckoutOutBook(CheckOutBook $command)
                 </article>
             </myColBox>
         </section>
-        <section>
+        <!--section>
             <myColBox>
                 <article>
                     <p>New Stuff to check out!</p>
@@ -1878,7 +1893,6 @@ public function handleCheckoutOutBook(CheckOutBook $command)
                             <ul>
                                 <li><a href="http://eventstore.org">EventStore.org</a> - production-ready eventstore, postgres implementation with streams</li>
                                 <li><a href="https://eventsauce.io/">Event Sauce - Event-sourcing & Commands</a></li>
-                                <li><a href="http://getprooph.org/">Prooph - CQRS and ES</a></li>
                                 <li><a href="https://github.com/broadway/broadway">Broadway - framework for CQRS and ES</a></li>
                             </ul>
                     </ul>
@@ -1907,12 +1921,12 @@ public function handleCheckoutOutBook(CheckOutBook $command)
                     </ul>
                 </article>
             </myColBox>
-        </section>
+        </section-->
         <section>
             <myColBox>
                 <article>
                     <h1 id="thank-you">Thank you!</h1>
-                    <img src="img/sephp-lg.png" alt="southeast php">
+                    <img src="img/exploreddd.jpg" alt="explore ddd">
                 </article>
             </myColBox>
             <aside class="notes">
