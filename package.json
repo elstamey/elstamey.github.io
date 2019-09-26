@@ -4,6 +4,8 @@
   "description": "Emily's Presentation Framework",
   "homepage": "http://elstamey.github.io",
   "scripts": {
+    "freshinstall": "rm -rf node_modules && rm -rf package-lock.json && npm install",
+    "preinstall": "npm config set package-lock true",
     "test": "grunt test",
     "start": "grunt serve",
     "build": "grunt"
@@ -41,7 +43,14 @@
     "reveal.js": "^3.8.0",
     "highlight.js": "^9.11.0",
     "reveal-code-focus": "^1.0.0",
-    "lodash": ">=4.17.13"
+    "lodash": ">=4.17.13",
+    "lodash.mergewith": ">=4.6.2",
+    "diff": ">=3.5.0",
+    "js-yaml": ">=3.13.1",
+    "mixin-deep": ">=1.3.2",
+    "set-value": ">=2.0.1",
+    "tar": ">=2.2.2",
+    "fstream": ">=1.0.12"
   },
   "license": "MIT"
 }
