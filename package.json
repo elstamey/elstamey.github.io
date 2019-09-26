@@ -1,19 +1,16 @@
 {
-  "name": "reveal.js",
+  "name": "elstamey.github.io",
   "version": "3.8.0",
-  "description": "The HTML Presentation Framework",
-  "homepage": "http://revealjs.com",
-  "subdomain": "revealjs",
-  "main": "js/reveal.js",
+  "description": "Emily's Presentation Framework",
+  "homepage": "http://elstamey.github.io",
   "scripts": {
     "test": "grunt test",
     "start": "grunt serve",
     "build": "grunt"
   },
   "author": {
-    "name": "Hakim El Hattab",
-    "email": "hakim.elhattab@gmail.com",
-    "web": "http://hakim.se"
+    "name": "Emily Stamey",
+    "web": "http://elstamey.github.io"
   },
   "repository": {
     "type": "git",
@@ -41,8 +38,10 @@
     "socket.io": "^2.2.0"
   },
   "dependencies": {
+    "reveal.js": "^3.8.0",
     "highlight.js": "^9.11.0",
-    "reveal-code-focus": "^1.0.0"
+    "reveal-code-focus": "^1.0.0",
+    "lodash": ">=4.17.13"
   },
   "license": "MIT"
 }
