@@ -103,790 +103,792 @@
             </aside>
         </section>
         <section>
-            <myTitleBox><h3>I LOVE Legacy!</h3></myTitleBox>
-            <myColBox>
-                <article>
-                    <img src="img/boots/knife_fork.jpg" alt="Fork Knife">
-                </article>
-            </myColBox>
-            <aside class="notes">
-                <p>I love to give and hear talks about Legacy solutions because there is so much creativity and problem solving! </p>
-                <p>Event Sourcing, I feel, is a great for fixing so many things that Legacy Applications ArE or HAVE BECOME</p>
-                <p>I really liked Eric Evans photo and reverence for the legacy application through the photo of the tree being propped up</p>
-                <p>One of my favorite photos to represent Legacy is also this one.  Because so many of the legacy apps I've worked on have started out as a knife and over time our users or developers decided they needed a fork, and this is what they came up with. </p>
-                <p>At first when you look at it, things may be messy, but in reality this is pretty magnificent ingenuity, right?</p>
-            </aside>
-        </section>
-        <section>
-            <myTitleBox>
-                <h3 id="we-re-going-to-talk-about-">Learning Objectives</h3>
-            </myTitleBox>
-            <myColBox>
-                <article>
-                    <ul>
-                        <li>Basics of Event Sourcing using an example of a library (the kind where you check out books)</li>
-                        <p>&nbsp;</p>
-                        <li>Three projects I have worked on and the ways we used Event Sourcing on them</li>
-                    </ul>
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myTitleBox>
-                <h2 id="this-will-seem-like-overkill-for-a-little-bit">Before we begin</h2>
-            </myTitleBox>
-            <myColBox>
-                <article>
-                    <p>Learning Event-Sourcing (or DDD) is tough! i</p>
-                    <p>Be kind to learners (including yourself)</p>
-                    <p>Event-Sourcing isn't for your whole application</p>
-                </article>
-                <!--article>
-                    <p><img src="img/library/look_here.gif"></p>
-                </article-->
-            </myColBox>
-            <aside class="notes">
-                <li>Coming from a CRUD environment, Event-sourcing seems weird, it isn't normal to learn it all at once.  It can take a while!</li>
-                <li>Reminder: As with all new things, be patient with yourself</li>
-                <li>ES isn't for all the things!</li>
-                <li>If we were simply managing inventory or building a blog app, we probably wouldn't need ES</li>
-                <li>ES is helpful for the things that make our applications difficult to maintain over time, the changes in process</li>
-                <li>ES is great for proving how you got to your results</li>
-                <li>ES is powerful in that it's flexible to changes and keeping an audit log</li>
-            </aside>
-        </section>
-        <section>
-            <myColBox>
-                <article>
-                    <h1 id="event-sourcing">Event Sourcing</h1>
-                    <p>The fundamental idea of Event Sourcing is that of ensuring <strong>every change to the state</strong> of an application <strong>is captured in an event object</strong>, and that these event objects are themselves stored in the sequence they were applied for the same lifetime as the application state itself.</p></p>
-                    <p>  Martin Fowler</p>
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myTitleBox>
-                <h3>Events and Listeners</h3>
-            </myTitleBox>
-            <myColBox>
-                <article>
-                    <img src="img/library/events_listeners.png" alt="An Event represented as a diamond and a Listener represented as an ear">
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myTitleBox>
-                <h3 id="an-event">An Event</h3>
-            </myTitleBox>
-            <myColBox>
-                <article>
-                    <p>What happened?<br>
-                        <strong>BookWasCheckedOut</strong></p>
-                    <p>What do I need to remember about it?<br>
-                        <strong>(book, patron, date)</strong></p>
-                </article>
-                <article>
-                    <img src="img/library/lending%20desk1.png">
-                </article>
-            </myColBox>
-        </section>
-        <section>
+            <section>
+                <myTitleBox><h3>I LOVE Legacy!</h3></myTitleBox>
+                <myColBox>
+                    <article>
+                        <img src="img/boots/knife_fork.jpg" alt="Fork Knife">
+                    </article>
+                </myColBox>
+                <aside class="notes">
+                    <p>I love to give and hear talks about Legacy solutions because there is so much creativity and problem solving! </p>
+                    <p>Event Sourcing, I feel, is a great for fixing so many things that Legacy Applications ArE or HAVE BECOME</p>
+                    <p>I really liked Eric Evans photo and reverence for the legacy application through the photo of the tree being propped up</p>
+                    <p>One of my favorite photos to represent Legacy is also this one.  Because so many of the legacy apps I've worked on have started out as a knife and over time our users or developers decided they needed a fork, and this is what they came up with. </p>
+                    <p>At first when you look at it, things may be messy, but in reality this is pretty magnificent ingenuity, right?</p>
+                </aside>
+            </section>
             <section>
                 <myTitleBox>
-                    <h3 id="event-attributes">Event Attributes</h3>
+                    <h3 id="we-re-going-to-talk-about-">Learning Objectives</h3>
                 </myTitleBox>
                 <myColBox>
                     <article>
                         <ul>
-                            <li>Save only what you need to preserve</li>
-                            <li>The rest can be looked up</li>
+                            <li>Basics of Event Sourcing using an example of a library (the kind where you check out books)</li>
+                            <p>&nbsp;</p>
+                            <li>Three projects I have worked on and the ways we used Event Sourcing on them</li>
                         </ul>
-                        <p><strong>(book id, patron id, date)</strong></p>
-                    </article>
-                    <article>
-                        <img src="img/hey_boss/event-with-attributes.png">
                     </article>
                 </myColBox>
             </section>
             <section>
+                <myTitleBox>
+                    <h2 id="this-will-seem-like-overkill-for-a-little-bit">Before we begin</h2>
+                </myTitleBox>
                 <myColBox>
                     <article>
-                        <h1 id="event-class">Event Class</h1>
-                        <pre><code>
-&lt;?php
-
-namespace Library\Events;
-
-use Library\Support\Event;
-
-class BookWasCheckedOut
-{
-
-    /**
-     * @var DateTime
-     */
-    protected $checkoutDate;
-
-    /**
-     * @var int
-     */
-    protected $patronId;
-
-    /**
-     * @var int
-     */
-    protected $bookId;
-
-    public function __construct(DateTime $checkoutDate, PatronId $patronId, BookId $bookId)
-    {
-
-        $this-&gt;checkoutDate = $checkoutDate;
-        $this-&gt;patronId = $patronId;
-        $this-&gt;bookId = $bookId;
-    }
-
-    /**
-    * @return array
-    */
-    public function serialize()
-    {
-        return [
-            &#39;checkout_date&#39; =&gt; $this-&gt;$checkoutDate-&gt;toString(),
-            &#39;patron_id&#39; =&gt; $this-&gt;patronId-&gt;toNative(),
-            &#39;book_id&#39; =&gt; $this-&gt;bookId-&gt;toNative(),
-        ];
-    }
-
-    /**
-    * @param array $data
-    *
-    * @return static
-    */
-    public static function deserialize($data)
-    {
-        return new BookWasCheckedOut(
-            DateTime::createFromFormat(&#39;j-M-Y&#39;, $data[&#39;checkout_date&#39;]),
-            PatronId::fromNative($data[&#39;patron_id&#39;]),
-            BookId::fromNative($data[&#39;book_id&#39;])
-        );
-    }
-
-     /**
-     * @return int
-     */
-    public function getBookId()
-    {
-        return $this->bookId;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCheckoutDate(): DateTime
-    {
-        return $this->checkoutDate;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPatronId(): int
-    {
-        return $this->patronId;
-    }
-
-
-}
-</code></pre>
+                        <p>Learning Event-Sourcing (or DDD) is tough! i</p>
+                        <p>Be kind to learners (including yourself)</p>
+                        <p>Event-Sourcing isn't for your whole application</p>
                     </article>
+                    <!--article>
+                        <p><img src="img/library/look_here.gif"></p>
+                    </article-->
                 </myColBox>
-                <span class="fragment current-only" data-code-focus="8"></span>
-                <span class="fragment current-only" data-code-focus="14,19"></span>
-                <span class="fragment current-only" data-code-focus="26"></span>
-            </section>
-        </section>
-        <section>
-            <myTitleBox>
-                <h3 id="rules-to-follow">Rules for Events</h3>
-            </myTitleBox>
-            <myColBox>
-                <article>
-                    <ul>
-                        <li>Usually named as past-tense verbs</li>
-                        <li><strong>RARELY</strong> changed</li>
-                        <li><strong>Never</strong> deleted</li>
-                        <li>Has attributes that are values<ul>
-                            <li>not model, object, collection, or aggregate root</li>
-                        </ul>
-                        </li>
-                    </ul>
-
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myColBox>
-                <article>
-                    <img src="img/status_change/dont_delete_events.png" alt="3 symbols representing events of a deposit, a correction, and a deposit">
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myTitleBox>
-                <h3 id="don-t-store-objects">Don&#39;t store objects</h3>
-            </myTitleBox>
-            <myColBox>
-                <article>
-                    <img src="img/status_change/Objects.png" alt="objects can change">
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myTitleBox>
-                <h3>If We Stored Objects in an Event...</h3>
-            </myTitleBox>
-            <myColBox>
-                <article>
-                    <img src="img/status_change/EventWithObject.png" alt="Event With Object">
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myTitleBox>
-                <!--<h3 id="events-are-not-bionic">Events are not Bionic</h3>-->
-            </myTitleBox>
-            <myColBox>
-                <article>
-                    <img src="img/hey_boss/could-should.jpg" alt="Jeff Goldblum in Jurassic Park saying you never stopped to think whether you should">
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myTitleBox>
-                <h3 id="events-rarely-change">Events rarely change</h3>
-            </myTitleBox>
-            <myColBox>
-                <article>
-                    <ul>
-                        <li>The part of the code that will change is most likely the <strong>result that follows that event</strong>.</li>
-                        <li>The <strong>structure of the resulting data</strong> is more likely to change than the thing that happened</li>
-                    </ul>
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myColBox>
-                <article>
-                    <p><img src="img/library/event_with_listener.png" alt="One event with one listener handling the event"></p>
-
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myColBox>
-                <article>
-                    <p><img src="img/status_change/events_replaced.png" alt="One event with two listeners handling the event differently, one is thrown away"></p>
-
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myColBox>
-                <article>
-                    <p><img src="img/status_change/events_treated_differently.png" alt="One event with two listeners handling the event differently"></p>
-
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myColBox>
-                <article>
-                    <h1 id="why-events-">Reasons to use Events</h1>
-                    <ul>
-                        <li>State transitions are important</li>
-                        <li>We need an audit log, proof of the state we are currently in</li>
-                        <li>The history of what happened is more important than the current state</li>
-                        <li>Events are replayable if behavior in your application changes</li>
-                    </ul>
-                </article>
-            </myColBox>
-        </section>
-
-        <section>
-            <myColBox>
-                <article>
-                    <p><img src="img/status_change/DomainMessage.png" alt="Domain Message"></p>
-
-                </article>
-            </myColBox>
-            <aside class="notes">
-                <li>When we talked about the definition of event sourcing, we said that we would store events in the order they happened</li>
-                <li>And we would always replay them in that order</li>
-                <li>We need to capture that order, the timestamp, and the type of event they are</li>
-                <li>And I like to separate this information from the Event class itself, as a sort of envelope</li>
-                <li>With the Event being stored as the payload.</li>
-                <li>This also makes it possible to store all of your events in the same eventstore</li>
-            </aside>
-        </section>
-        <section>
-            <myTitleBox>
-                <h3 id="event-store">Event Store</h3>
-            </myTitleBox>
-            <myColBox>
-                <article>
-                    <ul>
-                        <li>Domain-specific database</li>
-                        <li>Based on a Publish-Subscribe message pattern</li>
-                    </ul>
-                    <p><img src="img/hey_boss/event-store-domain-message.png" alt="EventStore"></p>
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <section data-background="img/status_change/projector.png">
                 <aside class="notes">
-                    <p>A set of event handlers that work together to build and maintain a table to be accessed by the read model.</p>
+                    <li>Coming from a CRUD environment, Event-sourcing seems weird, it isn't normal to learn it all at once.  It can take a while!</li>
+                    <li>Reminder: As with all new things, be patient with yourself</li>
+                    <li>ES isn't for all the things!</li>
+                    <li>If we were simply managing inventory or building a blog app, we probably wouldn't need ES</li>
+                    <li>ES is helpful for the things that make our applications difficult to maintain over time, the changes in process</li>
+                    <li>ES is great for proving how you got to your results</li>
+                    <li>ES is powerful in that it's flexible to changes and keeping an audit log</li>
                 </aside>
             </section>
             <section>
                 <myColBox>
                     <article>
-                        <h1 id="projector">Projector</h1>
-<pre><code>&lt;?php
-
-namespace Library\ReadModel;
-
-use Library\Events\BookWasCheckedIn;
-use Library\Events\BookWasCheckedOut;
-use Library\Events\BookAddedToBookshelf;
-use App\Support\ReadModel\Replayable;
-use App\Support\ReadModel\SimpleProjector;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Connection;
-
-class BookshelfProjector extends SimpleProjector implements Replayable
-{
-
-    /**
-     * @var Connection
-     */
-    private $connection;
-
-    /**
-     * @var string table we&#39;re playing events into
-     */
-    private $table = &#39;proj_bookshelf&#39;;
-
-    public function __construct(Connection $connection)
-    {
-        $this-&gt;connection = $connection;
-    }
-
-    public function beforeReplay()
-    {
-        $builder = $this-&gt;connection-&gt;getSchemaBuilder();
-
-        $builder-&gt;dropIfExists(&#39;proj_bookshelf&#39;);
-        $builder-&gt;create(&#39;proj_bookshelf_tmp&#39;, function (Blueprint $schema) {
-            $schema-&gt;string(&#39;book_id&#39;);
-            $schema-&gt;string(&#39;book_title&#39;);
-            $schema-&gt;string(&#39;book_author&#39;);
-            $schema-&gt;string(&#39;status&#39;);
-            $schema-&gt;string(&#39;checkout_date&#39;);
-            $schema-&gt;string(&#39;patron_id&#39;);
-
-            $schema-&gt;primary(&#39;book_id&#39;);
-        });
-
-        $this-&gt;table = &#39;proj_bookshelf_tmp&#39;;
-    }
-
-    public function afterReplay()
-    {
-        $builder = $this-&gt;connection-&gt;getSchemaBuilder();
-
-        $builder-&gt;dropIfExists(&#39;proj_bookshelf&#39;);
-        $builder-&gt;rename(&#39;proj_bookshelf_tmp&#39;, &#39;proj_bookshelf&#39;);
-
-        $this-&gt;table = &#39;proj_bookshelf&#39;;
-    }
-
-    /**
-    * @param BookWasCheckedOut $event
-    */
-    public function applyBookWasCheckedOut(BookWasCheckedOut $event)
-    {
-        $bookshelfItem = BookshelfItem::where(&#39;id&#39;, $event-&gt;bookId);
-
-        $book-&gt;status = &#39;Checked Out&#39;;
-        $book-&gt;checkout_date = $event-&gt;checkoutDate;
-        $book-&gt;patron_id = $event-&gt;patronId;
-
-        $book-&gt;save();
-    }
-
-    /**
-    * @param BookAddedToBookshelf $event
-    */
-    public function applyBookAddedToBookshelf(BookAddedToBookshelf $event)
-    {
-        $bookshelfItem = new BookshelfItem();
-        $bookshelfItem-&gt;setTable($this-&gt;table);
-
-        $bookshelfItem-&gt;bookId = $event-&gt;bookId;
-        $bookshelfItem-&gt;bookTitle = $event-&gt;bookTitle;
-        $bookshelfItem-&gt;bookAuthor = $event-&gt;bookAuthor;
-        $bookshelfItem-&gt;status = &#39;on shelf&#39;;
-
-        $bookshelfItem-&gt;save();
-    }
-
-
-    /**
-    * @param BookWasReturned $event
-    */
-    public function applyBookWasReturned(BookWasReturned $event)
-    {
-        $bookshelfItem = BookshelfItem::where(&#39;id&#39;, $event-&gt;bookId);
-
-        $book-&gt;status = &#39;Available&#39;;
-        $book-&gt;checkout_date = '';
-        $book-&gt;patron_id = '';
-
-        $book-&gt;save();
-    }
-}
-</code></pre>
-
-                        <p>A set of event handlers that work together to build and maintain a table to be accessed by the read model.</p>
-
+                        <h1 id="event-sourcing">Event Sourcing</h1>
+                        <p>The fundamental idea of Event Sourcing is that of ensuring <strong>every change to the state</strong> of an application <strong>is captured in an event object</strong>, and that these event objects are themselves stored in the sequence they were applied for the same lifetime as the application state itself.</p></p>
+                        <p>  Martin Fowler</p>
                     </article>
                 </myColBox>
-                <span class="fragment current-only" data-code-focus="13"></span>
-                <span class="fragment current-only" data-code-focus="24"></span>
-                <span class="fragment current-only" data-code-focus="63"></span>
-                <span class="fragment current-only" data-code-focus="77"></span>
-                <span class="fragment current-only" data-code-focus="94"></span>
             </section>
-        </section>
-        <section>
             <section>
                 <myTitleBox>
-                    <h1 id="read-model">Read Model</h1>
+                    <h3>Events and Listeners</h3>
                 </myTitleBox>
                 <myColBox>
                     <article>
-
-                        <img src="img/library/read_model.png" alt="Read Model table with highlighted rows and queries">
-
+                        <img src="img/library/events_listeners.png" alt="An Event represented as a diamond and a Listener represented as an ear">
                     </article>
                 </myColBox>
             </section>
             <section>
+                <myTitleBox>
+                    <h3 id="an-event">An Event</h3>
+                </myTitleBox>
                 <myColBox>
                     <article>
-                        <h1 id="read-model">Read Model</h1>
-<pre><code>&lt;?php
-
-namespace Library\ReadModel;
-
-
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
-
-/**
-* @codeCoverageIgnore
-*/
-class Bookshelf extends Model
-{
-    protected  $table = &#39;proj_bookshelf&#39;;
-    public $incrementing = false;
-    public $timestamps = false;
-
-    public static function lookupLoansFor($patronId)
-    {
-        return static::where(&#39;patron_id&#39;, $patronId)-&gt;get();
-    }
-
-    public function lookupAvailableBooks()
-    {
-        return static::where(&#39;status&#39;, &#39;Available&#39;)-&gt;get();
-    }
-
-    public function lookupOverdueBooks()
-    {
-        return static::where(&#39;checkout_date&#39;, &#39;&lt;&#39;, date(&#39;Y-m-d&#39;, strtotime(&#39;-7 days&#39;)))-&gt;get();
-    }
-}
-</code></pre>
+                        <p>What happened?<br>
+                            <strong>BookWasCheckedOut</strong></p>
+                        <p>What do I need to remember about it?<br>
+                            <strong>(book, patron, date)</strong></p>
+                    </article>
+                    <article>
+                        <img src="img/library/lending%20desk1.png">
                     </article>
                 </myColBox>
-                <span class="fragment current-only" data-code-focus="12"></span>
-                <span class="fragment current-only" data-code-focus="14"></span>
-                <span class="fragment current-only" data-code-focus="18"></span>
-                <span class="fragment current-only" data-code-focus="23"></span>
-                <span class="fragment current-only" data-code-focus="28"></span>
             </section>
-        </section>
-        <section>
-            <myTitleBox>
-                <h3>Creating the events</h3>
-            </myTitleBox>
-            <myRowBox>
-                <article>
-                    <ul>
-                        <li><b>An event is created only after validation</b>
+            <section>
+                <section>
+                    <myTitleBox>
+                        <h3 id="event-attributes">Event Attributes</h3>
+                    </myTitleBox>
+                    <myColBox>
+                        <article>
                             <ul>
-                                <li>Directly in a controller 'checkout' method</li>
-                                <li>Using a Check Out Book Command and Handler</li>
+                                <li>Save only what you need to preserve</li>
+                                <li>The rest can be looked up</li>
                             </ul>
-                        </li>
-                    </ul>
-                </article>
-            </myRowBox>
-        </section>
-        <section data-background="img/hey_boss/interactionToEventDiagram.jpg">
-            <!--<myColBox>-->
-            <!--<article>-->
-            <!--<p><img src="" alt="Diagram of the interaction on the web page then routed to the controller action, which calls a command, If valid, the Command creates the Event"></p>-->
+                            <p><strong>(book id, patron id, date)</strong></p>
+                        </article>
+                        <article>
+                            <img src="img/hey_boss/event-with-attributes.png">
+                        </article>
+                    </myColBox>
+                </section>
+                <section>
+                    <myColBox>
+                        <article>
+                            <h1 id="event-class">Event Class</h1>
+                            <pre><code>
+    &lt;?php
 
-            <!--</article>-->
-            <!--</myColBox>-->
-        </section>
+    namespace Library\Events;
 
-        <!--<section data-background="img/library/bookCheckoutForm.png">-->
-        <!--</section>-->
-        <!--<section>-->
-            <!--<myColBox>-->
-                <!--<article>-->
-                    <!--<h1 id="bookscontroller-update">CRUD: update method</h1>-->
-                    <!--<pre><code>public function update(Request $request, $id)-->
-<!--{-->
-    <!--// our default update method-->
-    <!--// validate inputs-->
-    <!--$Book = Book::findOrFail($id);-->
-    <!--$Book-&gt;update($request-&gt;all());-->
+    use Library\Support\Event;
 
-    <!--return $Book;-->
-<!--}-->
-<!--</code></pre>-->
-                <!--</article>-->
-            <!--</myColBox>-->
-        <!--</section>-->
-        <!--<section>-->
-            <!--<myTitleBox>-->
-                <!--<h1 id="crud-to-cqrs">CRUD Checkout</h1>-->
-            <!--</myTitleBox>-->
-            <!--<myColBox>-->
-                <!--<article>-->
-                    <!--<p>&nbsp;</p>-->
-                    <!--<pre><code>-->
-<!--public function checkOutBook(Request $request, $id)-->
-<!--{-->
-    <!--// altered the update method-->
-	<!--// validate inputs-->
-    <!--$Book = Book::findOrFail($id);-->
-    <!--$Book-&gt;update(&#39;status&#39; =&gt; &#39;checked out&#39;,-->
-                    <!--&#39;patron&#39; =&gt; $request-&gt;patronId);-->
-
-    <!--return $Book;-->
-<!--}-->
-<!--</code></pre>-->
-                    <!--<span class="fragment current-only" data-code-focus="2"></span>-->
-                    <!--<span class="fragment current-only" data-code-focus="7-8"></span>-->
-                <!--</article>-->
-                <!--<article>-->
-                    <!--<p>&nbsp;</p>-->
-                    <!--<p class="fragment"><img src="img/library/itDoesntFit.gif" alt="cat climbing into a trash pail but doesn&#39;t quite fit"></p>-->
-                <!--</article>-->
-            <!--</myColBox>-->
-        <!--</section>-->
-        <!--<section>-->
-            <!--<myTitleBox>-->
-                <!--<h1 id="crud-to-cqrs">CRUD Checkout</h1>-->
-            <!--</myTitleBox>-->
-            <!--<myColBox>-->
-                <!--<article>-->
-                    <!--<p>&nbsp;</p>-->
-                    <!--<pre><code>-->
-<!--public function checkOutBook(Request $request, $id)-->
-<!--{-->
-    <!--// altered the update method-->
-    <!--// validate book can be checked out-->
-
-    <!--$event = new BookWasCheckedOut($request->bookId,-->
-				<!--$request->patronId,-->
-				<!--time());-->
-
-<!--}-->
-<!--</code></pre>-->
-                    <!--<span class="fragment current-only" data-code-focus="5"></span>-->
-                    <!--<span class="fragment current-only" data-code-focus="7-9"></span>-->
-                <!--</article>-->
-            <!--</myColBox>-->
-        <!--</section>-->
-        <section>
-            <myRowBox>
-                <myTitleBox>
-                    <h1>CQRS</h1>
-                </myTitleBox>
-                <article>
-                    <br>
-
-                    <h3>Command and Query Response Segregation</h3>
-                    <ul>
-                        <p>An application architecture pattern commonly used with event sourcing</p>
-                        <p>CQRS involves splitting an application into two parts internally.</p>
-                    </ul>
-                </article>
-            </myRowBox>
-        </section>
-        <section>
-            <myRowBox>
-                <article>
-                    <h1 id="cqrs">CQRS</h1>
-                    <ul>
-                        <li><strong>Command</strong> is any method that mutates state</li>
-                        <li><strong>Query</strong> is any method that returns a value</li>
-                        <li>Should only be used on specific portions of a system, not the system as a whole</li>
-                    </ul>
-                </article>
-            </myRowBox>
-        </section>
-        <!--<section>-->
-        <!--<myColBox>-->
-        <!--<article>-->
-        <!--<h1 id="command-handler">Command Handler</h1>-->
-        <!--<p>A command handler receives a command and brokers a result from the appropriate aggregate. &quot;A result&quot; is either a successful application of the command, or an exception.</p>-->
-        <!--<p><strong> should affect one and only one aggregate </strong></p>-->
-        <!--</article>-->
-        <!--</myColBox>-->
-        <!--</section>-->
-        <section>
-            <section>
-                <myColBox>
-                    <article>
-                        <h1 id="command-handler">Command Handler</h1>
-                        <ol>
-                            <li>Validate the command on its own merits.</li>
-                            <li>Validate the command on the current state of the aggregate.</li>
-                            <li>If validation is successful, create an event(s)</li>
-                            <li>Attempt to persist the new events. If there&#39;s a concurrency conflict during this step, retry or exit.</li>
-                        </ol>
-                    </article>
-                </myColBox>
-            </section>
-            <section>
-                <myTitleBox>
-                    <h3 id="crud-to-cqrs">Command Handler example</h3>
-                </myTitleBox>
-                <myColBox>
-                    <article>
-                        <pre><code>public function update(Request $request)
+    class BookWasCheckedOut
     {
-        // $request has book id, patron id
 
-        try {
+        /**
+         * @var DateTime
+         */
+        protected $checkoutDate;
 
-            $command = new CheckOutBook($request-&gt;bookId, $request-&gt;patronId);
+        /**
+         * @var int
+         */
+        protected $patronId;
 
-            $this-&gt;bookLendingService-&gt;handleCheckOutBook($command);
+        /**
+         * @var int
+         */
+        protected $bookId;
 
-        } catch (InvalidUserException $e) {
-            return response()-&gt;json(&quot;Not authorized to check out a book.&quot;, Response::HTTP_FORBIDDEN);
-        } catch (BookUnavailableException $e) {
-           return response()-&gt;json(&quot;Book was not available to be checked out&quot;, 400);
+        public function __construct(DateTime $checkoutDate, PatronId $patronId, BookId $bookId)
+        {
 
-    }
-
-    &lt;------ dynamic command handler  ------&gt;
-
-    private function handle(Command $command)
-    {
-        $method = $this-&gt;getHandleMethod($command);
-
-        if (! method_exists($this, $method)) {
-            return;
+            $this-&gt;checkoutDate = $checkoutDate;
+            $this-&gt;patronId = $patronId;
+            $this-&gt;bookId = $bookId;
         }
 
-        $this-&gt;$method($command);
-    }
-
-    private function getHandleMethod(Command $command)
-    {
-        return &#39;handle&#39; . class_basename($command);
-    }
-
-    &lt;-------- handle check out book command ---------&gt;
-
-    public function handleCheckoutOutBook(CheckOutBook $command)
-    {
-        $book = Book::findOrFail($command-&gt;bookId);
-        $patron = Patron::findOrFail($command-&gt;patronId);
-
-        if (!$book-&gt;isAvailable()) {
-            throw new BookUnavailableException();
+        /**
+        * @return array
+        */
+        public function serialize()
+        {
+            return [
+                &#39;checkout_date&#39; =&gt; $this-&gt;$checkoutDate-&gt;toString(),
+                &#39;patron_id&#39; =&gt; $this-&gt;patronId-&gt;toNative(),
+                &#39;book_id&#39; =&gt; $this-&gt;bookId-&gt;toNative(),
+            ];
         }
 
-        if (!$patron-&gt;isAuthorized()) {
-            throw new InvalidUserException();
+        /**
+        * @param array $data
+        *
+        * @return static
+        */
+        public static function deserialize($data)
+        {
+            return new BookWasCheckedOut(
+                DateTime::createFromFormat(&#39;j-M-Y&#39;, $data[&#39;checkout_date&#39;]),
+                PatronId::fromNative($data[&#39;patron_id&#39;]),
+                BookId::fromNative($data[&#39;book_id&#39;])
+            );
         }
 
-        //record the event
-        $this-&gt;record(
-            new BookWasCheckedOut(date(&quot;Y-m-d H:i:s&quot;),
-                $patron-&gt;getId(),
-                $book-&gt;getId())
-        );
+         /**
+         * @return int
+         */
+        public function getBookId()
+        {
+            return $this->bookId;
+        }
+
+        /**
+         * @return DateTime
+         */
+        public function getCheckoutDate(): DateTime
+        {
+            return $this->checkoutDate;
+        }
+
+        /**
+         * @return int
+         */
+        public function getPatronId(): int
+        {
+            return $this->patronId;
+        }
 
 
     }
     </code></pre>
-                        <span class="fragment current-only" data-code-focus="1"></span>
-                        <span class="fragment current-only" data-code-focus="7"></span>
-                        <span class="fragment current-only" data-code-focus="9"></span>
-                        <span class="fragment current-only" data-code-focus="11-14"></span>
-                        <span class="fragment current-only" data-code-focus="38"></span>
-                        <span class="fragment current-only" data-code-focus="40-41"></span>
-                        <span class="fragment current-only" data-code-focus="43-49"></span>
-                        <span class="fragment current-only" data-code-focus="52-56"></span>
+                        </article>
+                    </myColBox>
+                    <span class="fragment current-only" data-code-focus="8"></span>
+                    <span class="fragment current-only" data-code-focus="14,19"></span>
+                    <span class="fragment current-only" data-code-focus="26"></span>
+                </section>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3 id="rules-to-follow">Rules for Events</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+                        <ul>
+                            <li>Usually named as past-tense verbs</li>
+                            <li><strong>RARELY</strong> changed</li>
+                            <li><strong>Never</strong> deleted</li>
+                            <li>Has attributes that are values<ul>
+                                <li>not model, object, collection, or aggregate root</li>
+                            </ul>
+                            </li>
+                        </ul>
+
                     </article>
                 </myColBox>
             </section>
-        </section>
-        <section>
-            <myColBox>
-                <article>
-                    <h1 id="separate-read-write">Optimize</h1>
-                    <ul>
-                        <li>Separate the load from reads and writes allowing you to scale each independently. </li>
+            <section>
+                <myColBox>
+                    <article>
+                        <img src="img/status_change/dont_delete_events.png" alt="3 symbols representing events of a deposit, a correction, and a deposit">
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3 id="don-t-store-objects">Don&#39;t store objects</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+                        <img src="img/status_change/Objects.png" alt="objects can change">
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3>If We Stored Objects in an Event...</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+                        <img src="img/status_change/EventWithObject.png" alt="Event With Object">
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myTitleBox>
+                    <!--<h3 id="events-are-not-bionic">Events are not Bionic</h3>-->
+                </myTitleBox>
+                <myColBox>
+                    <article>
+                        <img src="img/hey_boss/could-should.jpg" alt="Jeff Goldblum in Jurassic Park saying you never stopped to think whether you should">
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3 id="events-rarely-change">Events rarely change</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
                         <ul>
-                            <li>All <strong>commands</strong> go into a WriteService</li>
-                            <li>All <strong>queries</strong> go into a ReadService</li>
-                        </ul></li>
+                            <li>The part of the code that will change is most likely the <strong>result that follows that event</strong>.</li>
+                            <li>The <strong>structure of the resulting data</strong> is more likely to change than the thing that happened</li>
+                        </ul>
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myColBox>
+                    <article>
+                        <p><img src="img/library/event_with_listener.png" alt="One event with one listener handling the event"></p>
 
-                    </ul>
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myColBox>
+                    <article>
+                        <p><img src="img/status_change/events_replaced.png" alt="One event with two listeners handling the event differently, one is thrown away"></p>
 
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myTitleBox>
-                <h3>You can choose which is best</h3>
-            </myTitleBox>
-            <myColBox>
-                <article>
-                    <ul>
-                        <li>CRUD</li>
-                        <li>Event-Sourcing</li>
-                        <li>Event-Sourcing with CQRS</li>
-                        <li>Event-Sourcing, CQRS, DDD</li>
-                    </ul>
-                </article>
-                <article>
-                    <img src="img/hey_boss/captain-planet-power.jpg">
-                </article>
-            </myColBox>
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myColBox>
+                    <article>
+                        <p><img src="img/status_change/events_treated_differently.png" alt="One event with two listeners handling the event differently"></p>
+
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myColBox>
+                    <article>
+                        <h1 id="why-events-">Reasons to use Events</h1>
+                        <ul>
+                            <li>State transitions are important</li>
+                            <li>We need an audit log, proof of the state we are currently in</li>
+                            <li>The history of what happened is more important than the current state</li>
+                            <li>Events are replayable if behavior in your application changes</li>
+                        </ul>
+                    </article>
+                </myColBox>
+            </section>
+
+            <section>
+                <myColBox>
+                    <article>
+                        <p><img src="img/status_change/DomainMessage.png" alt="Domain Message"></p>
+
+                    </article>
+                </myColBox>
+                <aside class="notes">
+                    <li>When we talked about the definition of event sourcing, we said that we would store events in the order they happened</li>
+                    <li>And we would always replay them in that order</li>
+                    <li>We need to capture that order, the timestamp, and the type of event they are</li>
+                    <li>And I like to separate this information from the Event class itself, as a sort of envelope</li>
+                    <li>With the Event being stored as the payload.</li>
+                    <li>This also makes it possible to store all of your events in the same eventstore</li>
+                </aside>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3 id="event-store">Event Store</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+                        <ul>
+                            <li>Domain-specific database</li>
+                            <li>Based on a Publish-Subscribe message pattern</li>
+                        </ul>
+                        <p><img src="img/hey_boss/event-store-domain-message.png" alt="EventStore"></p>
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <section data-background="img/status_change/projector.png">
+                    <aside class="notes">
+                        <p>A set of event handlers that work together to build and maintain a table to be accessed by the read model.</p>
+                    </aside>
+                </section>
+                <section>
+                    <myColBox>
+                        <article>
+                            <h1 id="projector">Projector</h1>
+    <pre><code>&lt;?php
+
+    namespace Library\ReadModel;
+
+    use Library\Events\BookWasCheckedIn;
+    use Library\Events\BookWasCheckedOut;
+    use Library\Events\BookAddedToBookshelf;
+    use App\Support\ReadModel\Replayable;
+    use App\Support\ReadModel\SimpleProjector;
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Database\Connection;
+
+    class BookshelfProjector extends SimpleProjector implements Replayable
+    {
+
+        /**
+         * @var Connection
+         */
+        private $connection;
+
+        /**
+         * @var string table we&#39;re playing events into
+         */
+        private $table = &#39;proj_bookshelf&#39;;
+
+        public function __construct(Connection $connection)
+        {
+            $this-&gt;connection = $connection;
+        }
+
+        public function beforeReplay()
+        {
+            $builder = $this-&gt;connection-&gt;getSchemaBuilder();
+
+            $builder-&gt;dropIfExists(&#39;proj_bookshelf&#39;);
+            $builder-&gt;create(&#39;proj_bookshelf_tmp&#39;, function (Blueprint $schema) {
+                $schema-&gt;string(&#39;book_id&#39;);
+                $schema-&gt;string(&#39;book_title&#39;);
+                $schema-&gt;string(&#39;book_author&#39;);
+                $schema-&gt;string(&#39;status&#39;);
+                $schema-&gt;string(&#39;checkout_date&#39;);
+                $schema-&gt;string(&#39;patron_id&#39;);
+
+                $schema-&gt;primary(&#39;book_id&#39;);
+            });
+
+            $this-&gt;table = &#39;proj_bookshelf_tmp&#39;;
+        }
+
+        public function afterReplay()
+        {
+            $builder = $this-&gt;connection-&gt;getSchemaBuilder();
+
+            $builder-&gt;dropIfExists(&#39;proj_bookshelf&#39;);
+            $builder-&gt;rename(&#39;proj_bookshelf_tmp&#39;, &#39;proj_bookshelf&#39;);
+
+            $this-&gt;table = &#39;proj_bookshelf&#39;;
+        }
+
+        /**
+        * @param BookWasCheckedOut $event
+        */
+        public function applyBookWasCheckedOut(BookWasCheckedOut $event)
+        {
+            $bookshelfItem = BookshelfItem::where(&#39;id&#39;, $event-&gt;bookId);
+
+            $book-&gt;status = &#39;Checked Out&#39;;
+            $book-&gt;checkout_date = $event-&gt;checkoutDate;
+            $book-&gt;patron_id = $event-&gt;patronId;
+
+            $book-&gt;save();
+        }
+
+        /**
+        * @param BookAddedToBookshelf $event
+        */
+        public function applyBookAddedToBookshelf(BookAddedToBookshelf $event)
+        {
+            $bookshelfItem = new BookshelfItem();
+            $bookshelfItem-&gt;setTable($this-&gt;table);
+
+            $bookshelfItem-&gt;bookId = $event-&gt;bookId;
+            $bookshelfItem-&gt;bookTitle = $event-&gt;bookTitle;
+            $bookshelfItem-&gt;bookAuthor = $event-&gt;bookAuthor;
+            $bookshelfItem-&gt;status = &#39;on shelf&#39;;
+
+            $bookshelfItem-&gt;save();
+        }
+
+
+        /**
+        * @param BookWasReturned $event
+        */
+        public function applyBookWasReturned(BookWasReturned $event)
+        {
+            $bookshelfItem = BookshelfItem::where(&#39;id&#39;, $event-&gt;bookId);
+
+            $book-&gt;status = &#39;Available&#39;;
+            $book-&gt;checkout_date = '';
+            $book-&gt;patron_id = '';
+
+            $book-&gt;save();
+        }
+    }
+    </code></pre>
+
+                            <p>A set of event handlers that work together to build and maintain a table to be accessed by the read model.</p>
+
+                        </article>
+                    </myColBox>
+                    <span class="fragment current-only" data-code-focus="13"></span>
+                    <span class="fragment current-only" data-code-focus="24"></span>
+                    <span class="fragment current-only" data-code-focus="63"></span>
+                    <span class="fragment current-only" data-code-focus="77"></span>
+                    <span class="fragment current-only" data-code-focus="94"></span>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <myTitleBox>
+                        <h1 id="read-model">Read Model</h1>
+                    </myTitleBox>
+                    <myColBox>
+                        <article>
+
+                            <img src="img/library/read_model.png" alt="Read Model table with highlighted rows and queries">
+
+                        </article>
+                    </myColBox>
+                </section>
+                <section>
+                    <myColBox>
+                        <article>
+                            <h1 id="read-model">Read Model</h1>
+    <pre><code>&lt;?php
+
+    namespace Library\ReadModel;
+
+
+    use Carbon\Carbon;
+    use Illuminate\Database\Eloquent\Model;
+
+    /**
+    * @codeCoverageIgnore
+    */
+    class Bookshelf extends Model
+    {
+        protected  $table = &#39;proj_bookshelf&#39;;
+        public $incrementing = false;
+        public $timestamps = false;
+
+        public static function lookupLoansFor($patronId)
+        {
+            return static::where(&#39;patron_id&#39;, $patronId)-&gt;get();
+        }
+
+        public function lookupAvailableBooks()
+        {
+            return static::where(&#39;status&#39;, &#39;Available&#39;)-&gt;get();
+        }
+
+        public function lookupOverdueBooks()
+        {
+            return static::where(&#39;checkout_date&#39;, &#39;&lt;&#39;, date(&#39;Y-m-d&#39;, strtotime(&#39;-7 days&#39;)))-&gt;get();
+        }
+    }
+    </code></pre>
+                        </article>
+                    </myColBox>
+                    <span class="fragment current-only" data-code-focus="12"></span>
+                    <span class="fragment current-only" data-code-focus="14"></span>
+                    <span class="fragment current-only" data-code-focus="18"></span>
+                    <span class="fragment current-only" data-code-focus="23"></span>
+                    <span class="fragment current-only" data-code-focus="28"></span>
+                </section>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3>Creating the events</h3>
+                </myTitleBox>
+                <myRowBox>
+                    <article>
+                        <ul>
+                            <li><b>An event is created only after validation</b>
+                                <ul>
+                                    <li>Directly in a controller 'checkout' method</li>
+                                    <li>Using a Check Out Book Command and Handler</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </article>
+                </myRowBox>
+            </section>
+            <section data-background="img/hey_boss/interactionToEventDiagram.jpg">
+                <!--<myColBox>-->
+                <!--<article>-->
+                <!--<p><img src="" alt="Diagram of the interaction on the web page then routed to the controller action, which calls a command, If valid, the Command creates the Event"></p>-->
+
+                <!--</article>-->
+                <!--</myColBox>-->
+            </section>
+
+            <!--<section data-background="img/library/bookCheckoutForm.png">-->
+            <!--</section>-->
+            <!--<section>-->
+                <!--<myColBox>-->
+                    <!--<article>-->
+                        <!--<h1 id="bookscontroller-update">CRUD: update method</h1>-->
+                        <!--<pre><code>public function update(Request $request, $id)-->
+    <!--{-->
+        <!--// our default update method-->
+        <!--// validate inputs-->
+        <!--$Book = Book::findOrFail($id);-->
+        <!--$Book-&gt;update($request-&gt;all());-->
+
+        <!--return $Book;-->
+    <!--}-->
+    <!--</code></pre>-->
+                    <!--</article>-->
+                <!--</myColBox>-->
+            <!--</section>-->
+            <!--<section>-->
+                <!--<myTitleBox>-->
+                    <!--<h1 id="crud-to-cqrs">CRUD Checkout</h1>-->
+                <!--</myTitleBox>-->
+                <!--<myColBox>-->
+                    <!--<article>-->
+                        <!--<p>&nbsp;</p>-->
+                        <!--<pre><code>-->
+    <!--public function checkOutBook(Request $request, $id)-->
+    <!--{-->
+        <!--// altered the update method-->
+        <!--// validate inputs-->
+        <!--$Book = Book::findOrFail($id);-->
+        <!--$Book-&gt;update(&#39;status&#39; =&gt; &#39;checked out&#39;,-->
+                        <!--&#39;patron&#39; =&gt; $request-&gt;patronId);-->
+
+        <!--return $Book;-->
+    <!--}-->
+    <!--</code></pre>-->
+                        <!--<span class="fragment current-only" data-code-focus="2"></span>-->
+                        <!--<span class="fragment current-only" data-code-focus="7-8"></span>-->
+                    <!--</article>-->
+                    <!--<article>-->
+                        <!--<p>&nbsp;</p>-->
+                        <!--<p class="fragment"><img src="img/library/itDoesntFit.gif" alt="cat climbing into a trash pail but doesn&#39;t quite fit"></p>-->
+                    <!--</article>-->
+                <!--</myColBox>-->
+            <!--</section>-->
+            <!--<section>-->
+                <!--<myTitleBox>-->
+                    <!--<h1 id="crud-to-cqrs">CRUD Checkout</h1>-->
+                <!--</myTitleBox>-->
+                <!--<myColBox>-->
+                    <!--<article>-->
+                        <!--<p>&nbsp;</p>-->
+                        <!--<pre><code>-->
+    <!--public function checkOutBook(Request $request, $id)-->
+    <!--{-->
+        <!--// altered the update method-->
+        <!--// validate book can be checked out-->
+
+        <!--$event = new BookWasCheckedOut($request->bookId,-->
+                    <!--$request->patronId,-->
+                    <!--time());-->
+
+    <!--}-->
+    <!--</code></pre>-->
+                        <!--<span class="fragment current-only" data-code-focus="5"></span>-->
+                        <!--<span class="fragment current-only" data-code-focus="7-9"></span>-->
+                    <!--</article>-->
+                <!--</myColBox>-->
+            <!--</section>-->
+            <section>
+                <myRowBox>
+                    <myTitleBox>
+                        <h1>CQRS</h1>
+                    </myTitleBox>
+                    <article>
+                        <br>
+
+                        <h3>Command and Query Response Segregation</h3>
+                        <ul>
+                            <p>An application architecture pattern commonly used with event sourcing</p>
+                            <p>CQRS involves splitting an application into two parts internally.</p>
+                        </ul>
+                    </article>
+                </myRowBox>
+            </section>
+            <section>
+                <myRowBox>
+                    <article>
+                        <h1 id="cqrs">CQRS</h1>
+                        <ul>
+                            <li><strong>Command</strong> is any method that mutates state</li>
+                            <li><strong>Query</strong> is any method that returns a value</li>
+                            <li>Should only be used on specific portions of a system, not the system as a whole</li>
+                        </ul>
+                    </article>
+                </myRowBox>
+            </section>
+            <!--<section>-->
+            <!--<myColBox>-->
+            <!--<article>-->
+            <!--<h1 id="command-handler">Command Handler</h1>-->
+            <!--<p>A command handler receives a command and brokers a result from the appropriate aggregate. &quot;A result&quot; is either a successful application of the command, or an exception.</p>-->
+            <!--<p><strong> should affect one and only one aggregate </strong></p>-->
+            <!--</article>-->
+            <!--</myColBox>-->
+            <!--</section>-->
+            <section>
+                <section>
+                    <myColBox>
+                        <article>
+                            <h1 id="command-handler">Command Handler</h1>
+                            <ol>
+                                <li>Validate the command on its own merits.</li>
+                                <li>Validate the command on the current state of the aggregate.</li>
+                                <li>If validation is successful, create an event(s)</li>
+                                <li>Attempt to persist the new events. If there&#39;s a concurrency conflict during this step, retry or exit.</li>
+                            </ol>
+                        </article>
+                    </myColBox>
+                </section>
+                <section>
+                    <myTitleBox>
+                        <h3 id="crud-to-cqrs">Command Handler example</h3>
+                    </myTitleBox>
+                    <myColBox>
+                        <article>
+                            <pre><code>public function update(Request $request)
+        {
+            // $request has book id, patron id
+
+            try {
+
+                $command = new CheckOutBook($request-&gt;bookId, $request-&gt;patronId);
+
+                $this-&gt;bookLendingService-&gt;handleCheckOutBook($command);
+
+            } catch (InvalidUserException $e) {
+                return response()-&gt;json(&quot;Not authorized to check out a book.&quot;, Response::HTTP_FORBIDDEN);
+            } catch (BookUnavailableException $e) {
+               return response()-&gt;json(&quot;Book was not available to be checked out&quot;, 400);
+
+        }
+
+        &lt;------ dynamic command handler  ------&gt;
+
+        private function handle(Command $command)
+        {
+            $method = $this-&gt;getHandleMethod($command);
+
+            if (! method_exists($this, $method)) {
+                return;
+            }
+
+            $this-&gt;$method($command);
+        }
+
+        private function getHandleMethod(Command $command)
+        {
+            return &#39;handle&#39; . class_basename($command);
+        }
+
+        &lt;-------- handle check out book command ---------&gt;
+
+        public function handleCheckoutOutBook(CheckOutBook $command)
+        {
+            $book = Book::findOrFail($command-&gt;bookId);
+            $patron = Patron::findOrFail($command-&gt;patronId);
+
+            if (!$book-&gt;isAvailable()) {
+                throw new BookUnavailableException();
+            }
+
+            if (!$patron-&gt;isAuthorized()) {
+                throw new InvalidUserException();
+            }
+
+            //record the event
+            $this-&gt;record(
+                new BookWasCheckedOut(date(&quot;Y-m-d H:i:s&quot;),
+                    $patron-&gt;getId(),
+                    $book-&gt;getId())
+            );
+
+
+        }
+        </code></pre>
+                            <span class="fragment current-only" data-code-focus="1"></span>
+                            <span class="fragment current-only" data-code-focus="7"></span>
+                            <span class="fragment current-only" data-code-focus="9"></span>
+                            <span class="fragment current-only" data-code-focus="11-14"></span>
+                            <span class="fragment current-only" data-code-focus="38"></span>
+                            <span class="fragment current-only" data-code-focus="40-41"></span>
+                            <span class="fragment current-only" data-code-focus="43-49"></span>
+                            <span class="fragment current-only" data-code-focus="52-56"></span>
+                        </article>
+                    </myColBox>
+                </section>
+            </section>
+            <section>
+                <myColBox>
+                    <article>
+                        <h1 id="separate-read-write">Optimize</h1>
+                        <ul>
+                            <li>Separate the load from reads and writes allowing you to scale each independently. </li>
+                            <ul>
+                                <li>All <strong>commands</strong> go into a WriteService</li>
+                                <li>All <strong>queries</strong> go into a ReadService</li>
+                            </ul></li>
+
+                        </ul>
+
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3>You can choose which is best</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+                        <ul>
+                            <li>CRUD</li>
+                            <li>Event-Sourcing</li>
+                            <li>Event-Sourcing with CQRS</li>
+                            <li>Event-Sourcing, CQRS, DDD</li>
+                        </ul>
+                    </article>
+                    <article>
+                        <img src="img/hey_boss/captain-planet-power.jpg">
+                    </article>
+                </myColBox>
+            </section>
         </section>
         <section>
             <myTitleBox>
