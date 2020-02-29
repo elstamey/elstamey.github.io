@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -61,7 +61,7 @@
                                 <article>
                                     <myColBox>
                                         <article>
-                                            <img src="img/me.png" alt="developer">
+                                            <img src="img/emily.png" alt="developer">
                                         </article>
                                         <article>
                                             <img src="img/Map_of_USA_NC.svg">
@@ -80,9 +80,8 @@
                                             <img src="img/php-logo.png">
                                         </article>
                                         <article>
-                                            <img src="img/iatf-federation-logo-colour-rgb.png">
+                                            <img src="img/axe-throwing.jpg">
                                         </article>
-
                                         <article>
                                             <img src="img/mandala_madness.jpg">
                                         </article>
@@ -296,6 +295,30 @@
             return $this->patronId;
         }
 
+    }
+    </code></pre>
+                        </article>
+                    </myColBox>
+                    <span class="fragment current-only" data-code-focus="8"></span>
+                    <span class="fragment current-only" data-code-focus="14,19"></span>
+                    <span class="fragment current-only" data-code-focus="26"></span>
+                </section>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3 id="rules-to-follow">Rules for Events</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+                        <ul>
+                            <li>Usually named as past-tense verbs</li>
+                            <li><strong>RARELY</strong> changed</li>
+                            <li><strong>Never</strong> deleted</li>
+                            <li>Has attributes that are values<ul>
+                                <li>not model, object, collection, or aggregate root</li>
+                            </ul>
+                            </li>
+                        </ul>
 
     }
     </code></pre>
@@ -591,42 +614,117 @@
 
     namespace Library\ReadModel;
 
+    use Library\Events\BookWasCheckedIn;
+    use Library\Events\BookWasCheckedOut;
+    use Library\Events\BookAddedToBookshelf;
+    use App\Support\ReadModel\Replayable;
+    use App\Support\ReadModel\SimpleProjector;
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Database\Connection;
 
-    use Carbon\Carbon;
-    use Illuminate\Database\Eloquent\Model;
-
-    /**
-    * @codeCoverageIgnore
-    */
-    class Bookshelf extends Model
+    class BookshelfProjector extends SimpleProjector implements Replayable
     {
-        protected  $table = &#39;proj_bookshelf&#39;;
-        public $incrementing = false;
-        public $timestamps = false;
 
-        public static function lookupLoansFor($patronId)
+        /**
+         * @var Connection
+         */
+        private $connection;
+
+        /**
+         * @var string table we&#39;re playing events into
+         */
+        private $table = &#39;proj_bookshelf&#39;;
+
+        public function __construct(Connection $connection)
         {
-            return static::where(&#39;patron_id&#39;, $patronId)-&gt;get();
+            $this-&gt;connection = $connection;
         }
 
-        public function lookupAvailableBooks()
+        public function beforeReplay()
         {
-            return static::where(&#39;status&#39;, &#39;Available&#39;)-&gt;get();
+            $builder = $this-&gt;connection-&gt;getSchemaBuilder();
+
+            $builder-&gt;dropIfExists(&#39;proj_bookshelf&#39;);
+            $builder-&gt;create(&#39;proj_bookshelf_tmp&#39;, function (Blueprint $schema) {
+                $schema-&gt;string(&#39;book_id&#39;);
+                $schema-&gt;string(&#39;book_title&#39;);
+                $schema-&gt;string(&#39;book_author&#39;);
+                $schema-&gt;string(&#39;status&#39;);
+                $schema-&gt;string(&#39;checkout_date&#39;);
+                $schema-&gt;string(&#39;patron_id&#39;);
+
+                $schema-&gt;primary(&#39;book_id&#39;);
+            });
+
+            $this-&gt;table = &#39;proj_bookshelf_tmp&#39;;
         }
 
-        public function lookupOverdueBooks()
+        public function afterReplay()
         {
-            return static::where(&#39;checkout_date&#39;, &#39;&lt;&#39;, date(&#39;Y-m-d&#39;, strtotime(&#39;-7 days&#39;)))-&gt;get();
+            $builder = $this-&gt;connection-&gt;getSchemaBuilder();
+
+            $builder-&gt;dropIfExists(&#39;proj_bookshelf&#39;);
+            $builder-&gt;rename(&#39;proj_bookshelf_tmp&#39;, &#39;proj_bookshelf&#39;);
+
+            $this-&gt;table = &#39;proj_bookshelf&#39;;
+        }
+
+        /**
+        * @param BookWasCheckedOut $event
+        */
+        public function applyBookWasCheckedOut(BookWasCheckedOut $event)
+        {
+            $bookshelfItem = BookshelfItem::where(&#39;id&#39;, $event-&gt;bookId);
+
+            $book-&gt;status = &#39;Checked Out&#39;;
+            $book-&gt;checkout_date = $event-&gt;checkoutDate;
+            $book-&gt;patron_id = $event-&gt;patronId;
+
+            $book-&gt;save();
+        }
+
+        /**
+        * @param BookAddedToBookshelf $event
+        */
+        public function applyBookAddedToBookshelf(BookAddedToBookshelf $event)
+        {
+            $bookshelfItem = new BookshelfItem();
+            $bookshelfItem-&gt;setTable($this-&gt;table);
+
+            $bookshelfItem-&gt;bookId = $event-&gt;bookId;
+            $bookshelfItem-&gt;bookTitle = $event-&gt;bookTitle;
+            $bookshelfItem-&gt;bookAuthor = $event-&gt;bookAuthor;
+            $bookshelfItem-&gt;status = &#39;on shelf&#39;;
+
+            $bookshelfItem-&gt;save();
+        }
+
+
+        /**
+        * @param BookWasReturned $event
+        */
+        public function applyBookWasReturned(BookWasReturned $event)
+        {
+            $bookshelfItem = BookshelfItem::where(&#39;id&#39;, $event-&gt;bookId);
+
+            $book-&gt;status = &#39;Available&#39;;
+            $book-&gt;checkout_date = '';
+            $book-&gt;patron_id = '';
+
+            $book-&gt;save();
         }
     }
     </code></pre>
+
+                            <p>A set of event handlers that work together to build and maintain a table to be accessed by the read model.</p>
+
                         </article>
                     </myColBox>
-                    <span class="fragment current-only" data-code-focus="12"></span>
-                    <span class="fragment current-only" data-code-focus="14"></span>
-                    <span class="fragment current-only" data-code-focus="18"></span>
-                    <span class="fragment current-only" data-code-focus="23"></span>
-                    <span class="fragment current-only" data-code-focus="28"></span>
+                    <span class="fragment current-only" data-code-focus="13"></span>
+                    <span class="fragment current-only" data-code-focus="24"></span>
+                    <span class="fragment current-only" data-code-focus="63"></span>
+                    <span class="fragment current-only" data-code-focus="77"></span>
+                    <span class="fragment current-only" data-code-focus="94"></span>
                 </section>
             </section>
             <section>
@@ -904,621 +1002,640 @@
                 </article>
             </myColBox>
         </section>
-        <section data-background-image="img/hey_boss/bg-scholarships.png">
-            <myColBox>
-                <article>
-                    <img src="img/boots/scholarships_diagram.png" alt="Scholarships Project">
-                </article>
-            </myColBox>
-        </section>
         <section>
-            <myColBox>
-                <article>
-                    <img src="img/boots/bounded_contexts.png" alt="bounded contexts">
-                </article>
-            </myColBox>
+            <section>
+                <myTitleBox>
+                    <article>
+                        <h3>Scholarships Application</h3>
+                    </article>
+
+                </myTitleBox>
+                <myRowBox>
+                    <article>
+                        <li>Early CRUD application with one model for all functionality</li>
+                        <li>Handled a lot of business value but had many problems, some were unknown</li>
+                    </article>
+                </myRowBox>
+            </section>
+            <section data-background-image="img/hey_boss/bg-scholarships.png">
+                <myColBox>
+                    <article>
+                        <img src="img/boots/scholarships_diagram.png" alt="Scholarships Project">
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myColBox>
+                    <article>
+                        <img src="img/boots/bounded_contexts.png" alt="bounded contexts">
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myColBox>
+                    <article>
+                        <img src="img/hey_boss/scholarships-bounded-contexts-events.png" alt="bounded contexts with Events">
+                    </article>
+                </myColBox>
+            </section>
+<!--            <section>-->
+<!--                <myRowBox>-->
+<!--                    <article>-->
+<!--                        <myColBox>-->
+<!--                            <article>-->
+<!--                                <img src="img/boots/octocat_Professortocat_v2.png" alt="github">-->
+<!--                            </article>-->
+<!--                            <article>-->
+<!--                                <img src="img/boots/vagrant-virtualbox.png" alt="virtualization">-->
+<!--                            </article>-->
+<!--                            <article>-->
+<!--                                <img src="img/boots/phpunit.png" alt="tests">-->
+<!--                            </article>-->
+<!--                        </myColBox>-->
+<!--                    </article>-->
+<!--                    <article>-->
+<!--                        <myColBox>-->
+<!--                            <article>-->
+<!--                                <img src="img/boots/logo-composer-transparent.png" alt="composer">-->
+<!--                            </article>-->
+<!--                            <article>-->
+<!--                                <img src="img/hey_boss/twig.jpg" alt="twig">-->
+<!--                            </article>-->
+<!--                            <article>-->
+<!--                                <img src="img/hey_boss/pimple.jpg" alt="pimple">-->
+<!--                            </article>-->
+<!--                        </myColBox>-->
+<!--                    </article>-->
+<!--                </myRowBox>-->
+<!--            </section>-->
+<!--            <section>-->
+<!--                <myColBox>-->
+<!--                    <article>-->
+<!--                        <img src="img/hey_boss/scholarships-filetree-legacy.png" alt="filetree old only">-->
+<!--                    </article>-->
+<!--                </myColBox>-->
+<!--            </section>-->
+
+
+<!--            <section>-->
+<!--                <myColBox>-->
+<!--                    <article>-->
+<!--                        <img src="img/hey_boss/scholarships-filetree.png" alt="filetree with new code">-->
+<!--                    </article>-->
+<!--                </myColBox>-->
+<!--            </section>-->
+<!--                <section>-->
+<!--                    <myTitleBox>-->
+<!--                        <h3>Bootstrapping:  Namespaces</h3>-->
+<!--                    </myTitleBox>-->
+<!--                    <myColBox>-->
+<!--                        <article>-->
+<!--                            <ul>-->
+<!--                                <li>'/src' is given a namespace</li>-->
+<!--                                <li>namespaces are autoloaded in composer</li>-->
+<!--                            </ul>-->
+<!--                            <span class="fragment current-only" data-code-focus="7-11"></span>-->
+<!--                        </article>-->
+<!--                    </myColBox>-->
+<!--                    <footer>-->
+<!--        <pre><code>-->
+<!--    {-->
+<!--        "name": "itecs/scholarships",-->
+<!--        "description": "Scholarships application for the College of Engineering.",-->
+<!--        ...-->
+<!--        "autoload": {-->
+<!--            "psr-4": {-->
+<!--                "ITECS\\Scholarships\\": [ "src/", "app/core/" ],-->
+<!--                "Codeception\\Module\\": "src/",-->
+<!--                "Tests\\Substitute\\": "tests/_helpers/"-->
+<!--            }-->
+<!--        }-->
+<!--    }-->
+<!--    </code></pre>-->
+<!--                    </footer>-->
+
+<!--                    <aside class="notes">-->
+<!--                        <li>Composer allowed us to build this independent structure. </li>-->
+<!--                        <li>We used it to load a lot of the tooling I already mentioned</li>-->
+<!--                        <li>And we used it to autoload the namespaced code in our source folder.</li>-->
+<!--                        <li>(*)Here we label the /src folder as the namespace ITECS/Scholarships</li>-->
+<!--                    </aside>-->
+<!--                </section>-->
+<!--            </section>-->
+
+<!--            <section>-->
+<!--                <myColBox>-->
+<!--                    <article>-->
+<!--                        <img src="img/hey_boss/scholarships-filetree-controllers.png" alt="filetree with new controllers and views">-->
+<!--                    </article>-->
+<!--                </myColBox>-->
+<!--            </section>-->
+<!--            <section>-->
+<!--                <section data-background-image="img/boots/dependency_puzzle.png" data-background-size="20%" data-background-position="top">-->
+<!--                    <h1>Dependency Injection</h1>-->
+<!--                    <aside class="notes">-->
+<!--                        <li>We positioned our new code adjacent to the framework</li>-->
+<!--                        <li>We needed to bring the fully namespaced services into that framework</li>-->
+<!--                        <li>Dependency Injection allowed us to do that</li>-->
+<!--                        <li>We used Pimple to build our container and define the dependencies</li>-->
+<!--                    </aside>-->
+<!--                </section>-->
+<!--                <section>-->
+<!--                    <myTitleBox>-->
+<!--                        <h3>Dependencies</h3>-->
+<!--                    </myTitleBox>-->
+<!--                    <myColBox>-->
+<!--                        <article>-->
+<!--                            <p>The <u>dependencies</u> are the objects your class needs to function</p>-->
+<!--                            <p>GPAService needed a DB connection</p>-->
+<!--                        </article>-->
+<!--                    </myColBox>-->
+<!--                </section>-->
+<!--                <section>-->
+<!--                    <myTitleBox>-->
+<!--                        <h3>Inject the Dependencies</h3>-->
+<!--                    </myTitleBox>-->
+<!--                    <myColBox>-->
+<!--                        <article>-->
+<!--    <pre><code>-->
+<!--    function __construct(Database $database)-->
+<!--    {-->
+<!--        $this->database = $database;-->
+<!--    }-->
+<!--    </code></pre>-->
+<!--                        </article>-->
+<!--                    </myColBox>-->
+<!--                </section>-->
+<!--                <section>-->
+<!--                    <myTitleBox>-->
+<!--                        <h3>Dependency Injection</h3>-->
+<!--                    </myTitleBox>-->
+<!--                    <myColBox>-->
+<!--                        <article>-->
+<!--                            <ul>-->
+<!--                                <li>Decouples our code from low level implementation details</li>-->
+<!--                                <li>Instantiate our classes with their dependencies</li>-->
+<!--                                <li class="fragment"><u>AND</u> instantiate those dependencies</li>-->
+<!--                            </ul>-->
+<!--                        </article>-->
+<!--                    </myColBox>-->
+<!--                </section>-->
+<!--                <section>-->
+<!--                    <myTitleBox>-->
+<!--                        <h3>Dependency Map</h3>-->
+<!--                    </myTitleBox>-->
+<!--                    <myColBox>-->
+<!--                        <article>-->
+<!--                            <p>'/app/bindings.php'</p>-->
+<!--                            <pre><code>-->
+<!--    &lt;?php-->
+
+<!--        /* example one */-->
+
+<!--        use Scholarships\Selection\Services\IlluminateDatabaseGpaService;-->
+
+<!--        $container['Scholarships\Common\Services\GpaService'] = function($c) {-->
+<!--            return new IlluminateDatabaseGpaService($c['database']);-->
+<!--        };-->
+
+<!--    </code></pre>-->
+<!--                        </article>-->
+<!--                        <span class="fragment current-only" data-code-focus="6"></span>-->
+<!--                        <span class="fragment current-only" data-code-focus="9"></span>-->
+<!--                        <span class="fragment current-only" data-code-focus="8"></span>-->
+<!--                    </myColBox>-->
+
+<!--                    <aside class="notes">-->
+<!--                        &lt;!&ndash;<li>We needed an injector to bring our code dependencies into our CodeIgniter framework.  </li>&ndash;&gt;-->
+<!--                        &lt;!&ndash;<li>In order to do this, we defined container in a file called `bindings.php`</li>&ndash;&gt;-->
+<!--                        &lt;!&ndash;<li>T</li>&ndash;&gt;-->
+<!--                        &lt;!&ndash;<li>The controller could then inject the service container and receive its dependencies.</li>&ndash;&gt;-->
+<!--                        <li>(*)The first example is our GPA Service</li>-->
+<!--                        <li>(*)Its only dependency was a DB connection to look up the student's GPA</li>-->
+<!--                        <li>(*)We applied it to the container using the fully namespaced classname</li>-->
+<!--                    </aside>-->
+<!--                </section>-->
+<!--                <section>-->
+<!--                    <myTitleBox>-->
+<!--                        <h3>Dependency Map</h3>-->
+<!--                    </myTitleBox>-->
+<!--                    <myColBox>-->
+<!--                        <article>-->
+<!--                            <p>'/app/bindings.php'-->
+<!--                            <pre><code>-->
+<!--    &lt;?php-->
+
+<!--    /* example two */-->
+
+<!--    use Scholarships\Selection\ApplicantQueryService;-->
+
+<!--    $container['Scholarships\Selection\ApplicantQueryService'] = function($c) {-->
+<!--        return new ApplicantQueryService(-->
+<!--            $c['Scholarships\StudentApplication\StudentQueryService'],-->
+<!--            $c['Scholarships\Common\Services\ResidenciesService'],-->
+<!--            $c['Scholarships\Common\Services\GpaService'],-->
+<!--            $c['Scholarships\Common\Services\UnmetNeedService'],-->
+<!--            $c['Scholarships\Common\Services\CandidateQualificationService']-->
+<!--        );-->
+<!--    };-->
+<!--    </code></pre>-->
+<!--                        </article>-->
+<!--                    </myColBox>-->
+<!--                    <span class="fragment current-only" data-code-focus="6,9"></span>-->
+<!--                    <span class="fragment current-only" data-code-focus="10-14"></span>-->
+<!--                    <aside class="notes">-->
+<!--                        <li>We were bringing in large chunks of code.  Some Services involved more dependencies, and-->
+<!--                            preserving them was critical</li>-->
+<!--                        <li>(*) We included the class, the Applicant Query Service</li>-->
+<!--                        <li>(*)In this example, we needed Students, Their Residency, GPAs, Unmet Financial Need, and their qualification for the scholarship.  Each of those dependencies had their own dependencies. </li>-->
+<!--                        <li>And they were all included in this mapping for our DIC</li>-->
+<!--                    </aside>-->
+<!--                </section>-->
+<!--                <section>-->
+<!--                    <myTitleBox>-->
+<!--                        <h3>Dependency Injection Container</h3>-->
+<!--                    </myTitleBox>-->
+<!--                    <myColBox>-->
+<!--                        <article>-->
+<!--                            <ul>-->
+<!--                                &lt;!&ndash;<li>Dependency injection is a software design pattern that implements inversion of control for resolving dependencies.</li>&ndash;&gt;-->
+<!--                                &lt;!&ndash;<li>A dependency is an object that can be used (a service).</li>&ndash;&gt;-->
+<!--                                &lt;!&ndash;<li>An injection is the passing of a dependency to a dependent object (a client) that would use it.</li>&ndash;&gt;-->
+<!--                                &lt;!&ndash;<li>The Pimple Container helps us pass the Service or Object we need in the application along with all of its dependencies</li>&ndash;&gt;-->
+<!--                                &lt;!&ndash;<li>We don't have to wait to let the dependencies resolve when the user accesses the object, we can ensure they are there ahead of time</li>&ndash;&gt;-->
+<!--                                <li>A map of dependencies your class needs along with the logic to create those dependencies if they haven't been created yet</li>-->
+<!--                                <li>Can resolve complex dependencies transparently</li>-->
+<!--                                <li>Modular when you need to swap a dependency, only update the container</li>-->
+<!--                            </ul>-->
+<!--                        </article>-->
+<!--                    </myColBox>-->
+<!--                </section>-->
+<!--            </section>-->
+<!--            <section>-->
+<!--                <section>-->
+<!--                    <myTitleBox>-->
+<!--                        <h3>Pimple</h3>-->
+<!--                    </myTitleBox>-->
+<!--                    <myColBox>-->
+<!--                        <article>-->
+<!--                            <ul>-->
+<!--                                <li>Create your container by instantiating the Pimple class</li>-->
+<!--                            </ul>-->
+<!--                        </article>-->
+<!--                        <article><img src="img/hey_boss/pimple.jpg"> </article>-->
+<!--                    </myColBox>-->
+<!--                </section>-->
+<!--                <section>-->
+<!--                    <myTitleBox>-->
+<!--                        <h3>'app/services.php'</h3>-->
+<!--                    </myTitleBox>-->
+<!--                    <myColBox>-->
+<!--                        <article>-->
+<!--    <pre><code>-->
+<!--    &lt;?php-->
+
+<!--        use Pimple\Container;-->
+<!--        use Illuminate\Database\Capsule\Manager as Capsule;-->
+
+<!--        $container = new Container();-->
+
+<!--        $container['config'] = require_once('config.php');-->
+
+<!--        $container['database'] = function ($c) {-->
+<!--        $capsule = new Capsule;-->
+
+<!--        // PHP 5.3 doesn't do array de-referencing.-->
+<!--        // @todo update for php54-->
+<!--        $config = $c['config'];-->
+
+<!--        $capsule->addConnection(-->
+<!--            array(-->
+<!--                'driver'    => 'mysql        <section>-->
+<!--                <myColBox>-->
+<!--                    <article>-->
+<!--                        <img src="img/hey_boss/scholarships-bounded-contexts-events.png" alt="bounded contexts with Events">-->
+<!--                    </article>-->
+<!--                </myColBox>-->
+<!--            </section>',-->
+<!--                'host'      => $config['db']['default']['hostname'],-->
+<!--                'port'      => $config['db']['default']['port'],-->
+<!--                'database'  => $config['db']['default']['database'],-->
+<!--                'username'  => $config['db']['default']['username'],-->
+<!--                'password'  => $config['db']['default']['password'],-->
+<!--                'charset'   => 'utf8',-->
+<!--                'collation' => 'utf8_unicode_ci',-->
+<!--                'prefix'    => '',-->
+<!--                ),-->
+<!--                'default'-->
+<!--            );-->
+
+<!--            // Make this Capsule instance available globally via static methods... (optional)-->
+<!--            $capsule->setAsGlobal();-->
+
+<!--            return $capsule;-->
+<!--        };-->
+<!--    </code></pre>-->
+<!--                            <span class="fragment current-only" data-code-focus="7"></span>-->
+<!--                            <span class="fragment current-only" data-code-focus="9"></span>-->
+<!--                            <span class="fragment current-only" data-code-focus="11"></span>-->
+<!--                            <span class="fragment current-only" data-code-focus="12"></span>-->
+<!--                            <span class="fragment current-only" data-code-focus="18-31"></span>-->
+<!--                            <span class="fragment current-only" data-code-focus="36"></span>-->
+
+<!--                        </article>-->
+<!--                    </myColBox>-->
+<!--                    <aside class="notes">-->
+<!--                        <li>(*)In our services.php file in CodeIgniter, we initialized the container</li>-->
+<!--                        <li>(*)We included our configuration file and assigned it to a config container</li>-->
+<!--                        <li>(*)We could then build our database container</li>-->
+<!--                        <li>(*)We made a new capsule for our database container</li>-->
+<!--                        <li>(*)We applied the connection parameters from that config container</li>-->
+<!--                        <li>and after we properly set up our database configuration we returned the capsule</li>-->
+<!--                    </aside>-->
+<!--                </section>-->
+<!--                <section>-->
+<!--                    <myTitleBox>-->
+<!--                        <h3>Configuration file</h3>-->
+<!--                    </myTitleBox>-->
+<!--                    <myColBox>-->
+<!--                        <ul>-->
+<!--                            <li>DB connections</li>-->
+<!--                            <li>Base URL </li>-->
+<!--                            <li>Set paths to twig templates</li>-->
+<!--                            <li>Customize Notice messages</li>-->
+<!--                            <li>Set config variables for services</li>-->
+<!--                        </ul>-->
+<!--                    </myColBox>-->
+<!--                    <aside class="notes">-->
+<!--                        <li>This config file allowed us to support the many environments: development, staging, production was a configuration file. </li>-->
+<!--                        <li>This was not version controlled. But a template was.</li>-->
+<!--                        <li>We could download that template and fill in our local DB connections, the base_url path</li>-->
+<!--                        <li>We could set paths to twig templates, custom notice messages and many other things</li>-->
+<!--                    </aside>-->
+<!--                </section>-->
+<!--                <section>-->
+<!--                    <h3>Configuration file</h3>-->
+<!--                    <p>'/app/config.php'-->
+<!--                    <pre><code>-->
+<!--    &lt;?php-->
+<!--        return array(-->
+<!--            /* base url for path in the site */-->
+<!--            &#39;app&#39; =&gt; array(-->
+<!--                &#39;base_url&#39; =&gt; sprintf(&#39;http://localhost:%s/&#39;, isset($_SERVER[&#39;SERVER_PORT&#39;])-->
+<!--                ? $_SERVER[&#39;SERVER_PORT&#39;] : &#39;&#39;),-->
+<!--                &#39;index_page&#39; =&gt; &#39;index.php/&#39;,-->
+<!--                &#39;debug&#39; =&gt; FALSE-->
+<!--            ),-->
+
+<!--            /* DB configuration */-->
+<!--            &#39;db&#39; =&gt; array(-->
+<!--                &#39;default&#39; =&gt; array(-->
+<!--                    &#39;hostname&#39; =&gt; &quot;local__server&quot;,-->
+<!--                    &#39;port&#39; =&gt; &quot;3306&quot;,-->
+<!--                    &#39;username&#39; =&gt; &quot;uname&quot;,-->
+<!--                    &#39;password&#39; =&gt; &quot;pword&quot;,-->
+<!--                    &#39;database&#39; =&gt; &quot;db_name_&quot;-->
+<!--                )-->
+<!--            ),-->
+
+<!--            &#39;twig&#39; =&gt; array(-->
+<!--                &#39;template_path&#39; =&gt; array(-->
+<!--                    __DIR__ . &#39;/templates&#39;,-->
+<!--                    __DIR__ . &#39;/templates/dashboard&#39;,-->
+<!--                )-->
+<!--            ),-->
+
+<!--            &#39;authorization&#39; =&gt; array(-->
+<!--                &#39;funding&#39; =&gt; array(&#39;elstamey&#39;, &#39;person2&#39;),-->
+<!--                &#39;developers&#39; =&gt; array(&#39;elstamey&#39;),-->
+<!--                &#39;coordinators&#39; =&gt; array(&#39;person3&#39;)-->
+<!--            ),-->
+
+<!--            &#39;notice&#39; =&gt; array(-->
+<!--                &#39;enabled&#39; =&gt; false,-->
+<!--                &#39;type&#39; =&gt; &#39;info&#39;,-->
+<!--                &#39;headline&#39; =&gt; null,-->
+<!--                &#39;message&#39; =&gt; null,-->
+<!--                &#39;syslink&#39; =&gt; null-->
+<!--            ),-->
+
+<!--            &#39;errorHandling&#39; =&gt; array(-->
+<!--                &#39;emailExceptions&#39; =&gt; false-->
+<!--            ),-->
+
+<!--            &#39;awardLetters&#39; =&gt; array(-->
+<!--                &#39;letterhead&#39; =&gt; &#39;_itecs/notification-samples/ncsu_coe_aa_letterhead.pdf&#39;,-->
+<!--                &#39;academicYears&#39; =&gt; &#39;2015-2016&#39;,-->
+<!--                &#39;respondByDate&#39; =&gt; &#39;May 11, 2015&#39;,-->
+<!--                &#39;templates&#39; =&gt; array(-->
+<!--                    &#39;awardLetter&#39; =&gt; &#39;layouts/letters/award-letter.twig&#39;,-->
+<!--                    &#39;awardEmail&#39; =&gt; &#39;layouts/letters/award-email-body.twig&#39;-->
+<!--                ),-->
+<!--                &#39;fixedAttachments&#39; =&gt; array(-->
+<!--                    &#39;_itecs/notification-samples/thank_you_template.pdf&#39;-->
+<!--                ),-->
+<!--                &#39;signatureImagePath&#39; =&gt; &#39;_uploads/tmp/deans_signature.png&#39;,-->
+<!--                &#39;outputPath&#39; =&gt; &#39;_uploads/awardLetters/&#39;-->
+<!--            ),-->
+
+<!--            &#39;emailService&#39; =&gt; array(-->
+<!--                &#39;sendLimit&#39; =&gt; 5,-->
+<!--                &#39;retries&#39; =&gt; 3,-->
+<!--                &#39;throttleTime&#39; =&gt; 2, // seconds-->
+<!--                &#39;fromAddress&#39; =&gt; &#39;Scholarships Application &lt;engr-webmaster@ncsu.edu&gt;&#39;,-->
+<!--                &#39;replyToAddress&#39;=&gt;&#39;College of Engineering &lt;engineering@ncsu.edu&gt;&#39;-->
+<!--            )-->
+<!--        );-->
+
+<!--    ?&gt;-->
+<!--    </code></pre>-->
+<!--                    <p>We passed this array into a <b>$container['config']</b> variable</p>-->
+<!--                    <aside class="notes">-->
+<!--                        <li>setting the base_url was very helpful in supporting paths to resources in both our local environment and production </li>-->
+<!--                        <li>Our project used two DBs and we were able to configure both using this. The-->
+<!--                            parts of CodeIgniter that configured the DB could then pull in our config variable to remain consistent</li>-->
+<!--                        <li>We also put paths to twig templates, which were then configured into the framework similarly to the DB connections</li>-->
+<!--                        &lt;!&ndash;<li>We created an authorization array to limit access to the portions of the app&ndash;&gt;-->
+<!--                        &lt;!&ndash;because this would give us flexibility to turn access on and off when we needed to change&ndash;&gt;-->
+<!--                        &lt;!&ndash;the application</li>&ndash;&gt;-->
+<!--                    </aside>-->
+<!--                </section>-->
+<!--            </section>-->
+<!--            <section>-->
+<!--                <h3>Base Controller</h3>-->
+<!--                <pre><code>-->
+<!--    &lt;?php-->
+
+<!--    namespace ITECS\Scholarships;-->
+
+<!--    use \ReflectionClass;-->
+<!--    use \Log;-->
+
+<!--    /**-->
+<!--    * Base Application Controller Class-->
+<!--    *-->
+<!--    */-->
+<!--    class BaseController extends \Controller {-->
+
+<!--        const BAD_REQUEST=400;-->
+<!--        const FORBIDDEN=403;-->
+<!--        const NOT_FOUND=404;-->
+<!--        const METHOD_NOT_ALLOWED=405;-->
+<!--        const SERVER_ERROR=500;-->
+
+<!--        protected $serverResponseCodes;-->
+<!--        protected $authenticationService;-->
+
+<!--        /**-->
+<!--        * @var Pimple\Container-->
+<!--        */-->
+<!--        protected $container = null;-->
+
+<!--        /**-->
+<!--        * Constructor-->
+<!--        */-->
+<!--        public function BaseController()-->
+<!--        {-->
+<!--            parent::Controller();-->
+
+<!--            // BaseController Contains Container-->
+<!--            global $container;-->
+<!--            $this->container = $container;-->
+
+<!--            $this->authenticationService = $this->container['ITECS\Scholarships\IdentityAccess\AuthenticationService'];-->
+
+<!--            session_start();-->
+
+<!--            $this->setExceptionHandler();-->
+
+<!--            log_message('debug', "Base Controller Class Initialized");-->
+<!--        }-->
+<!--    }-->
+<!--    </code></pre>-->
+<!--                <span class="fragment current-only" data-code-focus="32"></span>-->
+<!--                <span class="fragment current-only" data-code-focus="38"></span>-->
+<!--                <aside class="notes">-->
+<!--                    <li>(*)We did this in the BaseController of the CI app </li>-->
+<!--                    <li>(*)Here We defined our container globally </li>-->
+<!--                </aside>-->
+<!--            </section>-->
+<!--            <section>-->
+<!--                <h3>Connecting to the Framework</h3>-->
+<!--                <ul>-->
+<!--                    <li>'/app/bindings.php'-->
+<!--                        <br>the roadmap of our new code and dependencies-->
+<!--                        <br>required in the '/app/services.php' file</li>-->
+
+<!--                    <li>'/app/services.php'-->
+<!--                        <br>defined and configured twig, database, et al-->
+<!--                        <br>required in the CI index.php file</li>-->
+
+<!--                    <li>'/app/controllers'-->
+<!--                        <br>new controllers for the new functionality</></li>-->
+<!--                </ul>-->
+<!--                <aside class="notes">-->
+<!--                    <li>We  created new controllers to separate new features from the old</li>-->
+<!--                    <li>These controllers linked to our container and passed the required classes and services we needed in the requests and templates</li>-->
+<!--                    <li>The services file is where we configured the database connections and twig templates and tooling and things like that.  This accessed our config variables from the config.php file</li>-->
+<!--                    <li>The bindings was our complete class map for our dependency injection container</li>-->
+<!--                </aside>-->
+<!--            </section>-->
+<!--            <section>-->
+<!--                <section>-->
+<!--                    <h3>Controllers</h3>-->
+<!--                    <pre><code>-->
+<!--    &lt;?php-->
+
+<!--    class Selectionnext extends BaseController-->
+<!--    {-->
+<!--        public function Selectionnext()-->
+<!--        {-->
+<!--            parent::BaseController();-->
+
+<!--            $this->scholarshipRepository = $this->container['Scholarships\Selection\Scholarship\ScholarshipRepository'];-->
+<!--            $this->collaborationsService = $this->container['Scholarships\Selection\CollaborationsService'];-->
+<!--            $this->committeeService = $this->container['Scholarships\Selection\CommitteeService'];-->
+<!--            $this->authService = $this->container['Scholarships\IdentityAccess\AuthenticationService'];-->
+<!--            $this->awardsService = $this->container['Scholarships\Selection\Scholarship\AwardsService'];-->
+<!--            $this->events = $this->container['Scholarships\Support\Events\EventStore'];-->
+<!--        }-->
+
+<!--        private function getScholarshipDashboard($scholarshipId,$keepItLight=false)-->
+<!--        {-->
+<!--            $committeeMember = $this->getCommitteeMember();-->
+
+<!--            $presenter = new ScholarshipDashboardPresenter(-->
+<!--                $committeeMember,-->
+<!--                ScholarshipId::fromString($scholarshipId),-->
+<!--                $this->events,-->
+<!--                $this->scholarshipRepository,-->
+<!--                $this->container['Scholarships\Selection\ApplicantQueryService'],-->
+<!--                $keepItLight-->
+<!--            );-->
+
+<!--            $scholDetails = $presenter->asArrayForJson();-->
+<!--            $scholDetails['json_string'] = json_encode($scholDetails);-->
+
+<!--            return $scholDetails;-->
+<!--        }-->
+<!--    ?&gt;-->
+<!--    </code></pre>-->
+<!--                    <span class="fragment current-only" data-code-focus="6"></span>-->
+<!--                    <span class="fragment current-only" data-code-focus="10-15"></span>-->
+<!--                    <span class="fragment current-only" data-code-focus="27"></span>-->
+<!--                    &lt;!&ndash;<span class="fragment current-only" data-code-focus="22"></span>&ndash;&gt;-->
+<!--                    &lt;!&ndash;<span class="fragment current-only" data-code-focus="31"></span>&ndash;&gt;-->
+<!--                    &lt;!&ndash;<span class="fragment current-only" data-code-focus="34"></span>&ndash;&gt;-->
+
+<!--                    <aside class="notes">-->
+<!--                        <li>Our controller extended the BaseController, so we could access the container variable</li>-->
+<!--                        <li>(*)Here is our new Selection controller and (*)in its function, we could define the classes we needed in all methods </li>-->
+<!--                        <li>(*) here in the selection dashboard we are accessing the Applicant Query Service to show our Qualified Students</li>-->
+<!--                        <li>(*)This informed a presenter to display the Scholarship, its requirements, valid candidates, and any awards already given.</li>-->
+<!--                        <li>(*)We returned this as Scholarship Details that would later be displayed by the template</li>-->
+<!--                    </aside>-->
+<!--                </section>-->
+<!--            </section>-->
+            <section>
+                <myTitleBox>
+                    <h3>Flexible to Changes</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+                        <ul>
+                            <li>We were able to implement changes in stages</li>
+                            <li>Selection Committee would never take away an award
+                                <ul>
+                                    <li class="fragment">until they did</li>
+                                </ul>
+                            </li>
+                            <li class="fragment">New academic year, new event store</li>
+                        </ul>
+                    </article>
+                </myColBox>
+            </section>
+            <section>
+                <myTitleBox>
+                    <h3 id="legacy">Scholarships wrap-up</h3>
+                </myTitleBox>
+                <myColBox>
+                    <article>
+                        <ul>
+                            <li>Modernized the code in pieces</li>
+                            <li>View events from multiple contexts</li>
+                            <li>Flexible to changes in the application</li>
+                        </ul>
+                    </article>
+                </myColBox>
+            </section>
         </section>
-        <section>
-            <myColBox>
-                <article>
-                    <img src="img/hey_boss/scholarships-bounded-contexts-events.png" alt="bounded contexts with Events">
-                </article>
-            </myColBox>
-        </section>
-        <!--<section>-->
-            <!--<myRowBox>-->
-                <!--<article>-->
-                    <!--<myColBox>-->
-                        <!--<article>-->
-                            <!--<img src="img/boots/octocat_Professortocat_v2.png" alt="github">-->
-                        <!--</article>-->
-                        <!--<article>-->
-                            <!--<img src="img/boots/vagrant-virtualbox.png" alt="virtualization">-->
-                        <!--</article>-->
-                        <!--<article>-->
-                            <!--<img src="img/boots/phpunit.png" alt="tests">-->
-                        <!--</article>-->
-                    <!--</myColBox>-->
-                <!--</article>-->
-                <!--<article>-->
-                    <!--<myColBox>-->
-                        <!--<article>-->
-                            <!--<img src="img/boots/logo-composer-transparent.png" alt="composer">-->
-                        <!--</article>-->
-                        <!--<article>-->
-                            <!--<img src="img/hey_boss/twig.jpg" alt="twig">-->
-                        <!--</article>-->
-                        <!--<article>-->
-                            <!--<img src="img/hey_boss/pimple.jpg" alt="pimple">-->
-                        <!--</article>-->
-                    <!--</myColBox>-->
-                <!--</article>-->
-            <!--</myRowBox>-->
-        <!--</section>-->
-        <!--<section>-->
-            <!--<myColBox>-->
-                <!--<article>-->
-                    <!--<img src="img/hey_boss/scholarships-filetree-legacy.png" alt="filetree old only">-->
-                <!--</article>-->
-            <!--</myColBox>-->
-        <!--</section>-->
-
-
-        <!--<section>-->
-            <!--<myColBox>-->
-                <!--<article>-->
-                    <!--<img src="img/hey_boss/scholarships-filetree.png" alt="filetree with new code">-->
-                <!--</article>-->
-            <!--</myColBox>-->
-        <!--</section>-->
-            <!--<section>-->
-                <!--<myTitleBox>-->
-                    <!--<h3>Bootstrapping:  Namespaces</h3>-->
-                <!--</myTitleBox>-->
-                <!--<myColBox>-->
-                    <!--<article>-->
-                        <!--<ul>-->
-                            <!--<li>'/src' is given a namespace</li>-->
-                            <!--<li>namespaces are autoloaded in composer</li>-->
-                        <!--</ul>-->
-                        <!--<span class="fragment current-only" data-code-focus="7-11"></span>-->
-                    <!--</article>-->
-                <!--</myColBox>-->
-                <!--<footer>-->
-    <!--<pre><code>-->
-<!--{-->
-    <!--"name": "itecs/scholarships",-->
-    <!--"description": "Scholarships application for the College of Engineering.",-->
-    <!--...-->
-    <!--"autoload": {-->
-        <!--"psr-4": {-->
-            <!--"ITECS\\Scholarships\\": [ "src/", "app/core/" ],-->
-            <!--"Codeception\\Module\\": "src/",-->
-            <!--"Tests\\Substitute\\": "tests/_helpers/"-->
-        <!--}-->
-    <!--}-->
-<!--}-->
-<!--</code></pre>-->
-                <!--</footer>-->
-
-                <!--<aside class="notes">-->
-                    <!--<li>Composer allowed us to build this independent structure. </li>-->
-                    <!--<li>We used it to load a lot of the tooling I already mentioned</li>-->
-                    <!--<li>And we used it to autoload the namespaced code in our source folder.</li>-->
-                    <!--<li>(*)Here we label the /src folder as the namespace ITECS/Scholarships</li>-->
-                <!--</aside>-->
-            <!--</section>-->
-        <!--</section>-->
-
-        <!--<section>-->
-            <!--<myColBox>-->
-                <!--<article>-->
-                    <!--<img src="img/hey_boss/scholarships-filetree-controllers.png" alt="filetree with new controllers and views">-->
-                <!--</article>-->
-            <!--</myColBox>-->
-        <!--</section>-->
-        <!--<section>-->
-            <!--<section data-background-image="img/boots/dependency_puzzle.png" data-background-size="20%" data-background-position="top">-->
-                <!--<h1>Dependency Injection</h1>-->
-                <!--<aside class="notes">-->
-                    <!--<li>We positioned our new code adjacent to the framework</li>-->
-                    <!--<li>We needed to bring the fully namespaced services into that framework</li>-->
-                    <!--<li>Dependency Injection allowed us to do that</li>-->
-                    <!--<li>We used Pimple to build our container and define the dependencies</li>-->
-                <!--</aside>-->
-            <!--</section>-->
-            <!--<section>-->
-                <!--<myTitleBox>-->
-                    <!--<h3>Dependencies</h3>-->
-                <!--</myTitleBox>-->
-                <!--<myColBox>-->
-                    <!--<article>-->
-                        <!--<p>The <u>dependencies</u> are the objects your class needs to function</p>-->
-                        <!--<p>GPAService needed a DB connection</p>-->
-                    <!--</article>-->
-                <!--</myColBox>-->
-            <!--</section>-->
-            <!--<section>-->
-                <!--<myTitleBox>-->
-                    <!--<h3>Inject the Dependencies</h3>-->
-                <!--</myTitleBox>-->
-                <!--<myColBox>-->
-                    <!--<article>-->
-<!--<pre><code>-->
-<!--function __construct(Database $database)-->
-<!--{-->
-    <!--$this->database = $database;-->
-<!--}-->
-<!--</code></pre>-->
-                    <!--</article>-->
-                <!--</myColBox>-->
-            <!--</section>-->
-            <!--<section>-->
-                <!--<myTitleBox>-->
-                    <!--<h3>Dependency Injection</h3>-->
-                <!--</myTitleBox>-->
-                <!--<myColBox>-->
-                    <!--<article>-->
-                        <!--<ul>-->
-                            <!--<li>Decouples our code from low level implementation details</li>-->
-                            <!--<li>Instantiate our classes with their dependencies</li>-->
-                            <!--<li class="fragment"><u>AND</u> instantiate those dependencies</li>-->
-                        <!--</ul>-->
-                    <!--</article>-->
-                <!--</myColBox>-->
-            <!--</section>-->
-            <!--<section>-->
-                <!--<myTitleBox>-->
-                    <!--<h3>Dependency Map</h3>-->
-                <!--</myTitleBox>-->
-                <!--<myColBox>-->
-                    <!--<article>-->
-                        <!--<p>'/app/bindings.php'</p>-->
-                        <!--<pre><code>-->
-<!--&lt;?php-->
-
-    <!--/* example one */-->
-
-    <!--use Scholarships\Selection\Services\IlluminateDatabaseGpaService;-->
-
-    <!--$container['Scholarships\Common\Services\GpaService'] = function($c) {-->
-        <!--return new IlluminateDatabaseGpaService($c['database']);-->
-    <!--};-->
-
-<!--</code></pre>-->
-                    <!--</article>-->
-                    <!--<span class="fragment current-only" data-code-focus="6"></span>-->
-                    <!--<span class="fragment current-only" data-code-focus="9"></span>-->
-                    <!--<span class="fragment current-only" data-code-focus="8"></span>-->
-                <!--</myColBox>-->
-
-                <!--<aside class="notes">-->
-                    <!--&lt;!&ndash;<li>We needed an injector to bring our code dependencies into our CodeIgniter framework.  </li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<li>In order to do this, we defined container in a file called `bindings.php`</li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<li>T</li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<li>The controller could then inject the service container and receive its dependencies.</li>&ndash;&gt;-->
-                    <!--<li>(*)The first example is our GPA Service</li>-->
-                    <!--<li>(*)Its only dependency was a DB connection to look up the student's GPA</li>-->
-                    <!--<li>(*)We applied it to the container using the fully namespaced classname</li>-->
-                <!--</aside>-->
-            <!--</section>-->
-            <!--<section>-->
-                <!--<myTitleBox>-->
-                    <!--<h3>Dependency Map</h3>-->
-                <!--</myTitleBox>-->
-                <!--<myColBox>-->
-                    <!--<article>-->
-                        <!--<p>'/app/bindings.php'-->
-                        <!--<pre><code>-->
-<!--&lt;?php-->
-
-<!--/* example two */-->
-
-<!--use Scholarships\Selection\ApplicantQueryService;-->
-
-<!--$container['Scholarships\Selection\ApplicantQueryService'] = function($c) {-->
-    <!--return new ApplicantQueryService(-->
-        <!--$c['Scholarships\StudentApplication\StudentQueryService'],-->
-        <!--$c['Scholarships\Common\Services\ResidenciesService'],-->
-        <!--$c['Scholarships\Common\Services\GpaService'],-->
-        <!--$c['Scholarships\Common\Services\UnmetNeedService'],-->
-        <!--$c['Scholarships\Common\Services\CandidateQualificationService']-->
-    <!--);-->
-<!--};-->
-<!--</code></pre>-->
-                    <!--</article>-->
-                <!--</myColBox>-->
-                <!--<span class="fragment current-only" data-code-focus="6,9"></span>-->
-                <!--<span class="fragment current-only" data-code-focus="10-14"></span>-->
-                <!--<aside class="notes">-->
-                    <!--<li>We were bringing in large chunks of code.  Some Services involved more dependencies, and-->
-                        <!--preserving them was critical</li>-->
-                    <!--<li>(*) We included the class, the Applicant Query Service</li>-->
-                    <!--<li>(*)In this example, we needed Students, Their Residency, GPAs, Unmet Financial Need, and their qualification for the scholarship.  Each of those dependencies had their own dependencies. </li>-->
-                    <!--<li>And they were all included in this mapping for our DIC</li>-->
-                <!--</aside>-->
-            <!--</section>-->
-            <!--<section>-->
-                <!--<myTitleBox>-->
-                    <!--<h3>Dependency Injection Container</h3>-->
-                <!--</myTitleBox>-->
-                <!--<myColBox>-->
-                    <!--<article>-->
-                        <!--<ul>-->
-                            <!--&lt;!&ndash;<li>Dependency injection is a software design pattern that implements inversion of control for resolving dependencies.</li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<li>A dependency is an object that can be used (a service).</li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<li>An injection is the passing of a dependency to a dependent object (a client) that would use it.</li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<li>The Pimple Container helps us pass the Service or Object we need in the application along with all of its dependencies</li>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<li>We don't have to wait to let the dependencies resolve when the user accesses the object, we can ensure they are there ahead of time</li>&ndash;&gt;-->
-                            <!--<li>A map of dependencies your class needs along with the logic to create those dependencies if they haven't been created yet</li>-->
-                            <!--<li>Can resolve complex dependencies transparently</li>-->
-                            <!--<li>Modular when you need to swap a dependency, only update the container</li>-->
-                        <!--</ul>-->
-                    <!--</article>-->
-                <!--</myColBox>-->
-            <!--</section>-->
-        <!--</section>-->
-        <!--<section>-->
-            <!--<section>-->
-                <!--<myTitleBox>-->
-                    <!--<h3>Pimple</h3>-->
-                <!--</myTitleBox>-->
-                <!--<myColBox>-->
-                    <!--<article>-->
-                        <!--<ul>-->
-                            <!--<li>Create your container by instantiating the Pimple class</li>-->
-                        <!--</ul>-->
-                    <!--</article>-->
-                    <!--<article><img src="img/hey_boss/pimple.jpg"> </article>-->
-                <!--</myColBox>-->
-            <!--</section>-->
-            <!--<section>-->
-                <!--<myTitleBox>-->
-                    <!--<h3>'app/services.php'</h3>-->
-                <!--</myTitleBox>-->
-                <!--<myColBox>-->
-                    <!--<article>-->
-<!--<pre><code>-->
-<!--&lt;?php-->
-
-    <!--use Pimple\Container;-->
-    <!--use Illuminate\Database\Capsule\Manager as Capsule;-->
-
-    <!--$container = new Container();-->
-
-    <!--$container['config'] = require_once('config.php');-->
-
-    <!--$container['database'] = function ($c) {-->
-    <!--$capsule = new Capsule;-->
-
-    <!--// PHP 5.3 doesn't do array de-referencing.-->
-    <!--// @todo update for php54-->
-    <!--$config = $c['config'];-->
-
-    <!--$capsule->addConnection(-->
-        <!--array(-->
-            <!--'driver'    => 'mysql        <section>-->
-            <!--<myColBox>-->
-                <!--<article>-->
-                    <!--<img src="img/hey_boss/scholarships-bounded-contexts-events.png" alt="bounded contexts with Events">-->
-                <!--</article>-->
-            <!--</myColBox>-->
-        <!--</section>',-->
-            <!--'host'      => $config['db']['default']['hostname'],-->
-            <!--'port'      => $config['db']['default']['port'],-->
-            <!--'database'  => $config['db']['default']['database'],-->
-            <!--'username'  => $config['db']['default']['username'],-->
-            <!--'password'  => $config['db']['default']['password'],-->
-            <!--'charset'   => 'utf8',-->
-            <!--'collation' => 'utf8_unicode_ci',-->
-            <!--'prefix'    => '',-->
-            <!--),-->
-            <!--'default'-->
-        <!--);-->
-
-        <!--// Make this Capsule instance available globally via static methods... (optional)-->
-        <!--$capsule->setAsGlobal();-->
-
-        <!--return $capsule;-->
-    <!--};-->
-<!--</code></pre>-->
-                        <!--<span class="fragment current-only" data-code-focus="7"></span>-->
-                        <!--<span class="fragment current-only" data-code-focus="9"></span>-->
-                        <!--<span class="fragment current-only" data-code-focus="11"></span>-->
-                        <!--<span class="fragment current-only" data-code-focus="12"></span>-->
-                        <!--<span class="fragment current-only" data-code-focus="18-31"></span>-->
-                        <!--<span class="fragment current-only" data-code-focus="36"></span>-->
-
-                    <!--</article>-->
-                <!--</myColBox>-->
-                <!--<aside class="notes">-->
-                    <!--<li>(*)In our services.php file in CodeIgniter, we initialized the container</li>-->
-                    <!--<li>(*)We included our configuration file and assigned it to a config container</li>-->
-                    <!--<li>(*)We could then build our database container</li>-->
-                    <!--<li>(*)We made a new capsule for our database container</li>-->
-                    <!--<li>(*)We applied the connection parameters from that config container</li>-->
-                    <!--<li>and after we properly set up our database configuration we returned the capsule</li>-->
-                <!--</aside>-->
-            <!--</section>-->
-            <!--<section>-->
-                <!--<myTitleBox>-->
-                    <!--<h3>Configuration file</h3>-->
-                <!--</myTitleBox>-->
-                <!--<myColBox>-->
-                    <!--<ul>-->
-                        <!--<li>DB connections</li>-->
-                        <!--<li>Base URL </li>-->
-                        <!--<li>Set paths to twig templates</li>-->
-                        <!--<li>Customize Notice messages</li>-->
-                        <!--<li>Set config variables for services</li>-->
-                    <!--</ul>-->
-                <!--</myColBox>-->
-                <!--<aside class="notes">-->
-                    <!--<li>This config file allowed us to support the many environments: development, staging, production was a configuration file. </li>-->
-                    <!--<li>This was not version controlled. But a template was.</li>-->
-                    <!--<li>We could download that template and fill in our local DB connections, the base_url path</li>-->
-                    <!--<li>We could set paths to twig templates, custom notice messages and many other things</li>-->
-                <!--</aside>-->
-            <!--</section>-->
-            <!--<section>-->
-                <!--<h3>Configuration file</h3>-->
-                <!--<p>'/app/config.php'-->
-                <!--<pre><code>-->
-<!--&lt;?php-->
-    <!--return array(-->
-        <!--/* base url for path in the site */-->
-        <!--&#39;app&#39; =&gt; array(-->
-            <!--&#39;base_url&#39; =&gt; sprintf(&#39;http://localhost:%s/&#39;, isset($_SERVER[&#39;SERVER_PORT&#39;])-->
-            <!--? $_SERVER[&#39;SERVER_PORT&#39;] : &#39;&#39;),-->
-            <!--&#39;index_page&#39; =&gt; &#39;index.php/&#39;,-->
-            <!--&#39;debug&#39; =&gt; FALSE-->
-        <!--),-->
-
-        <!--/* DB configuration */-->
-        <!--&#39;db&#39; =&gt; array(-->
-            <!--&#39;default&#39; =&gt; array(-->
-                <!--&#39;hostname&#39; =&gt; &quot;local__server&quot;,-->
-                <!--&#39;port&#39; =&gt; &quot;3306&quot;,-->
-                <!--&#39;username&#39; =&gt; &quot;uname&quot;,-->
-                <!--&#39;password&#39; =&gt; &quot;pword&quot;,-->
-                <!--&#39;database&#39; =&gt; &quot;db_name_&quot;-->
-            <!--)-->
-        <!--),-->
-
-        <!--&#39;twig&#39; =&gt; array(-->
-            <!--&#39;template_path&#39; =&gt; array(-->
-                <!--__DIR__ . &#39;/templates&#39;,-->
-                <!--__DIR__ . &#39;/templates/dashboard&#39;,-->
-            <!--)-->
-        <!--),-->
-
-        <!--&#39;authorization&#39; =&gt; array(-->
-            <!--&#39;funding&#39; =&gt; array(&#39;elstamey&#39;, &#39;person2&#39;),-->
-            <!--&#39;developers&#39; =&gt; array(&#39;elstamey&#39;),-->
-            <!--&#39;coordinators&#39; =&gt; array(&#39;person3&#39;)-->
-        <!--),-->
-
-        <!--&#39;notice&#39; =&gt; array(-->
-            <!--&#39;enabled&#39; =&gt; false,-->
-            <!--&#39;type&#39; =&gt; &#39;info&#39;,-->
-            <!--&#39;headline&#39; =&gt; null,-->
-            <!--&#39;message&#39; =&gt; null,-->
-            <!--&#39;syslink&#39; =&gt; null-->
-        <!--),-->
-
-        <!--&#39;errorHandling&#39; =&gt; array(-->
-            <!--&#39;emailExceptions&#39; =&gt; false-->
-        <!--),-->
-
-        <!--&#39;awardLetters&#39; =&gt; array(-->
-            <!--&#39;letterhead&#39; =&gt; &#39;_itecs/notification-samples/ncsu_coe_aa_letterhead.pdf&#39;,-->
-            <!--&#39;academicYears&#39; =&gt; &#39;2015-2016&#39;,-->
-            <!--&#39;respondByDate&#39; =&gt; &#39;May 11, 2015&#39;,-->
-            <!--&#39;templates&#39; =&gt; array(-->
-                <!--&#39;awardLetter&#39; =&gt; &#39;layouts/letters/award-letter.twig&#39;,-->
-                <!--&#39;awardEmail&#39; =&gt; &#39;layouts/letters/award-email-body.twig&#39;-->
-            <!--),-->
-            <!--&#39;fixedAttachments&#39; =&gt; array(-->
-                <!--&#39;_itecs/notification-samples/thank_you_template.pdf&#39;-->
-            <!--),-->
-            <!--&#39;signatureImagePath&#39; =&gt; &#39;_uploads/tmp/deans_signature.png&#39;,-->
-            <!--&#39;outputPath&#39; =&gt; &#39;_uploads/awardLetters/&#39;-->
-        <!--),-->
-
-        <!--&#39;emailService&#39; =&gt; array(-->
-            <!--&#39;sendLimit&#39; =&gt; 5,-->
-            <!--&#39;retries&#39; =&gt; 3,-->
-            <!--&#39;throttleTime&#39; =&gt; 2, // seconds-->
-            <!--&#39;fromAddress&#39; =&gt; &#39;Scholarships Application &lt;engr-webmaster@ncsu.edu&gt;&#39;,-->
-            <!--&#39;replyToAddress&#39;=&gt;&#39;College of Engineering &lt;engineering@ncsu.edu&gt;&#39;-->
-        <!--)-->
-    <!--);-->
-
-<!--?&gt;-->
-<!--</code></pre>-->
-                <!--<p>We passed this array into a <b>$container['config']</b> variable</p>-->
-                <!--<aside class="notes">-->
-                    <!--<li>setting the base_url was very helpful in supporting paths to resources in both our local environment and production </li>-->
-                    <!--<li>Our project used two DBs and we were able to configure both using this. The-->
-                        <!--parts of CodeIgniter that configured the DB could then pull in our config variable to remain consistent</li>-->
-                    <!--<li>We also put paths to twig templates, which were then configured into the framework similarly to the DB connections</li>-->
-                    <!--&lt;!&ndash;<li>We created an authorization array to limit access to the portions of the app&ndash;&gt;-->
-                    <!--&lt;!&ndash;because this would give us flexibility to turn access on and off when we needed to change&ndash;&gt;-->
-                    <!--&lt;!&ndash;the application</li>&ndash;&gt;-->
-                <!--</aside>-->
-            <!--</section>-->
-        <!--</section>-->
-        <!--<section>-->
-            <!--<h3>Base Controller</h3>-->
-            <!--<pre><code>-->
-<!--&lt;?php-->
-
-<!--namespace ITECS\Scholarships;-->
-
-<!--use \ReflectionClass;-->
-<!--use \Log;-->
-
-<!--/**-->
-<!--* Base Application Controller Class-->
-<!--*-->
-<!--*/-->
-<!--class BaseController extends \Controller {-->
-
-    <!--const BAD_REQUEST=400;-->
-    <!--const FORBIDDEN=403;-->
-    <!--const NOT_FOUND=404;-->
-    <!--const METHOD_NOT_ALLOWED=405;-->
-    <!--const SERVER_ERROR=500;-->
-
-    <!--protected $serverResponseCodes;-->
-    <!--protected $authenticationService;-->
-
-    <!--/**-->
-    <!--* @var Pimple\Container-->
-    <!--*/-->
-    <!--protected $container = null;-->
-
-    <!--/**-->
-    <!--* Constructor-->
-    <!--*/-->
-    <!--public function BaseController()-->
-    <!--{-->
-        <!--parent::Controller();-->
-
-        <!--// BaseController Contains Container-->
-        <!--global $container;-->
-        <!--$this->container = $container;-->
-
-        <!--$this->authenticationService = $this->container['ITECS\Scholarships\IdentityAccess\AuthenticationService'];-->
-
-        <!--session_start();-->
-
-        <!--$this->setExceptionHandler();-->
-
-        <!--log_message('debug', "Base Controller Class Initialized");-->
-    <!--}-->
-<!--}-->
-<!--</code></pre>-->
-            <!--<span class="fragment current-only" data-code-focus="32"></span>-->
-            <!--<span class="fragment current-only" data-code-focus="38"></span>-->
-            <!--<aside class="notes">-->
-                <!--<li>(*)We did this in the BaseController of the CI app </li>-->
-                <!--<li>(*)Here We defined our container globally </li>-->
-            <!--</aside>-->
-        <!--</section>-->
-        <!--<section>-->
-            <!--<h3>Connecting to the Framework</h3>-->
-            <!--<ul>-->
-                <!--<li>'/app/bindings.php'-->
-                    <!--<br>the roadmap of our new code and dependencies-->
-                    <!--<br>required in the '/app/services.php' file</li>-->
-
-                <!--<li>'/app/services.php'-->
-                    <!--<br>defined and configured twig, database, et al-->
-                    <!--<br>required in the CI index.php file</li>-->
-
-                <!--<li>'/app/controllers'-->
-                    <!--<br>new controllers for the new functionality</></li>-->
-            <!--</ul>-->
-            <!--<aside class="notes">-->
-                <!--<li>We  created new controllers to separate new features from the old</li>-->
-                <!--<li>These controllers linked to our container and passed the required classes and services we needed in the requests and templates</li>-->
-                <!--<li>The services file is where we configured the database connections and twig templates and tooling and things like that.  This accessed our config variables from the config.php file</li>-->
-                <!--<li>The bindings was our complete class map for our dependency injection container</li>-->
-            <!--</aside>-->
-        <!--</section>-->
-        <!--<section>-->
-            <!--<section>-->
-                <!--<h3>Controllers</h3>-->
-                <!--<pre><code>-->
-<!--&lt;?php-->
-
-<!--class Selectionnext extends BaseController-->
-<!--{-->
-    <!--public function Selectionnext()-->
-    <!--{-->
-        <!--parent::BaseController();-->
-
-        <!--$this->scholarshipRepository = $this->container['Scholarships\Selection\Scholarship\ScholarshipRepository'];-->
-        <!--$this->collaborationsService = $this->container['Scholarships\Selection\CollaborationsService'];-->
-        <!--$this->committeeService = $this->container['Scholarships\Selection\CommitteeService'];-->
-        <!--$this->authService = $this->container['Scholarships\IdentityAccess\AuthenticationService'];-->
-        <!--$this->awardsService = $this->container['Scholarships\Selection\Scholarship\AwardsService'];-->
-        <!--$this->events = $this->container['Scholarships\Support\Events\EventStore'];-->
-    <!--}-->
-
-    <!--private function getScholarshipDashboard($scholarshipId,$keepItLight=false)-->
-    <!--{-->
-        <!--$committeeMember = $this->getCommitteeMember();-->
-
-        <!--$presenter = new ScholarshipDashboardPresenter(-->
-            <!--$committeeMember,-->
-            <!--ScholarshipId::fromString($scholarshipId),-->
-            <!--$this->events,-->
-            <!--$this->scholarshipRepository,-->
-            <!--$this->container['Scholarships\Selection\ApplicantQueryService'],-->
-            <!--$keepItLight-->
-        <!--);-->
-
-        <!--$scholDetails = $presenter->asArrayForJson();-->
-        <!--$scholDetails['json_string'] = json_encode($scholDetails);-->
-
-        <!--return $scholDetails;-->
-    <!--}-->
-<!--?&gt;-->
-<!--</code></pre>-->
-                <!--<span class="fragment current-only" data-code-focus="6"></span>-->
-                <!--<span class="fragment current-only" data-code-focus="10-15"></span>-->
-                <!--<span class="fragment current-only" data-code-focus="27"></span>-->
-                <!--&lt;!&ndash;<span class="fragment current-only" data-code-focus="22"></span>&ndash;&gt;-->
-                <!--&lt;!&ndash;<span class="fragment current-only" data-code-focus="31"></span>&ndash;&gt;-->
-                <!--&lt;!&ndash;<span class="fragment current-only" data-code-focus="34"></span>&ndash;&gt;-->
-
-                <!--<aside class="notes">-->
-                    <!--<li>Our controller extended the BaseController, so we could access the container variable</li>-->
-                    <!--<li>(*)Here is our new Selection controller and (*)in its function, we could define the classes we needed in all methods </li>-->
-                    <!--<li>(*) here in the selection dashboard we are accessing the Applicant Query Service to show our Qualified Students</li>-->
-                    <!--<li>(*)This informed a presenter to display the Scholarship, its requirements, valid candidates, and any awards already given.</li>-->
-                    <!--<li>(*)We returned this as Scholarship Details that would later be displayed by the template</li>-->
-                <!--</aside>-->
-            <!--</section>-->
-        <!--</section>-->
         <section>
             <myTitleBox>
-                <h3>Flexible to Changes</h3>
+                <h1 id="student-enrollment-process">Student Enrollment Process</h1>
             </myTitleBox>
             <myColBox>
                 <article>
-                    <ul>
-                        <li>Selection Committee would never take away an award
-                            <ul>
-                                <li class="fragment">until they did</li>
-                            </ul>
-                        </li>
-                        <li class="fragment">New academic year, new event store</li>
 
-                    </ul>
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myTitleBox>
-                <h3 id="legacy">Scholarships wrap-up</h3>
-            </myTitleBox>
-            <myColBox>
-                <article>
-                    <ul>
-                        <li>Modernized the code in pieces</li>
-                        <li>View events from multiple contexts</li>
-                        <li>Flexible to changes in the application</li>
-                    </ul>
-                </article>
-            </myColBox>
-        </section>
-        <section>
-            <myColBox>
-                <article>
-                    <h1 id="student-enrollment-process">Student Enrollment Process</h1>
                     <ul>
                         <li>For Distance Education Students in the College of Engineering</li>
                         <li>Rewrote Application</li>
@@ -1607,7 +1724,7 @@
                 <li>Over time we add more states to the process to solve confusion, or to distribute load, lots of reasons!</li>
                 <li>Processes that handled lots of paper could become much more complex, even in trying to organize them</li>
             </aside>
-        </section>
+        <section>
         <section>
             <myTitleBox>
                 <h2>Paper Forms handling state</h2>
