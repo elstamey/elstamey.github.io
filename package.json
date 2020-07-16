@@ -43,7 +43,7 @@
     "reveal.js": "^3.8.0",
     "highlight.js": "^9.11.0",
     "reveal-code-focus": "^1.0.0",
-    "lodash": ">=4.17.13",
+    "lodash": ">=4.17.19",
     "lodash.mergewith": ">=4.6.2",
     "diff": ">=3.5.0",
     "js-yaml": ">=3.13.1",
